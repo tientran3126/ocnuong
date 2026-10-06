@@ -635,7 +635,7 @@ function extractYouTubeId(url){
 /* ============================================================
    STATE + FIREBASE
    ============================================================ */
-const STKEY = "tieunhi_v1_state";
+const STKEY = "ocnuong_v20_state";
 const clientId = "c_" + Date.now().toString(36) + Math.random().toString(36).slice(2,8);
 let firebaseReady = false, fbRef = null, fbImagesRef = null, fbArchiveRef = null, fbConnected = false, writeTimer = null, suppressWrite = false;
 let remoteSeeded = false;
@@ -678,7 +678,7 @@ function seed(){
     tableSessions: {}, merges: {}, tableServices: {}, tableNotes: {},
     menu: SEED_MENU.map(x=>({...x, recipe:(x.recipe||[]).map(r=>({...r}))})),
     ingredients: SEED_ING.map(x=>({...x})),
-    brand: {name:"TIỂU NHỊ",sub:"Quán nhậu thông minh · Phục vụ tận tâm",
+    brand: {name:"ỐC NƯỚNG",sub:"Quán nhậu hải sản · Tươi sống mỗi ngày",
       dev:"Phát triển bởi LƯ PHÙNG TIẾN",logo:"",address:"",phone:"",openHours:""},
     settings: {
       managerPin:"1234", cancelApproval:true, taxEnabled:false, taxRate:8,
@@ -866,9 +866,9 @@ function initFirebase(){
   try{
     if(!firebase.apps.length) firebase.initializeApp(cfg);
     const db = firebase.database();
-    fbRef = db.ref("tieunhi/state");
-    fbImagesRef = db.ref("tieunhi/images");
-    fbArchiveRef = db.ref("tieunhi/archive");
+    fbRef = db.ref("ocnuong/state");
+    fbImagesRef = db.ref("ocnuong/images");
+    fbArchiveRef = db.ref("ocnuong/archive");
     db.ref(".info/connected").on("value", s=>{
       fbConnected = !!s.val();
       if(fbConnected) setSyncStatus("syncing", "🟡 Đang kết nối...");
@@ -3788,8 +3788,18 @@ function openMenuEditor(id){
           (tempImgData ? '<button class="btn secondary small" id="mmImgRemove" type="button">🗑️ Xoá</button>' : '') +
         '</div></div>' +
     '</div>' +
-    '<label class="fl">Emoji <input id="mmEmoji" value="' + esc(m.emoji||"🍽️") + '" maxlength="8"></label>' +
-    '<label class="fl">URL ảnh <input id="mmImg" value="' + esc(m.img||"") + '" placeholder="https://i.imgur.com/xxx.jpg"></label>' +
+       '<label class="fl">Emoji (hiển thị khi không có ảnh) <input id="mmEmoji" value="' + esc(m.emoji||"🍽️") + '" maxlength="8"></label>' +
+    '<label class="fl">🔗 URL ảnh (Imgur/Postimages/Cloudinary)' +
+      '<input id="mmImg" value="' + esc(m.img||"") + '" placeholder="https://i.imgur.com/abc.jpg" inputmode="url" autocomplete="off">' +
+    '</label>' +
+    '<div class="row" style="margin-top:.3rem;gap:.3rem">' +
+      '<button type="button" class="btn secondary small" id="mmImgTest" style="flex:1">👁️ Xem thử</button>' +
+      '<button type="button" class="btn secondary small" id="mmImgClear" style="flex:0 0 auto">🗑️ Xoá URL</button>' +
+    '</div>' +
+    '<div id="mmImgTestBox" style="display:none;margin-top:.4rem;text-align:center;background:var(--bg);padding:.4rem;border-radius:8px;border:1px dashed var(--border)">' +
+      '<img id="mmImgTestImg" style="max-width:100%;max-height:180px;border-radius:6px" referrerpolicy="no-referrer">' +
+      '<div id="mmImgTestErr" style="display:none;color:var(--danger);font-size:.78rem;margin-top:.3rem">⚠️ Không tải được ảnh. Kiểm tra lại URL.</div>' +
+    '</div>' +
     '<label class="fl">Tên món <input id="mmName" value="' + esc(m.name) + '"></label>' +
     '<label class="fl">Danh mục <input id="mmCat" list="catList" value="' + esc(m.cat) + '"></label>' +
     '<datalist id="catList">' + cats.map(c=>'<option value="' + esc(c) + '">').join("") + '</datalist>' +
@@ -3846,8 +3856,28 @@ function openMenuEditor(id){
   };
   const rmBtn = document.getElementById("mmImgRemove");
   if(rmBtn) rmBtn.onclick = ()=>{ if(confirm("Xoá ảnh?")){ tempImgData = ""; document.getElementById("mmImg").value = ""; updatePreview(); } };
-  document.getElementById("mmEmoji").oninput = updatePreview;
+    document.getElementById("mmEmoji").oninput = updatePreview;
   document.getElementById("mmImg").oninput = updatePreview;
+  // Nút "Xem thử" URL ảnh
+  document.getElementById("mmImgTest").onclick = ()=>{
+    const url = document.getElementById("mmImg").value.trim();
+    const box = document.getElementById("mmImgTestBox");
+    const img = document.getElementById("mmImgTestImg");
+    const err = document.getElementById("mmImgTestErr");
+    if(!url){ alert("Chưa nhập URL"); return; }
+    box.style.display = "";
+    err.style.display = "none";
+    img.style.display = "";
+    img.onerror = ()=>{ img.style.display = "none"; err.style.display = ""; };
+    img.onload = ()=>{ img.style.display = ""; err.style.display = "none"; };
+    img.src = proxiedImgUrl(url) + (url.indexOf("?") >= 0 ? "&t=" : "?t=") + Date.now();
+  };
+  document.getElementById("mmImgClear").onclick = ()=>{
+    document.getElementById("mmImg").value = "";
+    document.getElementById("mmImgTestBox").style.display = "none";
+    tempImgData = "";
+    updatePreview();
+  };
   updatePreview();
   const recalc = ()=>{
     const price = Math.max(0, parseInt(document.getElementById("mmPrice").value)||0);
