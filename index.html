@@ -265,19 +265,6 @@ input[type="number"]{text-align:right}
 .ta-card .ta-name{font-weight:700;font-size:.9rem;color:var(--text)}
 .ta-card .ta-info{font-size:.76rem;color:var(--muted);margin-top:.15rem}
 .ta-card .ta-total{font-weight:800;color:var(--primary-d);text-align:right}
-.suggest-row{display:flex;gap:.5rem;align-items:center;padding:.5rem .6rem;border-radius:10px;margin-bottom:.35rem;
-  background:var(--bg);border:1px solid var(--border)}
-.suggest-row .sr-cat{flex:0 0 auto;font-size:.68rem;font-weight:700;padding:.15rem .45rem;border-radius:999px;color:#fff}
-.suggest-row .sr-cat.kv{background:var(--p3)}.suggest-row .sr-cat.mn{background:var(--primary)}
-.suggest-row .sr-cat.lau{background:var(--p2)}.suggest-row .sr-cat.bia{background:var(--beer)}
-.suggest-row .sr-cat.nuoc{background:var(--p4)}
-.suggest-row .sr-info{flex:1;min-width:0}
-.suggest-row .sr-name{font-weight:700;font-size:.9rem;color:var(--text)}
-.suggest-row .sr-meta{font-size:.74rem;color:var(--muted);margin-top:.1rem}
-.suggest-row .sr-price{font-weight:800;color:var(--primary-d);font-size:.9rem;text-align:right;flex:0 0 auto}
-.suggest-row .sr-qty{display:flex;align-items:center;gap:.25rem;flex:0 0 auto}
-.suggest-row .sr-qty button{width:26px;height:26px;border-radius:6px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:.9rem;cursor:pointer}
-.suggest-row .sr-qty span{min-width:24px;text-align:center;font-weight:700;font-size:.9rem}
 .cart-row{display:flex;gap:.55rem;align-items:flex-start;padding:.65rem .7rem;border-radius:10px;margin-bottom:.4rem;
   background:var(--bg);border:1px solid var(--border)}
 .cart-row .cr-img{flex:0 0 auto;width:48px;height:48px;border-radius:8px;background:linear-gradient(135deg,#f5d4a8,#e8b878);
@@ -295,6 +282,50 @@ input[type="number"]{text-align:right}
 .cart-row .cr-rm{background:none;border:none;color:var(--danger);font-size:.72rem;cursor:pointer;text-decoration:underline}
 .cart-footer{position:sticky;bottom:0;background:var(--surface);border-top:2px solid var(--border);
   padding:.7rem .3rem .3rem;margin-top:.5rem}
+/* === GACHA SUGGEST === */
+.gacha-trigger{display:block;width:100%;padding:1.1rem 1rem;margin-bottom:.7rem;border:none;border-radius:16px;
+  background:linear-gradient(135deg,#e0a021 0%,#c0521f 50%,#963f16 100%);
+  color:#fff;cursor:pointer;box-shadow:0 8px 24px rgba(192,82,31,.45),inset 0 -3px 8px rgba(0,0,0,.15);
+  position:relative;overflow:hidden;text-align:left}
+.gacha-trigger::before{content:"";position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+  background:radial-gradient(circle,rgba(255,255,255,.25) 0%,transparent 60%);
+  animation:gachaShine 4s linear infinite;pointer-events:none}
+@keyframes gachaShine{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.gacha-trigger:active{transform:scale(.98)}
+.gacha-trigger .gi{font-size:2.2rem;filter:drop-shadow(0 3px 6px rgba(0,0,0,.3))}
+.gacha-trigger .gt{font-size:1.15rem;font-weight:900;letter-spacing:.05em}
+.gacha-trigger .gs{font-size:.75rem;font-weight:500;opacity:.92;margin-top:.15rem}
+.gacha-dice{font-size:4rem;text-align:center;display:block;margin:.6rem auto;line-height:1;
+  filter:drop-shadow(0 4px 10px rgba(0,0,0,.25))}
+.gacha-dice.rolling{animation:diceRoll .5s ease-in-out infinite}
+@keyframes diceRoll{
+  0%{transform:rotate(0) scale(1)}
+  25%{transform:rotate(90deg) scale(1.15)}
+  50%{transform:rotate(180deg) scale(.95)}
+  75%{transform:rotate(270deg) scale(1.15)}
+  100%{transform:rotate(360deg) scale(1)}
+}
+.gacha-roll{width:100%;padding:1rem;border:none;border-radius:12px;font-size:1.05rem;font-weight:900;
+  letter-spacing:.05em;color:#fff;cursor:pointer;
+  background:linear-gradient(135deg,#c0521f,#963f16);
+  box-shadow:0 4px 14px rgba(192,82,31,.4)}
+.gacha-roll:active{transform:scale(.98)}
+.gacha-roll:disabled{opacity:.6}
+.gacha-item{display:flex;gap:.5rem;align-items:center;padding:.55rem .6rem;background:var(--bg);
+  border:1px solid var(--border);border-radius:10px;margin-bottom:.4rem;
+  animation:gachaPop .3s ease-out backwards}
+@keyframes gachaPop{from{opacity:0;transform:scale(.85) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.gacha-item .gi-img{width:46px;height:46px;flex-shrink:0;border-radius:9px;overflow:hidden;
+  background:linear-gradient(135deg,#f5d4a8,#e8b878);display:flex;align-items:center;justify-content:center;font-size:1.6rem}
+.gacha-item .gi-img img{width:100%;height:100%;object-fit:cover}
+.gacha-item .gi-info{flex:1;min-width:0}
+.gacha-item .gi-name{font-weight:800;font-size:.9rem;color:var(--primary-d);line-height:1.2}
+.gacha-item .gi-meta{font-size:.72rem;color:var(--muted);margin-top:.1rem}
+.gacha-item .gi-qty{display:flex;align-items:center;gap:.2rem}
+.gacha-item .gi-qty button{width:28px;height:28px;border-radius:7px;border:1px solid var(--border);
+  background:var(--surface);color:var(--text);font-size:1rem;font-weight:800;cursor:pointer}
+.gacha-item .gi-qty span{min-width:26px;text-align:center;font-weight:800;color:var(--primary-d)}
+.gacha-item .gi-rm{background:none;border:none;color:var(--danger);font-size:1.2rem;cursor:pointer;padding:.2rem .3rem}
 @media (max-width:600px){
   .ing-row{grid-template-columns:1.3fr 60px 80px 60px 60px 28px;font-size:.74rem}
   .kbtn{font-size:.92rem !important;padding:.7rem 1rem !important}
@@ -321,6 +352,7 @@ input[type="number"]{text-align:right}
   <div class="modebar">
     <span class="sync-dot" id="syncDot"></span>
     <span id="syncStatus" class="tiny">Đang khởi động...</span>
+    <button class="pillbtn" id="btnRefresh" title="Kéo dữ liệu mới từ Firebase">🔄</button>
     <span id="modeSub"></span>
     <span id="roleBadge" class="role-badge"></span>
     <button class="pillbtn" id="btnRoleLogin"></button>
@@ -369,7 +401,7 @@ input[type="number"]{text-align:right}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.0.3/qrcode.min.js"></script>
 <script>
 /* ============================================================
-   FIREBASE CONFIG
+   FIREBASE CONFIG — ĐÃ CẬP NHẬT
    ============================================================ */
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyBlt9RFYaIa4fBvA0w-d-Dh2JmrW50w5OU",
@@ -512,6 +544,22 @@ const minsAgo = ts => Math.max(0, Math.floor((Date.now()-(ts||Date.now()))/60000
 const fmtTime = ts => new Date(ts).toLocaleTimeString("vi-VN",{hour:"2-digit",minute:"2-digit"});
 const fmtDate = ts => new Date(ts).toLocaleDateString("vi-VN",{day:"2-digit",month:"2-digit",year:"numeric"});
 const isTakeawayId = id => typeof id === "string" && id.startsWith("TA");
+
+// 🔥 DEEP CLEAN: Loại bỏ MỌI undefined trước khi ghi Firebase (fix bug "undefined in property")
+function deepClean(obj){
+  if(obj === null || obj === undefined) return obj;
+  if(Array.isArray(obj)) return obj.map(deepClean).filter(v => v !== undefined);
+  if(typeof obj === "object"){
+    const out = {};
+    for(const k of Object.keys(obj)){
+      if(obj[k] === undefined) continue;
+      out[k] = deepClean(obj[k]);
+    }
+    return out;
+  }
+  return obj;
+}
+
 function toArr(v){
   if(Array.isArray(v)) return v;
   if(v && typeof v === "object"){
@@ -557,19 +605,16 @@ function readImageAsResizedDataUrl(file, maxW, maxH, quality){
 /* ============================================================
    STATE + FIREBASE
    ============================================================ */
-const STKEY = "ocnuong_v17_state";
+const STKEY = "ocnuong_v18_state";
 const clientId = "c_" + Date.now().toString(36) + Math.random().toString(36).slice(2,8);
 let firebaseReady = false, fbRef = null, fbImagesRef = null, fbConnected = false, writeTimer = null, suppressWrite = false;
-let remoteSeeded = false; // true khi đã nhận dữ liệu thật từ Firebase (hoặc máy quán đã khởi tạo xong)
-let imagesCache = {}; // {menuId: dataUrl} - ảnh được đồng bộ RIÊNG, tách khỏi state chính cho nhẹ
+let remoteSeeded = false;
+let imagesCache = {};
 function stripImagesForSync(st){
-  // Trả về bản sao state KHÔNG kèm ảnh (imgData) để gửi lên Firebase cho nhẹ.
-  // Ảnh được đồng bộ riêng qua fbImagesRef (xem saveMenuImage / listener ocnuong/images).
   st.menu = (st.menu||[]).map(m=>{ const c = {...m}; delete c.imgData; return c; });
   return st;
 }
 function applyImagesCache(){
-  // Gán lại ảnh đã lưu cục bộ/đã đồng bộ (imagesCache) vào state.menu theo id món.
   if(!state.menu) return;
   state.menu.forEach(m=>{
     if(Object.prototype.hasOwnProperty.call(imagesCache, m.id)){
@@ -578,7 +623,6 @@ function applyImagesCache(){
   });
 }
 function saveMenuImage(id, dataUrl){
-  // Ghi/xoá MỘT ảnh món tại nhánh riêng ocnuong/images/{id} - không đụng tới state chính.
   imagesCache[id] = dataUrl || "";
   if(!firebaseReady || !fbImagesRef) return;
   fbImagesRef.child(id).set(dataUrl || null).catch(err=>{
@@ -647,7 +691,9 @@ function migrateState(st){
     if(m.imgData === undefined) m.imgData = "";
     m.price = Number(m.price)||0; m.prep = Number(m.prep)||5; m.prio = Number(m.prio)||1;
     m.laborCost = Number(m.laborCost)||0; m.otherCost = Number(m.otherCost)||0;
-    m.caseSize = m.caseSize ? Number(m.caseSize) : undefined;
+    // 🔥 FIX: KHÔNG set undefined - phải delete hẳn key
+    if(m.caseSize) m.caseSize = Number(m.caseSize);
+    else delete m.caseSize;
     m.recipe = toArr(m.recipe).map(r=>({...r, qty: Number(r.qty)||0, ingId: String(r.ingId||"")}))
       .filter(r=>r.ingId && r.qty > 0);
   });
@@ -692,20 +738,25 @@ function save(){
   state.meta.lastClient = clientId;
   saveLocal();
   if(!firebaseReady || suppressWrite) return;
-  if(MODE !== "staff" && !remoteSeeded) return; // máy khách chưa nhận dữ liệu thật thì chưa được ghi, tránh ghi đè bằng data cũ
+  if(MODE !== "staff" && !remoteSeeded) return;
   clearTimeout(writeTimer);
   writeTimer = setTimeout(()=>{
-    const clean = stripImagesForSync(migrateState(JSON.parse(JSON.stringify(state))));
-    fbRef.set(clean)
-      .then(()=>{ if(!fbConnected) setSyncStatus("synced", "🟢 Ghi OK"); })
-      .catch(err=>{
-        console.error("[Firebase] WRITE ERROR:", err);
-        if(err.code === "PERMISSION_DENIED"){
-          setSyncStatus("offline", "🔴 Rules chưa Publish — Firebase Console");
-        } else {
-          setSyncStatus("offline", "🔴 " + (err.code||err.message));
-        }
-      });
+    try{
+      // 🔥 FIX: deepClean loại bỏ mọi undefined, sau đó migrate
+      const clean = deepClean(stripImagesForSync(migrateState(JSON.parse(JSON.stringify(state)))));
+      fbRef.set(clean)
+        .then(()=>{ if(!fbConnected) setSyncStatus("synced", "🟢 Ghi OK"); })
+        .catch(err=>{
+          console.error("[Firebase] WRITE ERROR:", err);
+          if(err.code === "PERMISSION_DENIED"){
+            setSyncStatus("offline", "🔴 Rules chưa Publish — Firebase Console");
+          } else {
+            setSyncStatus("offline", "🔴 " + (err.code||err.message));
+          }
+        });
+    }catch(e){
+      console.error("[save] Lỗi chuẩn bị dữ liệu:", e);
+    }
   }, 400);
 }
 function setSyncStatus(kind, text){
@@ -737,7 +788,6 @@ function initFirebase(){
       else setSyncStatus("offline", "🔴 Mất kết nối mạng");
       updateSyncUI();
     });
-    // Nhánh ẢNH đồng bộ RIÊNG (nhẹ, ít thay đổi) - không làm nặng nhánh state (đơn hàng/bàn) vốn cập nhật liên tục.
     fbImagesRef.on("value", snap=>{
       try{
         imagesCache = snap.val() || {};
@@ -750,27 +800,22 @@ function initFirebase(){
       try{
         const remote = snap.val();
         if(!remote){
-          // CHỈ máy QUÁN (staff/quản lý) được phép khởi tạo dữ liệu khi database trống.
-          // Máy KHÁCH (quét mã QR) tuyệt đối không tự đẩy dữ liệu lên, tránh ghi đè bằng
-          // dữ liệu cũ còn lưu trong điện thoại khách (nguyên nhân gây "mất đồng bộ" sau khi xoá database).
           if(MODE !== "staff"){
             setSyncStatus("syncing", "🟡 Đang chờ dữ liệu từ quán...");
             return;
           }
-          console.log("[Firebase] Database trống, đẩy state local lên (transaction an toàn)...");
-          const seedClean = stripImagesForSync(migrateState(JSON.parse(JSON.stringify(state))));
+          console.log("[Firebase] Database trống, đẩy state local lên...");
+          const seedClean = deepClean(stripImagesForSync(migrateState(JSON.parse(JSON.stringify(state)))));
           fbRef.transaction(current=>{
-            // Nếu lúc transaction chạy mà đã có dữ liệu (máy khác vừa ghi) thì KHÔNG ghi đè.
             if(current === null || current === undefined) return seedClean;
-            return; // abort, giữ nguyên dữ liệu đã có
+            return;
           }, (err, committed)=>{
             if(err){
               console.error("[Firebase] Lỗi đẩy state:", err);
-              if(err.code === "PERMISSION_DENIED") setSyncStatus("offline", "🔴 Rules chưa Publish — Firebase Console → Rules");
+              if(err.code === "PERMISSION_DENIED") setSyncStatus("offline", "🔴 Rules chưa Publish");
               else setSyncStatus("offline", "🔴 " + (err.code||err.message));
             } else if(committed){
-              console.log("[Firebase] ✅ Đẩy state lần đầu OK (là máy khởi tạo)");
-              // Máy thắng transaction cũng đẩy luôn ảnh cục bộ (nếu có) lên nhánh ảnh riêng.
+              console.log("[Firebase] ✅ Đẩy state lần đầu OK");
               state.menu.forEach(m=>{ if(m.imgData) saveMenuImage(m.id, m.imgData); });
               remoteSeeded = true;
               setSyncStatus("synced", "🟢 Đã kết nối");
@@ -782,7 +827,7 @@ function initFirebase(){
           return;
         }
         remoteSeeded = true;
-        if(remote.meta && remote.meta.lastClient === clientId) return;
+        // 🔥 FIX: Bỏ check lastClient để luôn cập nhật UI khi có dữ liệu mới
         console.log("[Firebase] 📥 Nhận dữ liệu từ remote");
         suppressWrite = true;
         state = migrateState(remote);
@@ -798,7 +843,7 @@ function initFirebase(){
       }
     }, err=>{
       console.error("[Firebase] LISTEN ERROR:", err);
-      if(err.code === "PERMISSION_DENIED") setSyncStatus("offline", "🔴 Rules chưa Publish — Firebase Console → Rules");
+      if(err.code === "PERMISSION_DENIED") setSyncStatus("offline", "🔴 Rules chưa Publish");
       else setSyncStatus("offline", "🔴 " + (err.code||err.message));
     });
     firebaseReady = true;
@@ -818,6 +863,8 @@ const MODE = (qTable && TABLES.some(t=>t.id===qTable)) ? "khach" : "staff";
 function getRole(){ if(MODE === "khach") return "guest"; return sessionStorage.getItem("ocnuong_role") || "staff"; }
 function setRole(r){ sessionStorage.setItem("ocnuong_role", r); }
 function isManager(){ return getRole() === "manager"; }
+// 🔥 Chỉ QL (không phải khách) mới thấy lãi/lỗ/giá vốn/giá NL
+function canSeeFinance(){ return MODE !== "khach" && isManager(); }
 let role = getRole();
 let currentTable = MODE==="khach" ? qTable : TABLES[0].id;
 let cart = {};
@@ -966,6 +1013,27 @@ document.getElementById("btnRoleLogin").onclick = ()=>{
     else if(pin !== null) alert("Mã PIN không đúng!");
   }
 };
+// 🔄 Nút refresh thủ công
+document.getElementById("btnRefresh").onclick = async ()=>{
+  if(!firebaseReady) return alert("Firebase chưa sẵn sàng");
+  try{
+    const snap = await fbRef.once("value");
+    const remote = snap.val();
+    if(remote){
+      suppressWrite = true;
+      state = migrateState(remote);
+      applyImagesCache();
+      saveLocal();
+      renderAll();
+      setTimeout(()=>{ suppressWrite = false; }, 500);
+      setSyncStatus("synced", "🟢 Đã làm mới");
+    } else {
+      alert("Firebase trống. Không có gì để kéo.");
+    }
+  }catch(e){
+    alert("Lỗi: " + (e.code || e.message));
+  }
+};
 function renderNav(){
   const nav = document.getElementById("nav"); nav.innerHTML = "";
   if(MODE !== "staff") return;
@@ -1061,17 +1129,17 @@ function openCallModal(){
       <button class="btn" id="callSend" style="width:100%;margin-top:.4rem">📩 Gửi yêu cầu</button>
     </div>
   </div></div>`;
-  const close = ()=>{ modalLocked = false; root.innerHTML = ""; };
+  const close = ()=>{ modalLocked = false; root.innerHTML = ""; renderAll(); };
   document.getElementById("mc").onclick = close;
   document.getElementById("mb").onclick = e=>{ if(e.target.id === "mb") close(); };
   root.querySelectorAll("[data-preset]").forEach(b=>b.onclick = ()=>{
     const type = b.dataset.preset;
-    sendCall(type, callTypeInfo(type).label); close(); renderAll();
+    sendCall(type, callTypeInfo(type).label); close();
   });
   document.getElementById("callSend").onclick = ()=>{
     const msg = document.getElementById("callMsg").value.trim();
     if(!msg){ alert("Nhập tin nhắn hoặc chọn nút"); return; }
-    sendCall("other", msg); close(); renderAll();
+    sendCall("other", msg); close();
   };
 }
 function sendCall(type, message){
@@ -1158,20 +1226,205 @@ function renderCartBottomBar(){
     else doSendToKitchen();
   };
 }
+// 🔥 NÚT GỢI Ý MỚI - TO, DẠNG XÚC XẮC
 function renderSuggestWrap(){
   const wrap = document.getElementById("suggestWrap");
   if(!wrap) return;
   wrap.innerHTML = `
-    <div class="card" style="background:linear-gradient(135deg,color-mix(in srgb,var(--beer) 8%,var(--surface)),var(--surface));border-color:var(--beer)">
-      <div class="row">
-        <div>
-          <b style="color:var(--primary-d)">💡 Gợi ý món cho nhóm</b>
-          <div class="tiny muted" style="margin-top:.15rem">Cho chúng tôi biết nhóm có mấy người → gợi ý combo phù hợp (khai vị · món chính · lẩu · đồ uống)</div>
+    <button class="gacha-trigger" id="btnOpenGacha">
+      <div style="display:flex;align-items:center;gap:.75rem">
+        <span class="gi">🎲</span>
+        <div style="flex:1;min-width:0">
+          <div class="gt">GỢI Ý MÓN CHO NHÓM</div>
+          <div class="gs">Quay xúc xắc — combo tối ưu lợi nhuận & best seller</div>
         </div>
-        <button class="btn" id="btnOpenSuggest" style="background:linear-gradient(135deg,var(--beer),#b8741c);border:none">✨ Gợi ý</button>
+        <span style="font-size:1.6rem;opacity:.85">✨</span>
       </div>
-    </div>`;
-  document.getElementById("btnOpenSuggest").onclick = ()=>openSuggestModal();
+    </button>`;
+  document.getElementById("btnOpenGacha").onclick = openGachaModal;
+}
+// 🎲 GACHA: weighted random - ưu tiên lãi cao + best seller + có yếu tố ngẫu nhiên
+function gachaScore(m){
+  const cost = itemCost(m);
+  const margin = m.price > 0 ? (m.price - cost) / m.price : 0;
+  const tagBonus = m.tag === "best" ? 50 : (m.tag === "good" ? 25 : 0);
+  const randomFactor = Math.random() * 40; // mỗi lần quay khác nhau
+  return Math.max(1, margin * 100 + tagBonus + randomFactor + 10);
+}
+function weightedPick(pool, excludeSet, scoreFn){
+  const candidates = pool.filter(m => !excludeSet.has(m.id) && isItemOrderable(m));
+  if(!candidates.length) return null;
+  const scored = candidates.map(m => ({ m, score: scoreFn(m) }));
+  const total = scored.reduce((s,x)=>s+x.score, 0);
+  let r = Math.random() * total;
+  for(const x of scored){
+    r -= x.score;
+    if(r <= 0) return x.m;
+  }
+  return scored[scored.length-1].m;
+}
+function gachaRoll(guests, includeLau, includeBia, includeNuoc){
+  const result = [];
+  const picked = new Set();
+  const pushPick = (pool, qty) => {
+    const pick = weightedPick(pool, picked, gachaScore);
+    if(pick){ picked.add(pick.id); result.push({itemId: pick.id, qty}); }
+  };
+  // Khai vị
+  const apps = state.menu.filter(m => m.cat === "Món khai vị");
+  const appCount = Math.max(1, Math.ceil(guests/4));
+  for(let i=0;i<appCount;i++) pushPick(apps, 1);
+  // Món mặn
+  const mainCats = ["Ốc hương","Ốc móng tay","Sò huyết","Hàu","Món gà","Món bò - bê","Combo nướng"];
+  const mains = state.menu.filter(m => mainCats.includes(m.cat));
+  const mainCount = Math.max(2, Math.ceil(guests * 1.0));
+  for(let i=0;i<mainCount;i++) pushPick(mains, 1);
+  // Lẩu
+  if(includeLau){
+    const laus = state.menu.filter(m => m.cat === "Món lẩu");
+    const lauCount = Math.max(1, Math.ceil(guests/4));
+    for(let i=0;i<lauCount;i++) pushPick(laus, 1);
+  }
+  // Bia
+  if(includeBia){
+    const bias = state.menu.filter(m => m.cat === "Đồ uống" && /bia/i.test(m.name));
+    if(bias.length){
+      const pick = weightedPick(bias, new Set(), gachaScore);
+      if(pick) result.push({itemId: pick.id, qty: Math.max(2, guests*2)});
+    }
+  }
+  // Nước
+  if(includeNuoc){
+    const nuocs = state.menu.filter(m => m.cat === "Đồ uống" && !/bia/i.test(m.name));
+    if(nuocs.length){
+      const pick = weightedPick(nuocs, new Set(), gachaScore);
+      if(pick) result.push({itemId: pick.id, qty: Math.max(1, Math.ceil(guests/2))});
+    }
+  }
+  return result;
+}
+function openGachaModal(){
+  modalLocked = true;
+  const root = document.getElementById("modalRoot");
+  let guests = 4;
+  let includeLau = true, includeBia = true, includeNuoc = true;
+  let result = [];
+  let rolling = false;
+  function render(){
+    const totalQty = result.reduce((s,x)=>s+x.qty, 0);
+    root.innerHTML = `<div class="modal-back" id="mb"><div class="modal" style="max-width:560px">
+      <button class="close-x" id="mc">✕</button>
+      <h3 style="text-align:center;color:var(--primary-d);margin:.2rem 0">🎲 Gợi ý món cho nhóm</h3>
+      <div class="tiny muted" style="text-align:center;margin-bottom:.5rem">Quay để nhận combo — mỗi lần một khác, ưu tiên món lãi cao & best-seller</div>
+      <div class="gacha-dice ${rolling?'rolling':''}">🎲</div>
+      <label class="fl" style="margin-top:0">Số khách
+        <input type="number" id="gGuests" value="${guests}" min="1" max="30">
+      </label>
+      <div class="filter-bar" style="justify-content:center;margin-top:.4rem">
+        <button class="${includeLau?'active':''}" data-tog="lau">🍲 Lẩu</button>
+        <button class="${includeBia?'active':''}" data-tog="bia">🍺 Bia</button>
+        <button class="${includeNuoc?'active':''}" data-tog="nuoc">🥤 Nước</button>
+      </div>
+      <button class="gacha-roll" id="gRoll" ${rolling?'disabled':''} style="margin-top:.5rem">
+        ${rolling ? '🎲 ĐANG QUAY...' : (result.length ? '🎲 QUAY LẠI (ngẫu nhiên mới)' : '🎲 QUAY NGAY')}
+      </button>
+      ${result.length ? `
+        <div style="margin-top:.8rem">
+          <div class="row" style="margin-bottom:.4rem">
+            <b>✨ Combo gợi ý</b>
+            <span class="tiny muted">${result.length} món · ${totalQty} phần</span>
+          </div>
+          <div id="gList">
+            ${result.map((r,i)=>{
+              const m = state.menu.find(x=>x.id === r.itemId);
+              if(!m) return '';
+              const raw = m.imgData || m.img;
+              const imgHtml = raw
+                ? `<img src="${esc(proxiedImgUrl(raw))}" referrerpolicy="no-referrer" onerror="this.parentElement.textContent='${esc(m.emoji||'🍽️')}'">`
+                : `<span>${esc(m.emoji||'🍽️')}</span>`;
+              const tagTxt = m.tag === 'best' ? ' · 🔥 BEST' : (m.tag === 'good' ? ' · 👍 GOOD' : '');
+              return `<div class="gacha-item" style="animation-delay:${i*0.05}s">
+                <div class="gi-img">${imgHtml}</div>
+                <div class="gi-info">
+                  <div class="gi-name">${esc(m.name)}</div>
+                  <div class="gi-meta">${VND(m.price)}${tagTxt} · Tổng ${VND(m.price * r.qty)}</div>
+                </div>
+                <div class="gi-qty">
+                  <button data-gdec="${i}">−</button>
+                  <span>${r.qty}</span>
+                  <button data-ginc="${i}">+</button>
+                </div>
+                <button class="gi-rm" data-grm="${i}" title="Xoá">✕</button>
+              </div>`;
+            }).join("")}
+          </div>
+        </div>
+        <div class="row" style="margin-top:.7rem;gap:.4rem">
+          <button class="btn secondary small" id="gClear" style="flex:0 0 auto">🗑️ Xóa hết</button>
+          <button class="btn ok" id="gAdd" style="flex:1">🛒 Thêm vào giỏ</button>
+        </div>
+      ` : ''}
+      <button class="btn secondary" id="gBack" style="width:100%;margin-top:.5rem">← Đóng</button>
+    </div></div>`;
+    const close = ()=>{ modalLocked = false; root.innerHTML = ""; renderAll(); };
+    document.getElementById("mc").onclick = close;
+    document.getElementById("mb").onclick = e=>{ if(e.target.id === "mb") close(); };
+    document.getElementById("gBack").onclick = close;
+    const guestsInput = document.getElementById("gGuests");
+    guestsInput.oninput = e => { guests = Math.max(1, Math.min(30, parseInt(e.target.value)||1)); };
+    root.querySelectorAll("[data-tog]").forEach(b=>b.onclick = ()=>{
+      const k = b.dataset.tog;
+      if(k==='lau') includeLau = !includeLau;
+      if(k==='bia') includeBia = !includeBia;
+      if(k==='nuoc') includeNuoc = !includeNuoc;
+      render();
+    });
+    document.getElementById("gRoll").onclick = () => {
+      if(rolling) return;
+      rolling = true;
+      render();
+      setTimeout(()=>{
+        result = gachaRoll(guests, includeLau, includeBia, includeNuoc);
+        rolling = false;
+        render();
+      }, 700);
+    };
+    root.querySelectorAll("[data-ginc]").forEach(b=>b.onclick = ()=>{
+      const i = parseInt(b.dataset.ginc);
+      if(result[i]) result[i].qty++;
+      render();
+    });
+    root.querySelectorAll("[data-gdec]").forEach(b=>b.onclick = ()=>{
+      const i = parseInt(b.dataset.gdec);
+      if(!result[i]) return;
+      if(result[i].qty > 1) result[i].qty--;
+      else result.splice(i,1);
+      render();
+    });
+    root.querySelectorAll("[data-grm]").forEach(b=>b.onclick = ()=>{
+      const i = parseInt(b.dataset.grm);
+      result.splice(i,1);
+      render();
+    });
+    const clr = document.getElementById("gClear");
+    if(clr) clr.onclick = ()=>{ if(confirm("Xoá hết gợi ý?")){ result = []; render(); } };
+    const add = document.getElementById("gAdd");
+    if(add) add.onclick = ()=>{
+      if(!result.length) return;
+      let added = 0;
+      result.forEach(r=>{
+        const cur = cart[r.itemId] || {qty:0, note:""};
+        cur.qty += r.qty;
+        cart[r.itemId] = cur;
+        added++;
+      });
+      modalLocked = false;
+      root.innerHTML = "";
+      alert(`✓ Đã thêm ${added} món vào giỏ`);
+      renderAll();
+    };
+  }
+  render();
 }
 function openCartModal(){
   cartModalOpen = true;
@@ -1276,137 +1529,6 @@ function renderCartModal(){
     renderCartModal(); renderCartBottomBar();
   };
 }
-function suggestMenu(guestCount, style, includeLau, includeBia, includeNuoc){
-  const mult = style === "tietkiem" ? 0.8 : (style === "sang" ? 1.4 : 1);
-  const pickBest = (catList, count) => {
-    const items = state.menu.filter(m => m.available && catList.includes(m.cat) && isItemOrderable(m));
-    return items.map(m=>({
-      m, score: itemMargin(m) * 60 + (m.tag === "best" ? 40 : (m.tag === "good" ? 20 : 0))
-    })).sort((a,b)=>b.score - a.score).slice(0, count);
-  };
-  const result = [];
-  pickBest(["Món khai vị"], Math.max(1, Math.ceil(guestCount / 4))).forEach(r=>{
-    result.push({m: r.m, qty: 1, cat: "khai_vi"});
-  });
-  const mainCats = ["Ốc hương","Ốc móng tay","Sò huyết","Hàu","Món gà","Món bò - bê","Combo nướng"];
-  const mainCount = Math.max(2, Math.ceil(guestCount * mult));
-  pickBest(mainCats, mainCount).forEach(r=>{
-    result.push({m: r.m, qty: 1, cat: "man"});
-  });
-  if(includeLau){
-    const lauCount = Math.max(1, Math.ceil(guestCount / 4));
-    pickBest(["Món lẩu"], lauCount).forEach(r=>{
-      result.push({m: r.m, qty: 1, cat: "lau"});
-    });
-  }
-  if(includeBia){
-    const biaCount = Math.max(2, guestCount * 2);
-    const biaItems = state.menu.filter(m => m.available && m.cat === "Đồ uống" && /bia/i.test(m.name) && isItemOrderable(m));
-    biaItems.sort((a,b)=>itemMargin(b) - itemMargin(a));
-    if(biaItems[0]) result.push({m: biaItems[0], qty: biaCount, cat: "bia"});
-  }
-  if(includeNuoc){
-    const nuocItems = state.menu.filter(m => m.available && m.cat === "Đồ uống" && !/bia/i.test(m.name) && isItemOrderable(m));
-    nuocItems.sort((a,b)=>itemMargin(b) - itemMargin(a));
-    if(nuocItems[0]) result.push({m: nuocItems[0], qty: Math.max(1, Math.ceil(guestCount / 2)), cat: "nuoc"});
-  }
-  return result;
-}
-function openSuggestModal(){
-  const root = document.getElementById("modalRoot");
-  modalLocked = true;
-  let guests = 4;
-  let style = "coban";
-  let includeLau = true, includeBia = true, includeNuoc = true;
-  let suggestions = [];
-  function renderInner(){
-    const catLabels = {khai_vi:{label:"Khai vị",cls:"kv"},man:{label:"Món mặn",cls:"mn"},lau:{label:"Lẩu",cls:"lau"},bia:{label:"Bia",cls:"bia"},nuoc:{label:"Nước",cls:"nuoc"}};
-    return `<div class="modal-back" id="mb"><div class="modal suggest-modal" style="max-width:600px">
-      <button class="close-x" id="mc">✕</button>
-      <h3>✨ Gợi ý món cho nhóm</h3>
-      <div class="tiny muted">Chọn combo, có thể điều chỉnh số lượng từng món.</div>
-      <div style="margin-top:.7rem;display:grid;grid-template-columns:1fr 1fr;gap:.5rem">
-        <label class="fl" style="margin:0">Số khách
-          <input type="number" id="sgGuests" value="${guests}" min="1" max="30" style="width:100%">
-        </label>
-        <label class="fl" style="margin:0">Kiểu combo
-          <select id="sgStyle" style="width:100%">
-            <option value="tietkiem" ${style==="tietkiem"?"selected":""}>💰 Tiết kiệm</option>
-            <option value="coban" ${style==="coban"?"selected":""}>🍽️ Cơ bản</option>
-            <option value="sang" ${style==="sang"?"selected":""}>👑 Sang trọng</option>
-          </select>
-        </label>
-      </div>
-      <div class="filter-bar" style="margin-top:.5rem">
-        <button class="${includeLau?'active':''}" data-tog="lau">🍲 Lẩu</button>
-        <button class="${includeBia?'active':''}" data-tog="bia">🍺 Bia</button>
-        <button class="${includeNuoc?'active':''}" data-tog="nuoc">🥤 Nước ngọt</button>
-      </div>
-      <button class="btn" id="sgGen" style="width:100%;background:linear-gradient(135deg,var(--beer),#b8741c);border:none">🔄 Tạo gợi ý</button>
-      <div style="margin-top:.8rem" id="sgResult">
-        ${suggestions.length ? suggestions.map((x,i)=>{
-          const cl = catLabels[x.cat] || {label:"—",cls:""};
-          return `<div class="suggest-row">
-            <span class="sr-cat ${cl.cls}">${cl.label}</span>
-            <div class="sr-info">
-              <div class="sr-name">${esc(x.m.name)}</div>
-              <div class="sr-meta">${VND(x.m.price)}</div>
-            </div>
-            <div class="sr-qty">
-              <button data-sg-dec="${i}">−</button>
-              <span>${x.qty}</span>
-              <button data-sg-inc="${i}">+</button>
-            </div>
-            <div class="sr-price">${VND(x.m.price * x.qty)}</div>
-          </div>`;
-        }).join("") + `
-          <button class="btn ok" id="sgAddCart" style="width:100%;margin-top:.6rem">➕ Thêm tất cả vào giỏ</button>
-        ` : '<div class="empty">Bấm "Tạo gợi ý" để xem combo phù hợp</div>'}
-      </div>
-    </div></div>`;
-  }
-  function bind(){
-    const close = ()=>{ modalLocked = false; root.innerHTML = ""; };
-    document.getElementById("mc").onclick = close;
-    document.getElementById("mb").onclick = e=>{ if(e.target.id === "mb") close(); };
-    document.getElementById("sgGuests").oninput = e=>{ guests = Math.max(1, Math.min(30, parseInt(e.target.value)||1)); };
-    document.getElementById("sgStyle").onchange = e=>{ style = e.target.value; };
-    root.querySelectorAll("[data-tog]").forEach(b=>b.onclick = ()=>{
-      const k = b.dataset.tog;
-      if(k === "lau") includeLau = !includeLau;
-      else if(k === "bia") includeBia = !includeBia;
-      else if(k === "nuoc") includeNuoc = !includeNuoc;
-      root.innerHTML = renderInner(); bind();
-    });
-    document.getElementById("sgGen").onclick = ()=>{
-      suggestions = suggestMenu(guests, style, includeLau, includeBia, includeNuoc);
-      root.innerHTML = renderInner(); bind();
-    };
-    root.querySelectorAll("[data-sg-inc]").forEach(b=>b.onclick = ()=>{
-      const i = parseInt(b.dataset.sgInc);
-      if(suggestions[i]) suggestions[i].qty++;
-      root.innerHTML = renderInner(); bind();
-    });
-    root.querySelectorAll("[data-sg-dec]").forEach(b=>b.onclick = ()=>{
-      const i = parseInt(b.dataset.sgDec);
-      if(suggestions[i] && suggestions[i].qty > 1) suggestions[i].qty--;
-      root.innerHTML = renderInner(); bind();
-    });
-    const addBtn = document.getElementById("sgAddCart");
-    if(addBtn) addBtn.onclick = ()=>{
-      suggestions.forEach(x=>{
-        const cur = cart[x.m.id] || {qty:0, note:""};
-        cur.qty += x.qty;
-        cart[x.m.id] = cur;
-      });
-      modalLocked = false; root.innerHTML = "";
-      alert(`✓ Đã thêm ${suggestions.length} món vào giỏ`);
-      renderAll();
-    };
-  }
-  root.innerHTML = renderInner();
-  bind();
-}
 function renderKhach(){
   const sel = document.getElementById("selTable");
   const khachSub = document.getElementById("khachSub");
@@ -1502,22 +1624,58 @@ function renderKhach(){
       cart[id].note = inp.value;
     };
   });
+  // 🔥 NÂNG CẤP: Khách tự hủy món khi bếp chưa bắt đầu
   const box = document.getElementById("myOrders");
   if(currentKhachMode === "takeaway"){
     box.innerHTML = '<div class="tiny muted">Đơn mang về sẽ được nhân viên gọi xác nhận qua SĐT.</div>';
   } else {
     const real = resolveTable(currentTable);
     const mine = state.orders.filter(o=>o.table === real && o.status !== "huy");
-    box.innerHTML = mine.length ? "" : '<div class="empty">Chưa gọi món nào</div>';
+    if(mine.length){
+      box.innerHTML = '<div class="tiny muted" style="margin-bottom:.4rem">💡 Bạn có thể tự hủy món khi bếp <b>chưa bắt đầu</b> chế biến.</div>';
+    } else {
+      box.innerHTML = '<div class="empty">Chưa gọi món nào</div>';
+    }
     mine.slice().reverse().forEach(o=>{
       const done = o.status === "hoan_thanh";
+      const canCancel = o.status === "cho_bep";
       const d = document.createElement("div"); d.className = "item" + (done ? " served" : "");
-      d.innerHTML = `<div class="name">${done ? "✅ " : ""}${esc(o.name)} ×${o.qty}${o.note?` <span class="notetag">📝 ${esc(o.note)}</span>`:""}</div>
-        <span class="badge st">${statusLabel(o.status)}</span>`;
+      d.innerHTML = `
+        <div class="name" style="flex:1;min-width:0">
+          ${done ? "✅ " : ""}${esc(o.name)} ×${o.qty}
+          ${o.note?` <span class="notetag">📝 ${esc(o.note)}</span>`:""}
+        </div>
+        <div style="display:flex;align-items:center;gap:.4rem;flex:0 0 auto">
+          <span class="badge st">${statusLabel(o.status)}</span>
+          ${canCancel ? `<button class="pillbtn x" data-cust-cancel="${o.id}">✕ Hủy</button>` : ""}
+        </div>`;
       box.appendChild(d);
+    });
+    box.querySelectorAll("[data-cust-cancel]").forEach(b=>{
+      b.onclick = ()=> customerCancelOrder(b.dataset.custCancel);
     });
   }
   renderCartBottomBar();
+}
+// 🔥 Khách tự huỷ món (chỉ khi bếp chưa bắt đầu)
+function customerCancelOrder(orderId){
+  const o = state.orders.find(x=>x.id === orderId);
+  if(!o) return;
+  if(o.status !== "cho_bep"){
+    alert("Món đã được bếp chuẩn bị hoặc đã phục vụ. Vui lòng gọi nhân viên.");
+    return;
+  }
+  if(!confirm(`Hủy món "${o.name}" ×${o.qty}?`)) return;
+  state.cancelLogs.push({
+    id: uid("cl"), orderId: o.id, name: o.name, qty: o.qty, price: o.price,
+    table: o.table, ts: nowMs(),
+    reason: "Khách tự hủy trên app (bếp chưa làm)",
+    by: "customer"
+  });
+  state.orders = state.orders.filter(x=>x.id !== orderId);
+  save();
+  alert("✓ Đã hủy món");
+  renderAll();
 }
 function doSendToKitchen(){
   if(sending) return;
@@ -1688,9 +1846,11 @@ function renderModal(){
     const type = typeOfItem(o.itemId);
     const typeBadge = type === "drink" ? '<span class="badge drink">🍺</span>' :
                       type === "service" ? '<span class="badge service">🧂</span>' : "";
-    const cancelBtn = done
-      ? `<span class="pillbtn" style="opacity:.4;cursor:not-allowed">🔒</span>`
-      : `<button class="pillbtn x" data-cancel="${o.id}">✕</button>`;
+    // 🔥 Nâng cấp: cho phép hủy mọi trạng thái (kể cả đã xong) nếu là QL
+    const canCancel = !done || isManager();
+    const cancelBtn = canCancel
+      ? `<button class="pillbtn x" data-cancel="${o.id}" title="${done?'Hủy (hoàn kho)':''}">✕</button>`
+      : `<span class="pillbtn" style="opacity:.4;cursor:not-allowed" title="Món đã hoàn thành, chỉ QL mới hủy được">🔒</span>`;
     return `<div class="item${done ? " served" : ""}">
       <div class="name" style="flex:1;min-width:0">
         ${done ? "✅ " : ""}${typeBadge} ${esc(o.name)} ×${o.qty}
@@ -1763,8 +1923,10 @@ function renderModal(){
       <button class="btn" id="mPay" ${(os.length || (!isTA && svc.price)) ? "" : "disabled"}>💳 Thanh toán</button>
     </div>
   </div></div>`;
-  document.getElementById("mc").onclick = ()=>{ activeModalTable=null; activeModalTA=null; actionMode=null; renderModal(); };
-  document.getElementById("mb").onclick = e=>{ if(e.target.id === "mb"){ activeModalTable=null; activeModalTA=null; actionMode=null; renderModal(); } };
+  // 🔥 FIX: khi đóng modal phải gọi renderAll để refresh cả nền
+  const closeModal = ()=>{ activeModalTable=null; activeModalTA=null; actionMode=null; renderAll(); };
+  document.getElementById("mc").onclick = closeModal;
+  document.getElementById("mb").onclick = e=>{ if(e.target.id === "mb") closeModal(); };
   root.querySelectorAll("[data-cancel]").forEach(b=>{ b.onclick = ()=>{ requestCancelItem(b.dataset.cancel); }; });
   root.querySelectorAll("[data-hc]").forEach(b=>b.onclick = ()=>{
     const c = state.calls.find(x=>x.id === b.dataset.hc);
@@ -1887,17 +2049,39 @@ function renderSvcModal(){
     delete state.tableServices[t]; save(); actionMode = null; renderAll();
   };
 }
+// 🔥 NÂNG CẤP: Nhân viên có thể huỷ món đã hoàn thành (sẽ hoàn kho)
 function requestCancelItem(orderId){
   const o = state.orders.find(x=>x.id === orderId);
   if(!o) return;
-  if(o.status === "hoan_thanh"){ alert("Món đã hoàn thành!"); return; }
   const loc = isTakeawayId(o.table) ? `đơn ${o.table}` : `bàn ${o.table}`;
-  if(!confirm(`Hủy "${o.name}" ×${o.qty} của ${loc}?`)) return;
-  if(state.settings.cancelApproval && !isManager()){
-    const pin = prompt("PIN QL:");
+  const isDone = o.status === "hoan_thanh";
+  if(isDone){
+    // Món đã xong: chỉ QL được huỷ, có hoàn kho
+    if(!isManager()){
+      alert("Món đã hoàn thành. Cần QL xác nhận để huỷ (món sẽ được hoàn lại kho).");
+      return;
+    }
+    if(!confirm(`Món "${o.name}" ×${o.qty} đã hoàn thành.\nHủy sẽ HOÀN LẠI NGUYÊN LIỆU vào kho.\nTiếp tục?`)) return;
+    const pin = prompt("Xác nhận PIN QL:");
     if(pin !== state.settings.managerPin){ alert("Sai PIN!"); return; }
+  } else {
+    if(!confirm(`Hủy "${o.name}" ×${o.qty} của ${loc}?`)) return;
+    if(state.settings.cancelApproval && !isManager()){
+      const pin = prompt("PIN QL:");
+      if(pin !== state.settings.managerPin){ alert("Sai PIN!"); return; }
+    }
   }
-  const reason = prompt("Lý do:", "Khách đổi ý");
+  const reason = prompt("Lý do:", isDone ? "Hủy sau khi hoàn thành" : "Khách đổi ý");
+  // 🔥 Hoàn kho nếu món đã được trừ
+  if(o.deducted){
+    const m = state.menu.find(x=>x.id === o.itemId);
+    if(m && m.recipe && m.recipe.length){
+      m.recipe.forEach(r=>{
+        const ing = state.ingredients.find(i=>i.id === r.ingId);
+        if(ing) ing.stock = +(ing.stock + r.qty*o.qty).toFixed(3);
+      });
+    }
+  }
   state.cancelLogs.push({
     id: uid("cl"), orderId: o.id, name: o.name, qty: o.qty, price: o.price,
     table: o.table, ts: nowMs(), reason: reason || "",
@@ -2274,12 +2458,16 @@ function renderQl(){
   const ael = document.getElementById("menuAdmin");
   if(ael) menuAdminScroll = ael.scrollTop;
   const subnav = document.getElementById("qlSubnav");
+  // 🔥 FIX: Staff KHÔNG thấy tab "Tài chính"
   const subs = [
-    ["menu","🍽️ Menu"],["kho","📦 Kho"],["finance","💰 Tài chính"],
+    ["menu","🍽️ Menu"],["kho","📦 Kho"],
     ["report","📊 Báo cáo"],["hoadon","🧾 Hóa đơn"],["call","🔔 Tin nhắn"],
     ["log","📋 Lịch sử"],["qr","🔗 QR"]
   ];
-  if(isManager()) subs.push(["settings","⚙️ Cài đặt"]);
+  if(isManager()){
+    subs.splice(2, 0, ["finance","💰 Tài chính"]);
+    subs.push(["settings","⚙️ Cài đặt"]);
+  }
   if(!subs.find(s=>s[0] === currentQlTab)) currentQlTab = "menu";
   subnav.innerHTML = subs.map(([id,label])=>`<button class="${id===currentQlTab?'active':''}" data-sub="${id}">${label}</button>`).join("");
   subnav.querySelectorAll("button").forEach(b=>{
@@ -2298,7 +2486,7 @@ function renderQl(){
   else if(currentQlTab === "settings") renderQlSettings(content);
 }
 function renderQlMenu(el){
-  const showFin = isManager();
+  const showFin = canSeeFinance();
   el.innerHTML = `
     <div class="card">
       <div class="row">
@@ -2329,6 +2517,7 @@ function renderQlMenu(el){
       const shortage = itemsShortage(m);
       const raw = m.imgData || m.img;
       const svc = raw ? `<img src="${esc(proxiedImgUrl(raw))}" style="width:36px;height:36px;object-fit:cover;border-radius:6px;flex-shrink:0" referrerpolicy="no-referrer" onerror="this.style.display='none'">` : `<span style="font-size:1.6rem;flex-shrink:0">${esc(m.emoji||'🍽️')}</span>`;
+      // 🔥 FIX: chỉ QL mới thấy giá gốc/lãi
       let finLine = showFin
         ? `<div class="price">Bán: ${VND(m.price)} · Gốc: ${VND(cost)} · Lãi: <b style="color:${profit>=0?'var(--ok)':'var(--danger)'}">${VND(profit)}</b> (${marginPct}%)</div>`
         : `<div class="price">Bán: ${VND(m.price)} · UT${m.prio} · ${m.prep}'</div>`;
@@ -2360,7 +2549,9 @@ function renderQlMenu(el){
   });
   box.scrollTop = menuAdminScroll;
 }
+// 🔥 FIX: Nhân viên KHÔNG thấy giá NL
 function renderQlKho(el){
+  const showFin = canSeeFinance();
   const low = state.ingredients.filter(i=>i.stock <= i.minStock);
   const totalValue = state.ingredients.reduce((s,i)=>s + i.price*i.stock, 0);
   el.innerHTML = `
@@ -2370,12 +2561,12 @@ function renderQlKho(el){
     <div class="stats">
       <div class="stat"><div class="n">${state.ingredients.length}</div><div class="l">Nguyên liệu</div></div>
       <div class="stat"><div class="n">${low.length}</div><div class="l">Sắp hết</div></div>
-      <div class="stat"><div class="n">${VND(totalValue)}</div><div class="l">Giá trị kho</div></div>
+      ${showFin ? `<div class="stat"><div class="n">${VND(totalValue)}</div><div class="l">Giá trị kho</div></div>` : ''}
     </div>
     <div class="card">
       <div class="row"><b>📦 Nguyên liệu</b>
-        <button class="btn small" id="btnAddIng" ${isManager()?"":"disabled"}>+ Nguyên liệu</button></div>
-      <div class="ing-row header"><div>Tên</div><div>ĐVT</div><div>Giá</div><div>Tồn</div><div>Min</div><div></div></div>
+        <button class="btn small" id="btnAddIng" ${showFin?"":"disabled"}>+ Nguyên liệu</button></div>
+      <div class="ing-row header"><div>Tên</div><div>ĐVT</div>${showFin?'<div>Giá</div>':'<div style="text-align:center">—</div>'}<div>Tồn</div><div>Min</div><div></div></div>
       <div id="ingList"></div>
     </div>`;
   const list = document.getElementById("ingList");
@@ -2383,15 +2574,18 @@ function renderQlKho(el){
     const div = document.createElement("div");
     div.className = "ing-row";
     div.innerHTML = `
-      <input value="${esc(ing.name)}" data-f="name" data-id="${ing.id}" ${isManager()?"":"disabled"}>
-      <input value="${esc(ing.unit)}" data-f="unit" data-id="${ing.id}" ${isManager()?"":"disabled"}>
-      <input type="number" value="${ing.price}" data-f="price" data-id="${ing.id}" min="0" step="1000" ${isManager()?"":"disabled"}>
-      <input type="number" value="${ing.stock}" data-f="stock" data-id="${ing.id}" min="0" step="0.1" ${isManager()?"":"disabled"}>
-      <input type="number" value="${ing.minStock}" data-f="minStock" data-id="${ing.id}" min="0" step="0.1" ${isManager()?"":"disabled"}>
-      ${isManager()?`<button class="pillbtn x" data-del="${ing.id}">✕</button>`:'<span></span>'}`;
+      <input value="${esc(ing.name)}" data-f="name" data-id="${ing.id}" ${showFin?"":"disabled"}>
+      <input value="${esc(ing.unit)}" data-f="unit" data-id="${ing.id}" ${showFin?"":"disabled"}>
+      ${showFin
+        ? `<input type="number" value="${ing.price}" data-f="price" data-id="${ing.id}" min="0" step="1000">`
+        : `<input type="text" value="***" disabled style="text-align:center">`}
+      <input type="number" value="${ing.stock}" data-f="stock" data-id="${ing.id}" min="0" step="0.1" ${showFin?"":"disabled"}>
+      <input type="number" value="${ing.minStock}" data-f="minStock" data-id="${ing.id}" min="0" step="0.1" ${showFin?"":"disabled"}>
+      ${showFin?`<button class="pillbtn x" data-del="${ing.id}">✕</button>`:'<span></span>'}`;
     list.appendChild(div);
   });
   list.querySelectorAll("input").forEach(inp=>{
+    if(inp.disabled) return;
     inp.onchange = ()=>{
       const ing = state.ingredients.find(i=>i.id === inp.dataset.id);
       if(!ing) return;
@@ -2408,7 +2602,7 @@ function renderQlKho(el){
     save(); renderQlKho(el);
   });
   document.getElementById("btnAddIng").onclick = ()=>{
-    if(!isManager()) return;
+    if(!showFin) return;
     const name = prompt("Tên NL:");
     if(!name) return;
     state.ingredients.push({ id: uid("i"), name: name.trim(), unit: "kg", price: 0, stock: 0, minStock: 0 });
@@ -2417,7 +2611,7 @@ function renderQlKho(el){
 }
 
 /* ============================================================
-   TÀI CHÍNH (FIXED P&L)
+   TÀI CHÍNH
    ============================================================ */
 let finPeriod = "month"; let finFrom = "", finTo = "";
 function finGetRange(period, from, to){
@@ -2461,26 +2655,19 @@ function recurringCostForRange(fromTs, toTs){
   return { total, days, monthlyTotal, dailyAvg, breakdown };
 }
 function calcFinance(fromTs, toTs){
-  // Doanh thu kỳ
   const invs = toArr(state.invoices).filter(i =>
     i.type === "final" && !i.superseded && i.ts >= fromTs && i.ts <= toTs);
   const revenue = invs.reduce((s,i) => s + (Number(i.total)||0), 0);
-  // COGS: giá vốn = BOM cost × số lượng bán
   const cogs = invs.reduce((s,i) =>
     s + toArr(i.items).reduce((a,x) => a + (x.qty||0) * (x.cost||0), 0), 0);
   const grossProfit = revenue - cogs;
-  // Nhập NL (chỉ để hiển thị, KHÔNG trừ vào P&L)
   const purchases = state.purchases.filter(p => p.ts >= fromTs && p.ts <= toTs);
   const totalPurchase = purchases.reduce((s,p) => s + (Number(p.total)||0), 0);
-  // Chi phí phát sinh
   const expenses = state.expenses.filter(e => e.ts >= fromTs && e.ts <= toTs);
   const totalExpense = expenses.reduce((s,e) => s + (Number(e.amount)||0), 0);
-  // CP cố định phân bổ
   const rec = recurringCostForRange(fromTs, toTs);
   const totalRecurring = rec.total;
-  // LỢI NHUẬN RÒNG
   const netProfit = revenue - cogs - totalExpense - totalRecurring;
-  // Sổ quỹ (dòng tiền thực)
   const allRevenue = toArr(state.invoices)
     .filter(i => i.type === "final" && !i.superseded && i.ts <= toTs)
     .reduce((s,i) => s + (Number(i.total)||0), 0);
@@ -2502,7 +2689,12 @@ function calcFinance(fromTs, toTs){
     balance
   };
 }
+// 🔥 FIX: Guard - chỉ QL mới xem được
 function renderQlFinance(el){
+  if(!isManager()){
+    el.innerHTML = '<div class="empty">🔒 Chỉ quản lý xem được</div>';
+    return;
+  }
   const [fromTs, toTs] = finGetRange(finPeriod, finFrom, finTo);
   const fin = calcFinance(fromTs, toTs);
   const isNeg = fin.netProfit < 0;
@@ -2635,6 +2827,7 @@ function renderQlFinance(el){
   });
 }
 function openRecurringModal(){
+  if(!isManager()){ alert("🔒 Chỉ quản lý"); return; }
   const root = document.getElementById("modalRoot");
   const opts = Object.entries(EXP_CATS).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join("");
   root.innerHTML = `<div class="modal-back" id="mb"><div class="modal">
@@ -2667,6 +2860,7 @@ function openRecurringModal(){
   };
 }
 function openPurchaseModal(){
+  if(!isManager()){ alert("🔒 Chỉ quản lý được phép nhập kho."); return; }
   const root = document.getElementById("modalRoot");
   const ingOptions = state.ingredients.map(i => `<option value="${i.id}">${esc(i.name)} (${esc(i.unit)})</option>`).join("");
   root.innerHTML = `<div class="modal-back" id="mb"><div class="modal">
@@ -2723,6 +2917,7 @@ function openPurchaseModal(){
   };
 }
 function openExpenseModal(){
+  if(!isManager()){ alert("🔒 Chỉ quản lý được phép ghi chi phí."); return; }
   const root = document.getElementById("modalRoot");
   const opts = Object.entries(EXP_CATS).map(([k,v]) => `<option value="${k}">${v.label}</option>`).join("");
   root.innerHTML = `<div class="modal-back" id="mb"><div class="modal">
@@ -2759,7 +2954,7 @@ function openExpenseModal(){
 }
 
 /* ============================================================
-   BÁO CÁO (chart có số + bảng dữ liệu)
+   BÁO CÁO
    ============================================================ */
 let rptPeriod = "today"; let rptFrom = "", rptTo = "";
 let rptTypeFilter = "all"; let rptView = "overview"; let rankTab = "best";
@@ -2807,12 +3002,12 @@ function calcStats(fromTs, toTs, typeFilter){
   return {invoices:filtered, revenue, cost, items, agg, count:filtered.length};
 }
 function renderQlReport(el){
+  const showFin = isManager();
   const [fromTs, toTs] = getPeriodRange(rptPeriod, rptFrom, rptTo);
   const [prevFrom, prevTo] = getPrevRange(rptPeriod, rptFrom, rptTo);
   const cur = calcStats(fromTs, toTs, rptTypeFilter);
   const prev = calcStats(prevFrom, prevTo, rptTypeFilter);
   const fin = calcFinance(fromTs, toTs);
-  const showFin = isManager();
   function delta(c, p){
     if(!p) return {txt:"—", cls:""};
     const pct = ((c - p) / p) * 100;
@@ -2833,20 +3028,24 @@ function renderQlReport(el){
   const sortedDays = Object.keys(byDay).sort();
   const maxVal = Math.max(1, ...sortedDays.flatMap(d=>[byDay[d].rev, byDay[d].cost, Math.abs(byDay[d].profit)]));
   const chartDays = sortedDays.slice(-31);
+  // 🔥 FIX: staff chỉ thấy cột doanh thu
   const chartHtml = chartDays.length ? `
     <div class="gchart">
       ${chartDays.map(d=>{
         const v = byDay[d];
         const hR = Math.max(4, Math.round(v.rev / maxVal * 140));
-        const hC = Math.max(4, Math.round(v.cost / maxVal * 140));
-        const hP = Math.max(4, Math.round(Math.max(0,v.profit) / maxVal * 140));
+        const hC = showFin ? Math.max(4, Math.round(v.cost / maxVal * 140)) : 0;
+        const hP = showFin ? Math.max(4, Math.round(Math.max(0,v.profit) / maxVal * 140)) : 0;
         const day = d.slice(8) + "/" + d.slice(5,7);
-        return `<div class="gday" title="${day}: DT ${VND(v.rev)}, Gốc ${VND(v.cost)}, Lãi ${VND(v.profit)}">
+        const tooltip = showFin
+          ? `${day}: DT ${VND(v.rev)}, Gốc ${VND(v.cost)}, Lãi ${VND(v.profit)}`
+          : `${day}: DT ${VND(v.rev)}`;
+        return `<div class="gday" title="${tooltip}">
           <div style="font-size:.62rem;font-weight:700;color:var(--primary-d);text-align:center;margin-bottom:2px">${fmtShort(v.rev)}</div>
           <div class="gbars">
             <div class="gbar rev" style="height:${hR}px"></div>
-            <div class="gbar cost" style="height:${hC}px"></div>
-            <div class="gbar profit" style="height:${hP}px"></div>
+            ${showFin?`<div class="gbar cost" style="height:${hC}px"></div>
+            <div class="gbar profit" style="height:${hP}px"></div>`:''}
           </div>
           <div class="glbl">${day}</div>
         </div>`;
@@ -2854,25 +3053,20 @@ function renderQlReport(el){
     </div>
     <div class="legend">
       <span><span class="dot rev"></span>Doanh thu</span>
-      <span><span class="dot cost"></span>Giá gốc</span>
-      <span><span class="dot profit"></span>Lợi nhuận</span>
+      ${showFin?`<span><span class="dot cost"></span>Giá gốc</span>
+      <span><span class="dot profit"></span>Lợi nhuận</span>`:''}
     </div>
-    <div style="overflow-x:auto;margin-top:.7rem;max-height:280px;overflow-y:auto;border:1px solid var(--border);border-radius:8px">
+    ${showFin?`<div style="overflow-x:auto;margin-top:.7rem;max-height:280px;overflow-y:auto;border:1px solid var(--border);border-radius:8px">
       <table style="font-size:.78rem;width:100%">
         <thead style="position:sticky;top:0;background:var(--surface);z-index:1">
-          <tr>
-            <th>Ngày</th>
-            <th style="text-align:right">Doanh thu</th>
-            <th style="text-align:right">Giá gốc</th>
-            <th style="text-align:right">Lãi</th>
-          </tr>
+          <tr><th>Ngày</th><th style="text-align:right">Doanh thu</th>
+            <th style="text-align:right">Giá gốc</th><th style="text-align:right">Lãi</th></tr>
         </thead>
         <tbody>
           ${chartDays.slice().reverse().map(d=>{
             const v = byDay[d];
             const day = d.slice(8) + "/" + d.slice(5,7) + "/" + d.slice(0,4);
-            return `<tr>
-              <td>${day}</td>
+            return `<tr><td>${day}</td>
               <td style="text-align:right;color:var(--primary-d);font-weight:600">${VND(v.rev)}</td>
               <td style="text-align:right;color:var(--warn)">${VND(v.cost)}</td>
               <td style="text-align:right;color:${v.profit>=0?'var(--money)':'var(--danger)'};font-weight:700">${VND(v.profit)}</td>
@@ -2880,7 +3074,7 @@ function renderQlReport(el){
           }).join("")}
         </tbody>
       </table>
-    </div>` : '<div class="empty">Chưa có dữ liệu</div>';
+    </div>`:''}` : '<div class="empty">Chưa có dữ liệu</div>';
   const ranking = Object.entries(cur.agg).map(([name,v])=>{
     const profit = v.rev - v.cost;
     const margin = v.rev ? profit / v.rev * 100 : 0;
@@ -3069,7 +3263,7 @@ function renderQlLog(el){
           <td>${isTakeawayId(l.table)?'🥡 ':''}${esc(l.table)}</td>
           <td>${esc(l.name)}</td><td>${l.qty}</td>
           <td class="muted tiny">${esc(l.reason||"—")}</td>
-          <td><span class="badge ${l.by==='manager'?'p2':'st'}">${l.by==='manager'?'QL':'NV'}</span></td>
+          <td><span class="badge ${l.by==='manager'?'p2':(l.by==='customer'?'out':'st')}">${l.by==='manager'?'QL':(l.by==='customer'?'KH':'NV')}</span></td>
         </tr>`).join("")}</tbody></table>` : '<div class="empty">Chưa có hủy món</div>'}
     </div>`;
 }
@@ -3279,6 +3473,8 @@ function renderQlSettings(el){
       <button class="btn danger small" id="btnReset">↺ Reset</button>
     </div>
   </div>`;
+  // 🔥 Fix: reset modalLocked trước khi bind
+  modalLocked = false;
   document.getElementById("setSave").onclick = ()=>{
     const pin = document.getElementById("setPin").value.trim();
     if(!pin || pin.length < 4){ alert("PIN >= 4 ký tự"); return; }
@@ -3346,7 +3542,7 @@ function renderQlSettings(el){
         setTimeout(()=>{ suppressWrite = false; }, 500);
         alert("✓ Đã kéo dữ liệu mới từ Firebase");
       } else {
-        await fbRef.set(stripImagesForSync(migrateState(JSON.parse(JSON.stringify(state)))));
+        await fbRef.set(deepClean(stripImagesForSync(migrateState(JSON.parse(JSON.stringify(state))))));
         state.menu.forEach(m=>{ if(m.imgData) saveMenuImage(m.id, m.imgData); });
         alert("✓ Đã đẩy dữ liệu local lên Firebase");
       }
@@ -3459,7 +3655,7 @@ function openMenuEditor(id){
       ${isNew ? "" : `<button class="btn secondary" id="mmDel" style="color:var(--danger);border-color:var(--danger)">🗑️ Xóa</button>`}
     </div>
   </div></div>`;
-  const closeEditor = ()=>{ modalLocked = false; root.innerHTML = ""; };
+  const closeEditor = ()=>{ modalLocked = false; root.innerHTML = ""; renderAll(); };
   document.getElementById("mc").onclick = closeEditor;
   document.getElementById("mb").onclick = e=>{ if(e.target.id === "mb") closeEditor(); };
   const updatePreview = ()=>{
@@ -3545,7 +3741,7 @@ function openMenuEditor(id){
     m.laborCost = Math.max(0, parseInt(document.getElementById("mmLabor").value)||0);
     m.otherCost = Math.max(0, parseInt(document.getElementById("mmOther").value)||0);
     const caseVal = parseInt(document.getElementById("mmCase").value)||0;
-    if(caseVal > 0) m.caseSize = caseVal; else delete m.caseSize;
+    if(caseVal > 0) m.caseSize = caseVal; else delete m.caseSize; // 🔥 FIX
     m.prep = Math.max(1, parseInt(document.getElementById("mmPrep").value)||5);
     m.prio = Math.min(5, Math.max(1, parseInt(document.getElementById("mmPrio").value)||1));
     m.tag = document.getElementById("mmTag").value;
@@ -3557,14 +3753,14 @@ function openMenuEditor(id){
     if(isNew) state.menu.push(m);
     else { const idx = state.menu.findIndex(x=>x.id === m.id); if(idx >= 0) state.menu[idx] = m; }
     save();
-    saveMenuImage(m.id, m.imgData); // ảnh đồng bộ riêng, không làm nặng state chính
-    closeEditor(); alert("Đã lưu món!"); renderAll();
+    saveMenuImage(m.id, m.imgData);
+    closeEditor(); alert("Đã lưu món!");
   };
   const del = document.getElementById("mmDel");
   if(del) del.onclick = ()=>{
     if(!confirm(`Xóa món "${m.name}"?`)) return;
     state.menu = state.menu.filter(x=>x.id !== m.id);
-    save(); closeEditor(); renderAll();
+    save(); closeEditor();
   };
 }
 
@@ -3573,6 +3769,8 @@ function openMenuEditor(id){
    ============================================================ */
 function renderAll(opts){
   opts = opts || {};
+  // 🔥 FIX: nếu modalRoot trống mà modalLocked=true thì reset để tránh UI đứng
+  if(modalLocked && !document.querySelector("#modalRoot .modal-back")) modalLocked = false;
   if(modalLocked){ renderHeader(); renderLowStockBanner(); renderCallBanner(); return; }
   renderHeader(); renderNav(); showSection();
   renderLowStockBanner(); renderCallBanner(); renderCallButton();
