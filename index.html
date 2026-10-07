@@ -119,6 +119,7 @@ select:focus,input:focus,textarea:focus{outline:2px solid var(--gold-l);outline-
 .badge.paid{background:var(--ok)}.badge.void{background:var(--muted);text-decoration:line-through}
 .badge.ta{background:var(--ta)}.badge.new{background:var(--p2)}.badge.cooking{background:var(--warn)}
 .badge.locked{background:var(--p2)}.badge.schedule{background:var(--p4)}.badge.pending{background:var(--warn)}
+.badge.delivering{background:#0E5C8A}.badge.delivered{background:var(--ok)}
 .kgroup{border:1.5px solid var(--border);border-radius:12px;padding:.7rem;margin-bottom:.6rem;background:var(--surface);box-shadow:var(--shadow)}
 .kgroup.hot{border-color:var(--danger)}
 .kgroup.cooking{border-color:var(--warn);background:color-mix(in srgb,var(--warn) 6%,var(--surface))}
@@ -138,6 +139,7 @@ select:focus,input:focus,textarea:focus{outline:2px solid var(--gold-l);outline-
 .ksec-title.service{background:color-mix(in srgb,var(--gold) 25%,transparent);color:var(--gold-d)}
 .ksec-title.music{background:linear-gradient(135deg,#FCE4EC,#F8BBD0);color:#C2185B}
 .ksec-title.scheduled{background:color-mix(in srgb,var(--p4) 20%,transparent);color:var(--p4)}
+.ksec-title.pending{background:color-mix(in srgb,var(--warn) 22%,transparent);color:var(--warn)}
 .ksec-title.done{background:color-mix(in srgb,var(--muted) 20%,transparent);color:var(--muted)}
 .stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.8rem;text-align:center;box-shadow:var(--shadow)}
 .stat .n{font-size:1.15rem;font-weight:800;color:var(--primary-d)}
@@ -297,7 +299,6 @@ input[type="number"]{text-align:right}
 .phone-gate .pg-box p{margin:.3rem 0 1rem;color:var(--muted);font-size:.85rem}
 .phone-gate .pg-box input{width:100%;padding:.75rem;font-size:1.1rem;text-align:center;letter-spacing:.1em;border:2px solid var(--border);border-radius:12px;margin-bottom:.7rem}
 .phone-gate .pg-box button{width:100%;padding:.85rem;font-size:1rem;font-weight:800;border:none;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--primary-d));color:#fff;cursor:pointer}
-.phone-gate .pg-box .verified{color:var(--ok);font-weight:700;font-size:.85rem;margin-top:.5rem}
 body.mode-khach header{position:static}
 body.mode-khach .header-top{padding:.3rem 0}
 body.mode-khach .gacha-trigger{padding:.7rem .8rem;border-radius:14px;margin-bottom:.5rem}
@@ -387,11 +388,6 @@ body.mode-khach .card{padding:.6rem;margin-bottom:.5rem}
     <div id="drinkFilterWrap"></div>
     <div id="menuList"></div>
     <div class="card" style="margin-top:1rem">
-      <b>🎵 Order nhạc</b>
-      <div class="note">Gửi bài hát yêu thích, quán sẽ phát khi rảnh tay</div>
-      <div id="musicBox"></div>
-    </div>
-    <div class="card" style="margin-top:1rem">
       <b>Trạng thái món đã gọi</b>
       <div id="myOrders"></div>
     </div>
@@ -403,7 +399,7 @@ body.mode-khach .card{padding:.6rem;margin-bottom:.5rem}
   <section id="sec-bep">
     <div class="card row"><b>🔥 Hàng đợi bếp</b><span class="muted" id="kCount"></span></div>
     <div class="note">UT hiệu dụng = UT gốc − ⌊phút chờ / 10⌋. Kho tự trừ khi món <b>hoàn thành</b>.</div>
-    <div class="ksec-title pending" id="kPendingTitle" style="display:none">⏳ Chờ xác nhận CK</div><div id="kPending"></div>
+    <div class="ksec-title pending" id="kPendingTitle" style="display:none">💳 Chờ xác nhận CK</div><div id="kPending"></div>
     <div class="ksec-title food">🍜 Món ăn</div><div id="kFood"></div>
     <div class="ksec-title beer">🍺 Bia</div><div id="kBeer"></div>
     <div class="ksec-title drink">🥤 Nước ngọt</div><div id="kDrink"></div>
@@ -428,7 +424,7 @@ body.mode-khach .card{padding:.6rem;margin-bottom:.5rem}
    FIREBASE CONFIG
    ============================================================ */
 const FIREBASE_CONFIG = {
-  apiKey: "AIzaSyBlt9RFYaIa4fBvA0w-d-Dh2JmrW50w5OU",
+  apiKey: "AIzaSyBlt9RFYaIa4fBvA0w-d-d-Dh2JmrW50w5OU",
   authDomain: "quanocnuong-10296.firebaseapp.com",
   databaseURL: "https://quanocnuong-10296-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "quanocnuong-10296",
@@ -438,7 +434,7 @@ const FIREBASE_CONFIG = {
 };
 
 /* ============================================================
-   RANK KHÁCH HÀNG — 100k=1 điểm, 100 điểm=1 bậc
+   RANK KHÁCH HÀNG
    ============================================================ */
 const CUSTOMER_RANKS = [
   {key:"dong",      name:"Đồng",         icon:"🥉", color:"#8B5A2B", min:0},
@@ -687,15 +683,19 @@ function genInvoiceCode(ts){
   state.seq = (state.seq||0) + 1;
   return "HD" + y + m + dd + "-" + String(state.seq).padStart(4,'0');
 }
-function isPhoneValid(phone){
-  return phone && /^0[0-9]{9,10}$/.test(phone.replace(/\D/g,''));
-}
+function isPhoneValid(phone){ return phone && /^0[0-9]{9,10}$/.test(String(phone).replace(/\D/g,'')); }
 function normalizePhone(p){ return String(p||"").replace(/\D/g,''); }
+// Fix #9: Bia random X3-X4 số khách
+function randomBeerQty(guests){
+  const min = Math.max(3, guests * 3);
+  const max = Math.max(4, guests * 4);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 /* ============================================================
    STATE + FIREBASE
    ============================================================ */
-const STKEY = "ocnuong_v23_state";
+const STKEY = "ocnuong_v24_state";
 const clientId = "c_" + Date.now().toString(36) + Math.random().toString(36).slice(2,8);
 let firebaseReady = false, fbRef = null, fbImagesRef = null, fbQrRef = null, fbArchiveRef = null, fbConnected = false, writeTimer = null, suppressWrite = false;
 let remoteSeeded = false;
@@ -703,9 +703,11 @@ let imagesCache = {};
 let qrImagesCache = {};
 let archiveCache = {};
 let currentVibe = "chill";
-let currentCatFilter = "all"; // Fix #8: filter danh mục món ăn
+let currentCatFilter = "all";
 let svcDraft = [];
 let purchaseDraft = [];
+// SĐT khách đã xác thực (session only, không lưu DB)
+let guestPhoneSession = "";
 
 function stripImagesForSync(st){
   st.menu = (st.menu||[]).map(m=>{ const c = {...m}; delete c.imgData; return c; });
@@ -762,9 +764,9 @@ function seed(){
       invoiceSymbol: "1C24TAA",
       taxCode: "",
       zaloPhone: "",
-      allowCustomerCancel: true, // Fix #3
-      requirePhoneQR: true,       // Fix #12
-      requireTakeawayPayment: true, // Fix #14
+      allowCustomerCancel: true,
+      requirePhoneQR: true,
+      requireTakeawayPayment: true,
       bank: {enabled:false,bankId:"VCB",accountNumber:"",accountHolder:"",qrImageUrl:"",showOnBill:true}
     },
     meta: {lastUpdate:0,lastClient:""}
@@ -777,6 +779,7 @@ function migrateState(st){
     prep: Number(o.prep)||5, ts: Number(o.ts)||Date.now(),
     scheduledAt: Number(o.scheduledAt)||0,
     paymentStatus: o.paymentStatus || "",
+    deliveryStatus: o.deliveryStatus || "",
     status: o.status || "cho_bep", table: String(o.table||""), name: String(o.name||"")
   }));
   st.invoices = toArr(st.invoices).map(inv=>({...inv,
@@ -821,6 +824,7 @@ function migrateState(st){
       locked: !!b.locked,
       groupId: String(b.groupId||""),
       mergedTables: Array.isArray(b.mergedTables) ? b.mergedTables : null,
+      scheduledOrder: b.scheduledOrder || null,
       createdAt: Number(b.createdAt)||Date.now()
     };
   });
@@ -868,7 +872,7 @@ function migrateState(st){
   });
   st.tableNotes = st.tableNotes && typeof st.tableNotes === "object" ? st.tableNotes : {};
   st.qrImages = st.qrImages && typeof st.qrImages === "object" ? st.qrImages : {};
-  st.qrTakeaway = String(st.qrTakeaway || "").slice(0, 500000);
+  st.qrTakeaway = String(st.qrTakeaway || "");
   st.takeawayMeta = st.takeawayMeta && typeof st.takeawayMeta === "object" ? st.takeawayMeta : {};
   st.takeawayCounter = Number(st.takeawayCounter)||0;
   st.seq = Number(st.seq)||1;
@@ -1031,6 +1035,7 @@ function initFirebase(){
             } else {
               state.menu.forEach(m=>{ if(m.imgData) saveMenuImage(m.id, m.imgData); });
               Object.keys(state.qrImages||{}).forEach(k=>{ if(state.qrImages[k]) saveQrImage(k, state.qrImages[k]); });
+              if(state.qrTakeaway) saveQrImage("TAKEAWAY", state.qrTakeaway);
               remoteSeeded = true;
               setSyncStatus("synced", "🟢 OK");
             }
@@ -1042,6 +1047,7 @@ function initFirebase(){
         state = migrateState(remote);
         applyImagesCache();
         applyQrCache();
+        if(qrImagesCache["TAKEAWAY"]) state.qrTakeaway = qrImagesCache["TAKEAWAY"];
         saveLocal();
         renderAll();
         const isMobile = window.innerWidth < 700;
@@ -1076,6 +1082,12 @@ function getRole(){ if(MODE === "khach") return "guest"; return sessionStorage.g
 function setRole(r){ sessionStorage.setItem("ocnuong_role", r); }
 function isManager(){ return getRole() === "manager"; }
 function canSeeFinance(){ return MODE !== "khach" && isManager(); }
+// Fix #3: Chỉ khi MODE=khach mới cần Gate SĐT (staff xem trước không cần)
+function isGuestVerified(){
+  if(!state.settings.requirePhoneQR) return true;
+  if(MODE !== "khach") return true;
+  return !!guestPhoneSession;
+}
 let role = getRole();
 let currentTable = MODE==="khach" ? (isTakeawayQR ? "TAKEAWAY" : qTable) : TABLES[0].id;
 let cart = {};
@@ -1119,7 +1131,7 @@ function setBooking(tableId, info){
   save();
 }
 function isTableLocked(tableId){ const b = getBooking(tableId); return b && b.locked; }
-function getTAMeta(id){ return state.takeawayMeta[id] || {name:"",phone:"",address:"",note:"",pickup:false}; }
+function getTAMeta(id){ return state.takeawayMeta[id] || {name:"",phone:"",address:"",note:"",pickup:false,deliveryStatus:""}; }
 function setTAMeta(id, meta){ state.takeawayMeta[id] = meta; save(); }
 function nextTAId(){ state.takeawayCounter = (state.takeawayCounter||0) + 1; return "TA" + state.takeawayCounter; }
 function getActiveTAs(){
@@ -1143,6 +1155,7 @@ function itemMargin(m){
   const cost = itemCost(m);
   return m.price > 0 ? (m.price - cost) / m.price : 0;
 }
+// Fix #7: buildBankQrUrl ưu tiên ảnh riêng, nếu dùng VietQR API phải có accountHolder
 function buildBankQrUrl(amount, desc){
   const b = state.settings.bank || {};
   if(!b.enabled) return "";
@@ -1195,7 +1208,17 @@ function typeOfItem(itemId){
   const m = state.menu.find(x=>x.id === itemId);
   return m ? typeOf(m.cat) : "food";
 }
-function statusLabel(s){ return {cho_bep:"⏳ Chờ",cho_ck:"💳 Chờ CK",dang_lam:"🔥 Đang làm",hoan_thanh:"✅ Xong",huy:"❌ Hủy"}[s] || s; }
+function statusLabel(s){
+  return {
+    cho_bep:"⏳ Chờ",
+    cho_ck:"💳 Chờ CK",
+    dang_lam:"🔥 Đang làm",
+    hoan_thanh:"✅ Xong",
+    dang_giao:"🚚 Đang giao",
+    da_giao:"🎉 Đã giao",
+    huy:"❌ Hủy"
+  }[s] || s;
+}
 function callTypeInfo(type){ return CALL_PRESETS.find(p=>p.type === type) || {icon:"💬", label:"Khác"}; }
 function getVibe(){ return VIBES[currentVibe] || VIBES.chill; }
 function isBillableItem(m){
@@ -1206,7 +1229,7 @@ function isBillableItem(m){
 }
 
 /* ============================================================
-   HEADER — Logo URL fix, đồng bộ gọn, nút 🔄 cạnh đồng bộ
+   HEADER
    ============================================================ */
 function renderHeader(){
   document.getElementById("brandName").textContent = state.brand.name;
@@ -1271,11 +1294,11 @@ document.getElementById("btnRefresh").onclick = async ()=>{
       state = migrateState(remote);
       applyImagesCache();
       applyQrCache();
+      if(qrImagesCache["TAKEAWAY"]) state.qrTakeaway = qrImagesCache["TAKEAWAY"];
       saveLocal();
       renderAll();
       setTimeout(()=>{ suppressWrite = false; }, 500);
       setSyncStatus("synced", "🟢 Đã làm mới");
-      // Ẩn text sau 2s
       setTimeout(()=>{ updateSyncUI(); }, 2000);
     } else { alert("Firebase trống."); }
   }catch(e){ alert("Lỗi: " + (e.code || e.message)); }
@@ -1399,23 +1422,22 @@ function openCallModal(){
   };
 }
 function sendCall(type, message){
-  const real = resolveTable(currentTable);
+  const real = currentKhachMode === "takeaway" ? "TAKEAWAY" : resolveTable(currentTable);
   state.calls.push({id: uid("c"), table: real, ts: nowMs(), type, message, handled: false});
   save();
 }
 
 /* ============================================================
-   PHONE GATE — Xác thực SĐT khi quét QR (#12)
+   PHONE GATE — Xác thực SĐT khi quét QR (Fix #3: chỉ khi MODE=khach)
    ============================================================ */
-let guestPhone = ""; // Session only — lưu tạm trong RAM
-function isGuestVerified(){ return !state.settings.requirePhoneQR || !!guestPhone; }
 function renderPhoneGate(){
   const wrap = document.getElementById("phoneGateWrap");
   if(!wrap) return;
+  // Chỉ hiện khi đang ở khách VÀ chưa xác thực
   if(MODE !== "khach" || isGuestVerified()){ wrap.innerHTML = ""; return; }
   wrap.innerHTML = '<div class="phone-gate" id="phoneGateModal"><div class="pg-box">' +
     '<h2>📱 Nhập SĐT để đặt món</h2>' +
-    '<p>Quán cần SĐT để liên hệ khi cần thiết và tích điểm khách hàng thân thiết.</p>' +
+    '<p>Quán cần SĐT để liên hệ và tích điểm khách hàng thân thiết.</p>' +
     '<input type="tel" id="pgPhone" placeholder="0901234567" inputmode="tel" maxlength="15" autocomplete="tel">' +
     '<button id="pgConfirm">Tiếp tục</button>' +
     '<div id="pgErr" style="color:var(--danger);font-size:.8rem;margin-top:.5rem;display:none"></div>' +
@@ -1431,20 +1453,18 @@ function renderPhoneGate(){
       err.style.display = "";
       return;
     }
-    guestPhone = phone;
-    // Nếu SĐT đã có trong hệ thống → tự gán tên
-    if(state.customers[phone] && state.customers[phone].name){
-      // Khách quen
+    guestPhoneSession = phone;
+    // Pre-fill SĐT vào TA Info nếu là mang về
+    if(currentKhachMode === "takeaway" && !taInfo.phone){
+      taInfo.phone = phone;
+    }
+    // Nếu SĐT khách quen → pre-fill tên
+    const customer = state.customers[phone];
+    if(customer && customer.name && currentKhachMode === "takeaway" && !taInfo.name){
+      taInfo.name = customer.name;
     }
     wrap.innerHTML = "";
     renderKhach();
-    // Thông báo cho bếp (nếu đang ở bàn)
-    if(!isTakeawayQR && qTable){
-      const real = resolveTable(qTable);
-      if(!state.tableSessions[real]){
-        // Chỉ tạo session khách khi thực sự đặt món đầu tiên
-      }
-    }
   };
   btn.onclick = submit;
   inp.onkeydown = e=>{ if(e.key === "Enter") submit(); };
@@ -1482,7 +1502,7 @@ function renderBookingLockBox(){
 }
 
 /* ============================================================
-   MODE TABS + ZALO
+   MODE TABS + ZALO (Fix #8)
    ============================================================ */
 function renderModeTabs(){
   const wrap = document.getElementById("modeTabsWrap");
@@ -1502,42 +1522,59 @@ function renderModeTabs(){
 function renderZaloBook(){
   const el = document.getElementById("zaloBookWrap");
   if(!el) return;
-  if(MODE !== "khach" || currentKhachMode === "takeaway"){ el.innerHTML = ""; return; }
+  // Hiện ở cả dine-in và takeaway (Fix #8)
+  if(MODE !== "khach"){ el.innerHTML = ""; return; }
   const zalo = state.settings.zaloPhone || state.brand.phone || "";
   if(!zalo){ el.innerHTML = ""; return; }
   el.innerHTML = '<div class="card zalo-book">' +
     '<div class="row"><b style="color:#2F5A33">📱 Đặt bàn trước qua Zalo</b>' +
     '<button class="btn small zalo" id="btnZaloBook">Chat Zalo</button></div>' +
-    '<div class="tiny muted" style="margin-top:.3rem">Nhắn Zalo đặt bàn trước, khỏi chờ.</div>' +
+    '<div class="tiny muted" style="margin-top:.3rem">Nhắn Zalo đặt bàn trước hoặc order hẹn giờ.</div>' +
   '</div>';
   const btn = document.getElementById("btnZaloBook");
   if(btn) btn.onclick = ()=>{
     const phone = zalo.replace(/\D/g,'');
+    const msg = "Xin chào " + (state.brand.name||"") + "! Tôi muốn đặt bàn/order hẹn giờ.";
+    if(navigator.clipboard) navigator.clipboard.writeText(msg).catch(()=>{});
     window.open("https://zalo.me/" + phone, "_blank");
   };
 }
 
 /* ============================================================
-   TA INFO BAR (Mang về) — không reload (#11)
+   TA INFO BAR — Fix #2: bỏ ô SĐT nếu đã xác thực, dùng phone session
    ============================================================ */
 function renderTAInfoBar(){
   const wrap = document.getElementById("taInfoWrap");
   if(!wrap) return;
   if(currentKhachMode !== "takeaway"){ wrap.innerHTML = ""; return; }
+  // Fix #2: Nếu đã xác thực qua Phone Gate → không cần nhập SĐT lại
+  const phoneFromGate = guestPhoneSession || "";
+  const hasGatePhone = MODE === "khach" && !!phoneFromGate;
+  // Nếu staff xem trước → hiện đầy đủ
+  if(hasGatePhone && !taInfo.phone){ taInfo.phone = phoneFromGate; }
+  
   const nameValid = taInfo.name.trim().length >= 2;
   const phoneValid = isPhoneValid(taInfo.phone);
   const addrRequired = !taInfo.pickup;
   const addrValid = !addrRequired || taInfo.address.trim().length >= 5;
   const ready = nameValid && phoneValid && addrValid;
+  
   let html = '<div class="ta-info-bar">' +
     '<div class="row"><b>🥡 Đơn mang về</b>' +
       '<span class="badge ' + (ready?'paid':'out') + '">' + (ready?'✓ Sẵn sàng':'Cần nhập') + '</span>' +
     '</div>' +
     '<label class="fl">Tên khách <span style="color:var(--danger)">*</span>' +
-      '<input id="taName" value="' + esc(taInfo.name) + '" autocomplete="off"></label>' +
-    '<label class="fl">SĐT <span style="color:var(--danger)">*</span>' +
-      '<input id="taPhone" value="' + esc(taInfo.phone) + '" inputmode="tel" autocomplete="off"></label>' +
-    '<label class="fl" style="margin-top:.5rem"><input type="checkbox" id="taPickup" ' + (taInfo.pickup?'checked':'') + ' style="width:auto"> Khách tự đến lấy</label>';
+      '<input id="taName" value="' + esc(taInfo.name) + '" autocomplete="off"></label>';
+  // Chỉ hiện ô SĐT nếu CHƯA xác thực qua phone gate
+  if(!hasGatePhone){
+    html += '<label class="fl">SĐT <span style="color:var(--danger)">*</span>' +
+      '<input id="taPhone" value="' + esc(taInfo.phone) + '" inputmode="tel" autocomplete="off"></label>';
+  } else {
+    html += '<div class="svc-summary" style="margin-top:.4rem;border-color:#4A7C4F">' +
+      '📱 SĐT đã xác thực: <b>' + esc(phoneFromGate) + '</b>' +
+    '</div>';
+  }
+  html += '<label class="fl" style="margin-top:.5rem"><input type="checkbox" id="taPickup" ' + (taInfo.pickup?'checked':'') + ' style="width:auto"> Khách tự đến lấy</label>';
   if(!taInfo.pickup){
     html += '<label class="fl">Địa chỉ <span style="color:var(--danger)">*</span>' +
       '<input id="taAddress" value="' + esc(taInfo.address) + '" autocomplete="street-address"></label>' +
@@ -1545,7 +1582,7 @@ function renderTAInfoBar(){
   }
   html += '<label class="fl">Ghi chú <input id="taNote" value="' + esc(taInfo.note) + '" autocomplete="off"></label></div>';
   wrap.innerHTML = html;
-  // Input update trực tiếp, KHÔNG rebuild (Fix #11)
+  
   const nameI = document.getElementById("taName");
   const phoneI = document.getElementById("taPhone");
   const addrI = document.getElementById("taAddress");
@@ -1581,7 +1618,7 @@ function renderCartBottomBar(){
 }
 
 /* ============================================================
-   FILTER THEO DANH MỤC MÓN ĂN (#8)
+   FILTER THEO DANH MỤC
    ============================================================ */
 function renderCatFilter(){
   const wrap = document.getElementById("drinkFilterWrap");
@@ -1608,9 +1645,9 @@ function catVisible(cat){
    MENU KHÁCH
    ============================================================ */
 function renderKhach(){
-  // Gate SĐT
   renderPhoneGate();
-  if(!isGuestVerified()){
+  // Fix #3: Chỉ block menu nếu MODE=khach và chưa xác thực
+  if(MODE === "khach" && !isGuestVerified()){
     const menuDiv = document.getElementById("menuList");
     if(menuDiv) menuDiv.innerHTML = "";
     renderCartBottomBar();
@@ -1657,17 +1694,17 @@ function renderKhach(){
 
   if(locked){
     menuDiv.innerHTML = '<div class="empty" style="padding:2rem 0;color:var(--p2);font-weight:700">🔒 Bàn đặt trước<br><span class="tiny" style="font-weight:400">Không đặt được món.</span></div>';
-    renderMusicBox(); renderMyOrders(); renderCartBottomBar();
+    renderMyOrders();
+    renderCartBottomBar();
     return;
   }
   if(notOpened){
     menuDiv.innerHTML = '<div class="empty" style="padding:2rem 0;color:var(--danger);font-weight:700">⛔ Bàn chưa mở<br><span class="tiny" style="font-weight:400">Vui lòng đợi NV xác nhận khách đã tới.</span></div>' +
       '<button class="btn secondary" id="btnCallOpen2" style="width:100%">🔔 Gọi NV mở bàn</button>';
-    const b = document.getElementById("btnOpen2");
-    if(b) b.onclick = ()=>{ sendCall("other", "Xin mở bàn"); alert("Đã gửi."); };
     const b2 = document.getElementById("btnCallOpen2");
     if(b2) b2.onclick = ()=>{ sendCall("other", "Xin mở bàn"); alert("Đã gửi."); };
-    renderMusicBox(); renderMyOrders(); renderCartBottomBar();
+    renderMyOrders();
+    renderCartBottomBar();
     return;
   }
 
@@ -1748,7 +1785,6 @@ function renderKhach(){
       cart[id].note = inp.value;
     };
   });
-  renderMusicBox();
   renderMyOrders();
   renderCartBottomBar();
 }
@@ -1773,7 +1809,7 @@ function openScheduleModal(itemId){
       '<button data-quick="60">+1h</button><button data-quick="120">+2h</button>' +
     '</div>' +
     '<label class="fl">Số lượng <input type="number" id="schedQty" value="' + Math.max(1, cur.qty||1) + '" min="1"></label>' +
-    '<label class="fl">Ghi chú <input id="schedNote" value="' + esc(cur.note||"") + '"></label>' +
+    '<label class="fl">Ghi chú <input id="schedNote" value="' + esc(cur.note||"") + '" autocomplete="off"></label>' +
     '<div class="row" style="margin-top:.8rem"><button class="btn secondary" id="schedCancel">Hủy</button>' +
     '<button class="btn" id="schedSave" style="background:linear-gradient(135deg,var(--p4),#5E2A6A)">⏰ Lưu</button></div></div></div>';
   const close = ()=>{ modalLocked = false; root.innerHTML = ""; renderKhach(); };
@@ -1799,29 +1835,48 @@ function openScheduleModal(itemId){
   };
 }
 
+/* ============================================================
+   MY ORDERS — Fix #4: hiện đủ trạng thái, bao gồm mang về
+   ============================================================ */
 function renderMyOrders(){
   const box = document.getElementById("myOrders");
   if(!box) return;
+  // Fix #4: Với mang về, hiện các đơn của SĐT khách (khớp SĐT hoặc TA id)
+  let mine = [];
   if(currentKhachMode === "takeaway"){
-    box.innerHTML = '<div class="tiny muted">Đơn mang về sẽ được NV gọi xác nhận qua SĐT.</div>';
-    return;
-  }
-  const real = resolveTable(currentTable);
-  const mine = state.orders.filter(o=>o.table === real && o.status !== "huy");
-  const canCancel = state.settings.allowCustomerCancel !== false;
-  if(mine.length){
-    box.innerHTML = '<div class="tiny muted" style="margin-bottom:.4rem">' + 
-      (canCancel ? '💡 Hủy được khi bếp <b>chưa xác nhận</b>.' : '💡 Liên hệ NV nếu muốn hủy món.') + '</div>';
+    // Tìm các TA có SĐT khớp
+    const myPhone = taInfo.phone || guestPhoneSession;
+    if(myPhone){
+      const myTAs = Object.keys(state.takeawayMeta).filter(k=>{
+        const meta = state.takeawayMeta[k];
+        return meta.phone === myPhone;
+      });
+      mine = state.orders.filter(o=>o.status !== "huy" && myTAs.includes(o.table));
+    }
+    if(!mine.length && !myPhone){
+      box.innerHTML = '<div class="tiny muted">Đơn mang về sẽ được NV gọi xác nhận qua SĐT.</div>';
+      return;
+    }
   } else {
-    box.innerHTML = '<div class="empty">Chưa gọi món</div>';
+    const real = resolveTable(currentTable);
+    mine = state.orders.filter(o=>o.table === real && o.status !== "huy");
+  }
+  
+  if(!mine.length){
+    box.innerHTML = '<div class="empty">Chưa có đơn</div>';
     return;
   }
+  
+  const canCancel = state.settings.allowCustomerCancel !== false;
+  box.innerHTML = '<div class="tiny muted" style="margin-bottom:.4rem">' +
+    (canCancel ? '💡 Hủy được khi bếp <b>chưa xác nhận</b>.' : '💡 Liên hệ NV nếu muốn hủy món.') + '</div>';
+  
   mine.slice().reverse().forEach(o=>{
-    const done = o.status === "hoan_thanh";
+    const done = o.status === "hoan_thanh" || o.status === "da_giao";
     const canCancelRow = canCancel && o.status === "cho_bep";
     const d = document.createElement("div"); d.className = "item" + (done ? " served" : "");
     let ratingHtml = "";
-    if(done){
+    if(o.status === "hoan_thanh"){
       if(o.rated){
         ratingHtml = '<div class="tiny" style="margin-top:.3rem;color:var(--gold-d);font-weight:700">Bạn đã chấm ' + "⭐".repeat(o.ratingStar||0) + '</div>';
       } else {
@@ -1831,6 +1886,10 @@ function renderMyOrders(){
       }
     }
     const schedHtml = isScheduled(o) ? ' <span class="scheduletag">⏰ ' + fmtDateTime(o.scheduledAt) + '</span>' : '';
+    const statusCls = {
+      cho_bep:'new', cho_ck:'pending', dang_lam:'cooking',
+      hoan_thanh:'st', dang_giao:'delivering', da_giao:'delivered'
+    }[o.status] || 'st';
     d.innerHTML = '<div style="width:100%">' +
       '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem">' +
         '<div class="name" style="flex:1;min-width:0">' +
@@ -1838,7 +1897,7 @@ function renderMyOrders(){
           (o.note ? ' <span class="notetag">📝 ' + esc(o.note) + '</span>' : '') + schedHtml +
         '</div>' +
         '<div style="display:flex;align-items:center;gap:.4rem;flex:0 0 auto">' +
-          '<span class="badge ' + (o.status==='cho_bep'?'new':(o.status==='dang_lam'?'cooking':(o.status==='cho_ck'?'pending':'st'))) + '">' + statusLabel(o.status) + '</span>' +
+          '<span class="badge ' + statusCls + '">' + statusLabel(o.status) + '</span>' +
           (canCancelRow ? '<button class="pillbtn x" data-cust-cancel="' + o.id + '">✕</button>' : "") +
         '</div>' +
       '</div>' + ratingHtml + '</div>';
@@ -1897,7 +1956,7 @@ function doSendToKitchen(){
       qty: c.qty, price: m.price, prio: m.prio, prep: m.prep,
       note: (c.note||"").trim(), status: "cho_bep", ts: now,
       scheduledAt: c.scheduledAt||0, deducted: false,
-      customerPhone: guestPhone || ""
+      customerPhone: guestPhoneSession || ""
     });
   });
   cart = {}; save();
@@ -1907,7 +1966,7 @@ function doSendToKitchen(){
 }
 
 /* ============================================================
-   GỬI MANG VỀ — Cần CK trước khi vào bếp (#14)
+   GỬI MANG VỀ — Fix #5: LUÔN vào "Chờ CK" trước
    ============================================================ */
 function doSendTakeaway(){
   if(sending) return;
@@ -1921,13 +1980,8 @@ function doSendTakeaway(){
   const n = cartCount();
   if(n === 0){ alert("Chưa chọn món"); return; }
   
-  // Nếu bật yêu cầu CK trước → mở modal xác nhận
-  if(state.settings.requireTakeawayPayment !== false){
-    openTakeawayPayConfirm();
-    return;
-  }
-  // Không yêu cầu → gửi thẳng
-  finalizeTakeawayOrder("");
+  // Fix #5: LUÔN qua modal xác nhận CK (không có option bỏ qua)
+  openTakeawayPayConfirm();
 }
 
 function openTakeawayPayConfirm(){
@@ -1942,35 +1996,37 @@ function openTakeawayPayConfirm(){
   const bankCfg = isBankConfigured();
   let qrHtml = '';
   if(bankCfg){
+    const qrUrl = buildBankQrUrl(grand, 'Don mang ve ' + taInfo.phone);
+    const bankInfo = state.settings.bank;
+    const bankName = (BANK_LIST.find(x=>x.id===bankInfo.bankId)||{}).name || bankInfo.bankId;
     qrHtml = '<div style="text-align:center;margin:.6rem 0">' +
-      '<img src="' + buildBankQrUrl(grand, 'Don mang ve') + '" style="width:200px;height:200px;background:#fff;padding:6px;border-radius:10px;border:1px solid var(--border)" referrerpolicy="no-referrer" onerror="this.style.display=\'none\';document.getElementById(\'tpcQrErr\').style.display=\'\'">' +
+      '<img src="' + qrUrl + '" style="width:220px;height:220px;background:#fff;padding:6px;border-radius:10px;border:1px solid var(--border)" referrerpolicy="no-referrer" onerror="this.style.display=\'none\';document.getElementById(\'tpcQrErr\').style.display=\'\'">' +
       '<div id="tpcQrErr" style="display:none;color:var(--danger);font-size:.8rem">⚠️ Không tải được QR</div>' +
     '</div>' +
-    '<div class="tiny" style="text-align:center;color:var(--muted)">' +
-      '🏦 <b>' + esc((BANK_LIST.find(b=>b.id===state.settings.bank.bankId)||{}).name||"") + '</b><br>' +
-      'STK: <b>' + esc(state.settings.bank.accountNumber||"") + '</b><br>' +
-      'Chủ TK: ' + esc(state.settings.bank.accountHolder||"") +
+    '<div class="svc-summary" style="border-color:var(--money);text-align:center">' +
+      '🏦 <b>' + esc(bankName) + '</b><br>' +
+      'STK: <b>' + esc(bankInfo.accountNumber||"") + '</b><br>' +
+      'Chủ TK: <b>' + esc(bankInfo.accountHolder||"— chưa nhập —") + '</b>' +
     '</div>';
   } else {
-    qrHtml = '<div class="empty" style="padding:1rem 0">⚠️ Chưa cấu hình ngân hàng. Vui lòng liên hệ NV để thanh toán.</div>';
+    qrHtml = '<div class="empty" style="padding:1rem 0">⚠️ Chưa cấu hình ngân hàng. Vui lòng liên hệ NV.</div>';
   }
   root.innerHTML = '<div class="modal-back" id="mb"><div class="modal">' +
     '<button class="close-x" id="mc">✕</button>' +
-    '<h3>💳 Xác nhận thanh toán trước</h3>' +
+    '<h3>💳 Xác nhận chuyển khoản</h3>' +
     '<div class="svc-summary" style="border-color:var(--money)">' +
       '<div class="row"><span>Tổng món:</span><b>' + VND(total) + '</b></div>' +
       (deliveryFee > 0 ? '<div class="row"><span>Phí giao:</span><b>' + VND(deliveryFee) + '</b></div>' : '') +
       '<div class="row" style="border-top:1px dashed var(--border);padding-top:.3rem;margin-top:.3rem"><b>TỔNG CK:</b><b style="color:var(--money);font-size:1.1rem">' + VND(grand) + '</b></div>' +
     '</div>' +
     '<div class="tiny muted" style="margin-top:.5rem">' +
-      'Vui lòng chuyển khoản đúng số tiền, sau đó NV xác nhận và gửi bếp.' +
+      'Vui lòng chuyển khoản đúng số tiền. Sau khi chuyển, bấm <b>"Đã chuyển khoản"</b> để đơn chờ NV xác nhận.' +
     '</div>' +
     qrHtml +
     '<div class="row" style="margin-top:.8rem">' +
       '<button class="btn secondary" id="tpcCancel">← Quay lại</button>' +
       '<button class="btn ok" id="tpcSent" style="flex:1">✓ Đã chuyển khoản</button>' +
     '</div>' +
-    '<button class="btn warn small" id="tpcSkip" style="width:100%;margin-top:.4rem">⏭️ Bỏ qua — Thanh toán sau</button>' +
   '</div></div>';
   const close = ()=>{ modalLocked = false; root.innerHTML = ""; renderAll(); };
   document.getElementById("mc").onclick = close;
@@ -1979,11 +2035,6 @@ function openTakeawayPayConfirm(){
   document.getElementById("tpcSent").onclick = ()=>{
     modalLocked = false; root.innerHTML = "";
     finalizeTakeawayOrder("pending_confirm");
-  };
-  document.getElementById("tpcSkip").onclick = ()=>{
-    if(!confirm("Bạn chọn thanh toán SAU. Đơn sẽ chờ NV xác nhận trước khi vào bếp. Tiếp tục?")) return;
-    modalLocked = false; root.innerHTML = "";
-    finalizeTakeawayOrder("skip_payment");
   };
 }
 
@@ -1995,11 +2046,11 @@ function finalizeTakeawayOrder(paymentMode){
   setTAMeta(taId, {
     name: taInfo.name.trim(), phone: taInfo.phone.trim(),
     address: taInfo.pickup ? "" : taInfo.address.trim(),
-    note: taInfo.note.trim(), pickup: !!taInfo.pickup
+    note: taInfo.note.trim(), pickup: !!taInfo.pickup,
+    deliveryStatus: "pending"
   });
-  // Nếu paymentMode = pending_confirm → status = cho_ck (bếp chưa thấy)
-  // Nếu skip_payment → status = cho_bep (bếp thấy luôn)
-  const orderStatus = (paymentMode === "pending_confirm") ? "cho_ck" : "cho_bep";
+  // Fix #5: LUÔN status = cho_ck (chờ CK), không có skip
+  const orderStatus = "cho_ck";
   Object.entries(cart).forEach(([id,c])=>{
     if(!c.qty) return;
     const m = state.menu.find(x=>x.id === id);
@@ -2009,19 +2060,16 @@ function finalizeTakeawayOrder(paymentMode){
       qty: c.qty, price: m.price, prio: m.prio, prep: m.prep,
       note: (c.note||"").trim(), status: orderStatus, ts: now,
       scheduledAt: c.scheduledAt||0, deducted: false,
-      paymentStatus: (paymentMode === "pending_confirm") ? "pending" : "later",
+      paymentStatus: "pending",
       customerPhone: taInfo.phone.trim()
     });
   });
   cart = {};
   taInfo = {name:"",phone:"",address:"",note:"",pickup:false};
+  // Không xóa guestPhoneSession để khách còn xem đơn
   save();
   setTimeout(()=>{ sending = false; }, 400);
-  if(paymentMode === "pending_confirm"){
-    alert("✓ Đã gửi đơn " + taId + "!\nNV sẽ kiểm tra chuyển khoản và bắt đầu làm món.");
-  } else {
-    alert("✓ Đã gửi đơn " + taId + " (thanh toán sau).");
-  }
+  alert("✓ Đã gửi đơn " + taId + "!\nNV sẽ kiểm tra chuyển khoản và bắt đầu làm món.\nBạn xem trạng thái ở mục 'Đơn đã gọi'.");
   renderAll();
 }
 
@@ -2087,8 +2135,7 @@ function renderCartModal(){
 }
 
 /* ============================================================
-   GACHA — ĂN GÌ CŨNG ĐƯỢC (#1)
-   Ra TOÀN BỘ MÓN (nhiều món một lượt)
+   GACHA — ĂN GÌ CŨNG ĐƯỢC (Fix #9: Bia X3-X4)
    ============================================================ */
 function renderSuggestWrap(){
   const wrap = document.getElementById("suggestWrap");
@@ -2119,7 +2166,6 @@ function weightedPick(pool){
   for(const x of scored){ r -= x.score; if(r <= 0) return x.m; }
   return scored[scored.length-1].m;
 }
-// Gacha: ra TOÀN BỘ MÓN — mỗi danh mục được chọn, chọn 1 món (không trùng)
 function gachaRollAll(selectedCats, guests){
   const result = [];
   const usedIds = new Set();
@@ -2130,7 +2176,8 @@ function gachaRollAll(selectedCats, guests){
     if(!pick) return;
     usedIds.add(pick.id);
     let qty = 1;
-    if(cat === "Bia") qty = Math.max(2, guests * 2);
+    // Fix #9: Bia random X3-X4 số khách
+    if(cat === "Bia") qty = randomBeerQty(guests);
     else if(cat === "Nước ngọt") qty = Math.max(1, Math.ceil(guests / 2));
     result.push({itemId: pick.id, qty, cat});
   });
@@ -2236,6 +2283,7 @@ function openGachaModal(){
       '<div class="gacha-dice ' + (rolling?'rolling':'') + '">🎲</div>' +
       '<label class="fl" style="margin-top:0">Số khách' +
         '<input type="number" id="gGuests" value="' + guests + '" min="1" max="30"></label>' +
+      '<div class="tiny muted" style="text-align:center;font-size:.68rem;margin-top:-.3rem">💡 Bia sẽ random X3-X4 số khách</div>' +
       '<div style="margin-top:.5rem"><div class="tiny muted" style="margin-bottom:.3rem">Chọn nhóm món:</div>' +
       '<div class="cat-chips">';
     availableCats.forEach(cat=>{
@@ -2311,82 +2359,7 @@ function openGachaModal(){
   }
   render();
 }
-
 /* ============================================================
-   ORDER NHẠC
-   ============================================================ */
-function renderMusicBox(){
-  const box = document.getElementById("musicBox");
-  if(!box) return;
-  const myTable = currentKhachMode === "takeaway" ? "TAKEAWAY" : resolveTable(currentTable);
-  const myRequests = state.musicQueue.filter(m=>m.table === myTable && !m.skipped);
-  const nowPlaying = state.musicQueue.find(m=>m.playing);
-  let html = '';
-  if(nowPlaying){
-    const info = VIBES[nowPlaying.vibe || "chill"] || VIBES.chill;
-    html += '<div class="music-card playing">' +
-      '<div class="row"><b style="color:#2F5A33">🔊 ĐANG PHÁT</b>' +
-      '<span class="badge" style="background:' + info.color + '">' + info.label + '</span></div>' +
-      '<div class="mc-title" style="margin-top:.3rem">' + esc(nowPlaying.title) + '</div>' +
-      '<div class="mc-meta">' + esc(nowPlaying.artist || "—") + '</div>' +
-    '</div>';
-  }
-  html += '<div class="row" style="margin-top:.5rem">' +
-    '<div class="muted tiny">🎵 Order nhạc</div>' +
-    '<button class="btn small" id="btnOrderMusic" style="background:linear-gradient(135deg,#E91E63,#8B2A1E)">+ Order</button>' +
-  '</div>';
-  if(myRequests.length){
-    html += '<div style="margin-top:.5rem">';
-    myRequests.slice(-5).forEach(m=>{
-      html += '<div class="music-row">' +
-        '<div style="flex:1;min-width:0"><b>' + esc(m.title) + '</b>' +
-          '<div class="mc-meta">' + esc(m.artist || "—") + '</div></div>' +
-        '<span class="badge ' + (m.playing?'paid':(m.played?'st':'new')) + '">' +
-          (m.playing ? "🔊" : (m.played ? "✓" : "⏳")) + '</span>' +
-      '</div>';
-    });
-    html += '</div>';
-  } else {
-    html += '<div class="empty" style="padding:.8rem 0">Chưa có yêu cầu</div>';
-  }
-  box.innerHTML = html;
-  const btn = document.getElementById("btnOrderMusic");
-  if(btn) btn.onclick = ()=>openMusicOrderModal();
-}
-function openMusicOrderModal(){
-  modalLocked = true;
-  const root = document.getElementById("modalRoot");
-  root.innerHTML = '<div class="modal-back" id="mb"><div class="modal">' +
-    '<button class="close-x" id="mc">✕</button>' +
-    '<h3>🎵 Order nhạc</h3>' +
-    '<label class="fl">Link YouTube<input id="moUrl" placeholder="https://youtube.com/watch?v=..." value="' + esc(currentMusicReq.url||"") + '"></label>' +
-    '<label class="fl">Tên bài <span style="color:var(--danger)">*</span><input id="moTitle" value="' + esc(currentMusicReq.title||"") + '"></label>' +
-    '<label class="fl">Ca sĩ<input id="moArtist" value="' + esc(currentMusicReq.artist||"") + '"></label>' +
-    '<label class="fl">Ghi chú<input id="moNote"></label>' +
-    '<div class="row" style="margin-top:.8rem"><button class="btn secondary" id="moCancel">Hủy</button>' +
-    '<button class="btn" id="moSave" style="background:linear-gradient(135deg,#E91E63,#8B2A1E)">🎵 Gửi</button></div></div></div>';
-  const close = ()=>{ modalLocked = false; root.innerHTML = ""; renderAll(); };
-  document.getElementById("mc").onclick = close;
-  document.getElementById("mb").onclick = e=>{ if(e.target.id === "mb") close(); };
-  document.getElementById("moCancel").onclick = close;
-  document.getElementById("moSave").onclick = ()=>{
-    const url = document.getElementById("moUrl").value.trim();
-    const title = document.getElementById("moTitle").value.trim();
-    const artist = document.getElementById("moArtist").value.trim();
-    const note = document.getElementById("moNote").value.trim();
-    if(!title){ alert("Nhập tên bài"); return; }
-    const real = currentKhachMode === "takeaway" ? "TAKEAWAY" : resolveTable(currentTable);
-    state.musicQueue.push({
-      id: uid("mu"), table: real, title, artist, url, note,
-      vibe: currentVibe, ts: nowMs(), played: false, playing: false, skipped: false
-    });
-    save();
-    currentMusicReq = {title:"", artist:"", url:""};
-    close();
-    alert("✓ Đã gửi yêu cầu!");
-  };
-}
-  /* ============================================================
    PHỤC VỤ
    ============================================================ */
 function tableOrders(t){ return state.orders.filter(o=>o.table === t && o.status !== "huy"); }
@@ -2435,10 +2408,14 @@ function taCardEl(taId){
   const os = tableOrders(taId);
   const hasCall = state.calls.some(c=>c.table === taId && !c.handled);
   const pendingCK = os.some(o=>o.status === "cho_ck");
+  const delivering = os.some(o=>o.status === "dang_giao");
+  const delivered = os.length > 0 && os.every(o=>o.status === "da_giao" || o.status === "hoan_thanh");
   const el = document.createElement("div");
   el.className = "ta-card";
   const badge = meta.pickup ? '<span class="badge p3">🏃 Tự lấy</span>' : '<span class="badge ta">🛵 Giao</span>';
-  const ckBadge = pendingCK ? '<span class="badge pending">💳 Chờ CK</span> ' : '';
+  const statusBadge = pendingCK ? '<span class="badge pending">💳 Chờ CK</span> ' :
+                      delivering ? '<span class="badge delivering">🚚 Đang giao</span> ' :
+                      delivered ? '<span class="badge delivered">🎉 Đã giao</span> ' : '';
   el.innerHTML = '<div class="ta-h"><div style="flex:1;min-width:0">' +
       '<div class="ta-id">🥡 ' + taId + ' ' + (hasCall?'<span style="color:var(--danger)">🔔</span>':'') + '</div>' +
       '<div class="ta-name">' + esc(meta.name||"(không tên)") + ' · ' + esc(meta.phone||"") + '</div>' +
@@ -2446,7 +2423,7 @@ function taCardEl(taId){
       (meta.note ? '<div class="ta-info">📝 ' + esc(meta.note) + '</div>' : '') +
       '<div class="ta-info">⏱ ' + minsAgo(state.tableSessions[taId]) + "' · " + os.reduce((s,o)=>s+o.qty,0) + ' món</div>' +
     '</div><div style="text-align:right;flex:0 0 auto">' +
-      ckBadge + badge + '<div class="ta-total">' + VND(total) + '</div>' +
+      statusBadge + badge + '<div class="ta-total">' + VND(total) + '</div>' +
     '</div></div>';
   el.onclick = ()=>{ activeModalTA = taId; activeModalTable = null; actionMode = null; renderModal(); };
   return el;
@@ -2456,10 +2433,12 @@ function renderPVSubnav(){
   if(!sub) return;
   const taCount = getActiveTAs().length;
   const bookingCount = Object.keys(state.bookings).filter(t=>state.bookings[t].locked).length;
+  const musicCount = state.musicQueue.filter(m=>!m.played && !m.skipped && !m.playing).length;
   sub.innerHTML =
     '<button class="' + (currentPvTab==='tables'?'active':'') + '" data-pv="tables">🍽️ Bàn</button>' +
     '<button class="' + (currentPvTab==='takeaway'?'active':'') + '" data-pv="takeaway">🥡 Mang về ' + (taCount?'('+taCount+')':'') + '</button>' +
-    '<button class="' + (currentPvTab==='booking'?'active':'') + '" data-pv="booking">🔒 Đặt bàn ' + (bookingCount?'('+bookingCount+')':'') + '</button>';
+    '<button class="' + (currentPvTab==='booking'?'active':'') + '" data-pv="booking">🔒 Đặt bàn ' + (bookingCount?'('+bookingCount+')':'') + '</button>' +
+    '<button class="' + (currentPvTab==='music'?'active':'') + '" data-pv="music">🎵 Nhạc ' + (musicCount?'('+musicCount+')':'') + '</button>';
   sub.querySelectorAll("[data-pv]").forEach(b=>b.onclick = ()=>{
     currentPvTab = b.dataset.pv; renderAll();
   });
@@ -2487,14 +2466,13 @@ function renderPV(){
     });
   } else if(currentPvTab === "takeaway"){
     const tas = getActiveTAs();
-    content.innerHTML = '<div class="card"><b>🥡 Đơn mang về</b><div class="muted">Bấm đơn để xem / thanh toán.</div></div>' +
+    content.innerHTML = '<div class="card"><b>🥡 Đơn mang về</b><div class="muted">Bấm đơn để xem / xác nhận CK / giao hàng.</div></div>' +
       (tas.length ? "" : '<div class="empty">Chưa có đơn</div>') +
       '<div id="taList"></div>';
     const list = document.getElementById("taList");
     tas.forEach(ta => list.appendChild(taCardEl(ta)));
   } else if(currentPvTab === "booking"){
-    // Nhóm theo groupId để hiển thị đặt bàn gộp
-    const groups = {}; // groupId hoặc tableId → {tables: [], info}
+    const groups = {};
     Object.keys(state.bookings).forEach(t=>{
       const b = state.bookings[t];
       const key = b.groupId || ("single_" + t);
@@ -2506,11 +2484,10 @@ function renderPV(){
     const unlockedGroups = groupList.filter(g=>!g.info.locked);
     content.innerHTML = '<div class="card"><b>🔒 Quản lý đặt bàn</b>' +
       '<div class="row" style="margin-top:.5rem"><button class="btn small" id="btnNewBooking">+ Đặt bàn mới</button></div>' +
-      '<div class="muted tiny" style="margin-top:.3rem">💡 Đặt nhiều bàn cùng lúc = <b>ghép bàn</b> (VD: sinh nhật 4-5 bàn liền).</div></div>' +
-      (lockedGroups.length ? '<div class="card"><b>Đã khóa (' + lockedGroups.length + ' nhóm)</b><div id="bookLockList"></div></div>' : '') +
-      (unlockedGroups.length ? '<div class="card"><b>Chưa khóa (' + unlockedGroups.length + ' nhóm)</b><div id="bookUnlockList"></div></div>' : '') +
+      '<div class="muted tiny" style="margin-top:.3rem">💡 Đặt nhiều bàn cùng lúc = <b>ghép bàn</b>.</div></div>' +
+      (lockedGroups.length ? '<div class="card"><b>Đã khóa (' + lockedGroups.length + ')</b><div id="bookLockList"></div></div>' : '') +
+      (unlockedGroups.length ? '<div class="card"><b>Chưa khóa (' + unlockedGroups.length + ')</b><div id="bookUnlockList"></div></div>' : '') +
       (!lockedGroups.length && !unlockedGroups.length ? '<div class="empty">Chưa có đặt bàn</div>' : '');
-    
     const mkRow = (g)=>{
       const b = g.info;
       const d = document.createElement("div");
@@ -2526,7 +2503,7 @@ function renderPV(){
         '</div></div>' +
         '<div class="row" style="gap:.3rem;margin-top:.3rem">' +
           (b.locked
-            ? '<button class="btn ok small" data-book-unlock="' + g.tables[0] + '">🔓 Mở bàn (khách tới)</button>'
+            ? '<button class="btn ok small" data-book-unlock="' + g.tables[0] + '">🔓 Mở bàn</button>'
             : '<button class="btn warn small" data-book-lock="' + g.tables[0] + '">🔒 Khóa lại</button>') +
           '<button class="btn secondary small" data-book-edit="' + g.tables[0] + '">✏️</button>' +
           '<button class="btn danger small" data-book-del="' + g.tables[0] + '">🗑️</button>' +
@@ -2537,9 +2514,7 @@ function renderPV(){
     if(l1) lockedGroups.forEach(g=> l1.appendChild(mkRow(g)));
     const l2 = document.getElementById("bookUnlockList");
     if(l2) unlockedGroups.forEach(g=> l2.appendChild(mkRow(g)));
-    
     document.getElementById("btnNewBooking").onclick = ()=>openBookingModal("");
-    
     document.querySelectorAll("[data-book-unlock]").forEach(b=>b.onclick = ()=>{
       const t0 = b.dataset.bookUnlock;
       const bk = state.bookings[t0];
@@ -2575,11 +2550,81 @@ function renderPV(){
       list.forEach(tid=>{ delete state.bookings[tid]; });
       save(); renderAll();
     });
+  } else if(currentPvTab === "music"){
+    renderMusicAdminInPV(content);
   }
+}
+// Fix #6: Order nhạc trong tab Phục vụ
+function renderMusicAdminInPV(content){
+  const queue = state.musicQueue.slice().reverse();
+  const playing = state.musicQueue.find(m=>m.playing);
+  const pending = state.musicQueue.filter(m=>!m.played && !m.playing && !m.skipped);
+  let html = '<div class="card"><div class="row"><b>🎵 Hàng đợi nhạc</b>' +
+    '<span class="muted tiny">' + pending.length + ' chờ · ' + (playing?'1 phát':'0') + '</span></div>' +
+    '<div class="muted tiny" style="margin-top:.3rem">Bấm ▶️ để phát trên máy riêng, ✓ để đánh dấu phát xong.</div>' +
+  '</div>';
+  if(playing){
+    const info = VIBES[playing.vibe || "chill"] || VIBES.chill;
+    const ytId = extractYouTubeId(playing.url);
+    html += '<div class="card music-card playing">' +
+      '<div class="row"><b style="color:#2F5A33">🔊 ĐANG PHÁT</b>' +
+      '<span class="badge" style="background:' + info.color + '">' + info.label + '</span></div>' +
+      '<div class="mc-title" style="margin-top:.3rem">' + esc(playing.title) + '</div>' +
+      '<div class="mc-meta">' + esc(playing.artist || "—") + ' · ' + (isTakeawayId(playing.table)?'🥡 ':'Bàn ') + esc(playing.table) + '</div>' +
+      '<div class="row" style="margin-top:.5rem;gap:.3rem">' +
+        (ytId ? '<a class="btn ok small" href="https://youtu.be/' + ytId + '" target="_blank" style="flex:1">▶️ Mở lại</a>' : '') +
+        '<button class="btn ok small" data-music-done="' + playing.id + '" style="flex:1">✓ Phát xong</button>' +
+        '<button class="btn secondary small" data-music-skip="' + playing.id + '" style="flex:1">⏭️ Bỏ qua</button>' +
+      '</div>' +
+    '</div>';
+  }
+  if(queue.length){
+    html += '<div class="card">';
+    queue.slice(0,50).forEach(m=>{
+      const info = VIBES[m.vibe || "chill"] || VIBES.chill;
+      const ytId = extractYouTubeId(m.url);
+      const isPending = !m.played && !m.playing && !m.skipped;
+      html += '<div class="music-row">' +
+        '<div style="flex:1;min-width:0">' +
+          '<b>' + esc(m.title) + '</b>' +
+          '<div class="mc-meta">' + esc(m.artist||"—") + ' · ' + (isTakeawayId(m.table)?'🥡 ':'Bàn ') + esc(m.table) + ' · ' + fmtTime(m.ts) + (m.note ? ' · 📝 ' + esc(m.note) : '') + '</div>' +
+        '</div>' +
+        '<span class="badge" style="background:' + info.color + '">' + info.label + '</span> ' +
+        '<span class="badge ' + (m.playing?'paid':(m.played?'st':(m.skipped?'void':'new'))) + '">' +
+          (m.playing?'🔊':(m.played?'✓':(m.skipped?'✗':'⏳'))) + '</span>';
+      if(isPending){
+        html += ' <button class="btn ok small" data-music-play="' + m.id + '" style="margin-left:.3rem">▶️ Phát</button>';
+        html += ' <button class="btn secondary small" data-music-skip="' + m.id + '">⏭️</button>';
+      }
+      html += '</div>';
+    });
+    html += '</div>';
+  } else {
+    html += '<div class="empty">Chưa có yêu cầu nhạc</div>';
+  }
+  content.innerHTML = html;
+  content.querySelectorAll("[data-music-play]").forEach(b=>b.onclick = ()=>{
+    const m = state.musicQueue.find(x=>x.id === b.dataset.musicPlay);
+    if(!m) return;
+    state.musicQueue.forEach(x=>x.playing = false);
+    m.playing = true; save(); renderAll();
+    const ytId = extractYouTubeId(m.url);
+    if(ytId) window.open("https://youtu.be/" + ytId, "_blank");
+  });
+  content.querySelectorAll("[data-music-skip]").forEach(b=>b.onclick = ()=>{
+    const m = state.musicQueue.find(x=>x.id === b.dataset.musicSkip);
+    if(!m) return;
+    m.playing = false; m.skipped = true; save(); renderAll();
+  });
+  content.querySelectorAll("[data-music-done]").forEach(b=>b.onclick = ()=>{
+    const m = state.musicQueue.find(x=>x.id === b.dataset.musicDone);
+    if(!m) return;
+    m.playing = false; m.played = true; save(); renderAll();
+  });
 }
 
 /* ============================================================
-   BẾP — 3 trạng thái + chờ CK
+   BẾP
    ============================================================ */
 function groupBy(list){
   const g = {};
@@ -2625,7 +2670,6 @@ function renderBep(){
   const countCK = pendingCK.reduce((s,o)=>s+o.qty,0);
   const countSched = scheduled.reduce((s,o)=>s+o.qty,0);
   document.getElementById("kCount").textContent = countCK + " chờ CK · " + countNew + " chờ · " + countCooking + " nấu · " + countSched + " hẹn";
-  // Khu chờ CK chỉ hiện khi có
   const kpTitle = document.getElementById("kPendingTitle");
   if(kpTitle) kpTitle.style.display = pendingCK.length ? "" : "none";
   renderKGroup("kPending", groupBy(pendingCK), "pending");
@@ -2646,7 +2690,7 @@ function renderKGroup(elId, groups, kind, isSched){
     const div = document.createElement("div");
     const isCooking = g.status === "dang_lam";
     const isPendingCK = g.status === "cho_ck";
-    div.className = "kgroup" + (g.hot ? " hot" : "") + (g.hasTA ? " ta" : "") + (isCooking ? " cooking" : "") + (g.isSched ? " scheduled" : "") + (isPendingCK ? " scheduled" : "");
+    div.className = "kgroup" + (g.hot ? " hot" : "") + (g.hasTA ? " ta" : "") + (isCooking ? " cooking" : "") + (g.isSched ? " scheduled" : "");
     const bumpTxt = g.bump > 0 ? ' → <b style="color:var(--danger)">UT ' + g.effPrio + '</b>' : "";
     let statusBadge = "";
     if(isPendingCK) statusBadge = '<span class="badge pending">💳 Chờ CK</span>';
@@ -2694,12 +2738,17 @@ function renderKGroup(elId, groups, kind, isSched){
       if(action === "confirm_ck"){
         ids.forEach(id=>{
           const o = state.orders.find(x=>x.id === id);
-          if(o && o.status === "cho_ck"){ o.status = "cho_bep"; o.paymentStatus = "confirmed"; o.ts = now; }
+          if(o && o.status === "cho_ck"){
+            o.status = "cho_bep"; o.paymentStatus = "confirmed"; o.ts = now;
+            if(!state.tableSessions[o.table]) state.tableSessions[o.table] = now;
+          }
         });
-        save(); renderAll(); return;
+        save(); renderAll();
+        alert("✓ Đã xác nhận CK. Món đã vào hàng đợi bếp.");
+        return;
       }
       if(action === "cancel_ck"){
-        if(!confirm("Hủy đơn này?")) return;
+        if(!confirm("Hủy đơn chờ CK này?")) return;
         ids.forEach(id=>{
           const o = state.orders.find(x=>x.id === id);
           if(o && o.status === "cho_ck"){ o.status = "huy"; }
@@ -2729,6 +2778,7 @@ function deductItemInventory(order){
 }
 function renderKMusicQueue(){
   const el = document.getElementById("kMusic");
+  if(!el) return;
   el.innerHTML = "";
   const pending = state.musicQueue.filter(m=>!m.played && !m.playing && !m.skipped);
   const playing = state.musicQueue.find(m=>m.playing);
@@ -2811,10 +2861,17 @@ function renderModal(){
   const note = !isTA ? state.tableNotes[id] : "";
   const booking = !isTA ? getBooking(id) : null;
   const opened = !!state.tableSessions[id];
+  // Fix #4: Xác định trạng thái giao hàng của TA
+  const taPendingCK = isTA && os.some(o=>o.status === "cho_ck");
+  const taAllDone = isTA && os.length > 0 && os.every(o=>o.status === "hoan_thanh");
+  const taDelivering = isTA && os.some(o=>o.status === "dang_giao");
+  const taDelivered = isTA && os.length > 0 && os.every(o=>o.status === "da_giao");
+  
   const rows = os.map(o=>{
-    const done = o.status === "hoan_thanh";
+    const done = o.status === "hoan_thanh" || o.status === "da_giao";
     const cooking = o.status === "dang_lam";
     const pendingCK = o.status === "cho_ck";
+    const delivering = o.status === "dang_giao";
     const type = typeOfItem(o.itemId);
     const typeBadge = type === "beer" ? '<span class="badge beer">🍺</span>' :
                       type === "softdrink" ? '<span class="badge drink">🥤</span>' :
@@ -2824,11 +2881,16 @@ function renderModal(){
       ? '<button class="pillbtn x" data-cancel="' + o.id + '">✕</button>'
       : '<span class="pillbtn" style="opacity:.4">🔒</span>';
     const schedTag = isScheduled(o) ? ' <span class="scheduletag">⏰ ' + fmtDateTime(o.scheduledAt) + '</span>' : '';
+    const statusCls = {
+      cho_bep:'new', cho_ck:'pending', dang_lam:'cooking',
+      hoan_thanh:'st', dang_giao:'delivering', da_giao:'delivered'
+    }[o.status] || 'st';
+    const statusPrefix = done ? "✅ " : (cooking ? "🔥 " : (pendingCK ? "💳 " : (delivering ? "🚚 " : "")));
     return '<div class="item' + (done ? " served" : "") + '">' +
       '<div class="name" style="flex:1;min-width:0">' +
-        (done ? "✅ " : (cooking ? "🔥 " : (pendingCK ? "💳 " : ""))) + typeBadge + ' ' + esc(o.name) + ' ×' + o.qty +
+        statusPrefix + typeBadge + ' ' + esc(o.name) + ' ×' + o.qty +
         (o.note ? ' <span class="notetag">📝 ' + esc(o.note) + '</span>' : '') + schedTag +
-        ' <span class="badge ' + (o.status==='cho_bep'?'new':(cooking?'cooking':(pendingCK?'pending':'st'))) + '">' + statusLabel(o.status) + '</span>' +
+        ' <span class="badge ' + statusCls + '">' + statusLabel(o.status) + '</span>' +
       '</div>' +
       '<div style="display:flex;align-items:center;gap:.4rem;flex:0 0 auto">' +
         '<span>' + VND(o.qty*o.price) + '</span>' + cancelBtn +
@@ -2880,6 +2942,16 @@ function renderModal(){
       (!meta.pickup ? '<div class="row"><span class="muted">📍</span><b style="text-align:right;flex:1">' + esc(meta.address||"—") + '</b></div>' : "") +
       (meta.note ? '<div class="row"><span class="muted">📝</span><span style="text-align:right">' + esc(meta.note) + '</span></div>' : "") +
     '</div>';
+    // Fix #4: Nút xác nhận giao hàng
+    if(taAllDone && !taDelivering && !taDelivered){
+      taBlock += '<button class="btn ok" id="mStartDelivery" style="width:100%;margin-top:.5rem">🚚 Bắt đầu giao hàng</button>';
+    }
+    if(taDelivering){
+      taBlock += '<button class="btn ok" id="mConfirmDelivered" style="width:100%;margin-top:.5rem">🎉 Xác nhận giao thành công</button>';
+    }
+    if(taDelivered){
+      taBlock += '<div class="svc-summary" style="border-color:var(--ok);text-align:center;margin-top:.5rem">🎉 Đơn đã giao thành công!</div>';
+    }
   }
   let actionUI = "";
   if(!isTA && (actionMode === "merge" || actionMode === "transfer")){
@@ -2954,7 +3026,6 @@ function renderModal(){
   if(openTblBtn) openTblBtn.onclick = ()=>{
     if(!confirm("Xác nhận khách đã tới — MỞ BÀN " + id + "?")) return;
     if(!state.tableSessions[id]) state.tableSessions[id] = nowMs();
-    // Nếu có booking đang khóa → mở hết các bàn cùng nhóm
     const bk = state.bookings[id];
     if(bk && bk.locked){
       const list = (bk.groupId && bk.mergedTables && bk.mergedTables.length) ? bk.mergedTables : [id];
@@ -2994,6 +3065,31 @@ function renderModal(){
     const list = (bk && bk.groupId && bk.mergedTables && bk.mergedTables.length) ? bk.mergedTables : [id];
     list.forEach(t=>{ delete state.bookings[t]; });
     save(); renderAll();
+  };
+  // Fix #4: Nút giao hàng
+  const startDelBtn = document.getElementById("mStartDelivery");
+  if(startDelBtn) startDelBtn.onclick = ()=>{
+    if(!confirm("Bắt đầu giao đơn " + id + "?")) return;
+    os.forEach(o=>{
+      if(o.status === "hoan_thanh"){ o.status = "dang_giao"; o.deliveryStartedAt = nowMs(); }
+    });
+    const meta = getTAMeta(id);
+    meta.deliveryStatus = "delivering";
+    setTAMeta(id, meta);
+    save(); renderAll();
+    alert("✓ Đã bắt đầu giao. Khách có thể thấy trạng thái.");
+  };
+  const confirmDelBtn = document.getElementById("mConfirmDelivered");
+  if(confirmDelBtn) confirmDelBtn.onclick = ()=>{
+    if(!confirm("Xác nhận giao thành công đơn " + id + "?")) return;
+    os.forEach(o=>{
+      if(o.status === "dang_giao"){ o.status = "da_giao"; o.deliveredAt = nowMs(); }
+    });
+    const meta = getTAMeta(id);
+    meta.deliveryStatus = "delivered";
+    setTAMeta(id, meta);
+    save(); renderAll();
+    alert("✓ Đã giao thành công!");
   };
   const doAction = document.getElementById("doAction");
   if(doAction) doAction.onclick = ()=>{
@@ -3037,7 +3133,7 @@ function renderModal(){
 }
 
 /* ============================================================
-   BOOKING MODAL — ĐA BÀN + GHÉP (#3, #7, #13)
+   BOOKING MODAL — Đa bàn + Fix #13 không tự khóa
    ============================================================ */
 function openBookingModal(tableId){
   const existing = tableId ? getBooking(tableId) : null;
@@ -3048,8 +3144,8 @@ function openBookingModal(tableId){
   let html = '<div class="modal-back" id="mb"><div class="modal"><button class="close-x" id="mc">✕</button>' +
     '<h3>📅 ' + (existing?'Sửa đặt bàn ' + tableId:'Đặt bàn mới') + '</h3>';
   if(!existing){
-    html += '<div class="muted tiny" style="margin-bottom:.5rem">💡 Tích nhiều bàn để <b>ghép bàn</b> (VD: sinh nhật 4-5 bàn liền).</div>' +
-      '<label class="fl">Chọn bàn</label>' +
+    html += '<div class="muted tiny" style="margin-bottom:.5rem">💡 Tích nhiều bàn để <b>ghép bàn</b>. Bàn chưa tích sẽ <b>không bị ảnh hưởng</b>.</div>' +
+      '<label class="fl">Chọn bàn (chỉ bàn được tích mới bị khóa)</label>' +
       '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(60px,1fr));gap:.35rem;background:var(--bg);padding:.5rem;border-radius:10px">' +
         availTables.map(t=>'<label style="display:flex;gap:.25rem;align-items:center;font-size:.82rem;padding:.3rem .4rem;background:var(--surface);border-radius:6px;cursor:pointer">' +
           '<input type="checkbox" data-bkt="' + t.id + '" style="width:auto">' + t.id + '</label>').join("") +
@@ -3076,12 +3172,10 @@ function openBookingModal(tableId){
   document.getElementById("mc").onclick = close;
   document.getElementById("mb").onclick = e=>{ if(e.target.id === "mb") close(); };
   document.getElementById("bkCancel").onclick = close;
-  // Nút chọn tất cả (chỉ khi tạo mới)
   const selAll = document.getElementById("bkSelectAll");
   if(selAll) selAll.onclick = ()=> root.querySelectorAll("[data-bkt]").forEach(c=>c.checked = true);
   const selNone = document.getElementById("bkSelectNone");
   if(selNone) selNone.onclick = ()=> root.querySelectorAll("[data-bkt]").forEach(c=>c.checked = false);
-  // Nút Zalo (chỉ khi sửa)
   const zaloBtn = document.getElementById("bkZalo");
   if(zaloBtn) zaloBtn.onclick = ()=>{
     const staffZalo = state.settings.zaloPhone || state.brand.phone || "";
@@ -3109,7 +3203,6 @@ function openBookingModal(tableId){
       createdAt: existing ? existing.createdAt : Date.now()
     };
     if(existing){
-      // Cập nhật giữ nguyên groupId + mergedTables
       setBooking(tableId, Object.assign({}, existing, info));
       close();
       alert("✓ Đã lưu đặt bàn " + tableId);
@@ -3117,10 +3210,8 @@ function openBookingModal(tableId){
       const selected = Array.from(root.querySelectorAll("[data-bkt]:checked")).map(x=>x.dataset.bkt);
       if(!selected.length){ alert("Chọn ít nhất 1 bàn"); return; }
       const groupId = selected.length > 1 ? uid("bk") : "";
-      // QUAN TRỌNG: chỉ set booking cho bàn được chọn, không đụng bàn khác
+      // Fix #13: CHỈ set booking cho bàn được tích, KHÔNG đụng bàn khác
       selected.forEach(t=>{
-        const existingB = state.bookings[t];
-        // Nếu bàn đã có booking cũ, ghi đè
         setBooking(t, Object.assign({}, info, {
           groupId,
           mergedTables: selected.length > 1 ? selected : null
@@ -3128,9 +3219,9 @@ function openBookingModal(tableId){
       });
       close();
       if(selected.length > 1){
-        alert("✓ Đã đặt " + selected.length + " bàn (ghép): " + selected.join(", "));
+        alert("✓ Đã đặt " + selected.length + " bàn (ghép): " + selected.join(", ") + "\nChỉ những bàn này bị khóa.");
       } else {
-        alert("✓ Đã đặt bàn " + selected[0]);
+        alert("✓ Đã đặt bàn " + selected[0] + ". Chỉ bàn này bị khóa.");
       }
     }
   };
@@ -3144,7 +3235,7 @@ function openSvcModal(tableId){
   svcDraft = cur.length ? cur.map(x=>({...x})) : [{id: uid("sv"), note:"", price:0, billable:true, ts: nowMs()}];
   const root = document.getElementById("modalRoot");
   modalLocked = true;
-  let html = '<div class="modal-back" id="mb"><div class="modal" style="max-width:600px">' +
+  root.innerHTML = '<div class="modal-back" id="mb"><div class="modal" style="max-width:600px">' +
     '<button class="close-x" id="mc">✕</button>' +
     '<h3>➕ Dịch vụ — Bàn ' + tableId + '</h3>' +
     '<div class="muted tiny">Thêm nhiều DV. Bỏ tích "Tính phí" cho DV miễn phí.</div>' +
@@ -3159,7 +3250,6 @@ function openSvcModal(tableId){
     '</div>' +
     (getTableServices(tableId).length ? '<button class="btn danger small" id="svcClearAll" style="width:100%;margin-top:.4rem">🗑️ Xóa tất cả</button>' : '') +
     '</div></div>';
-  root.innerHTML = html;
   function renderRows(){
     const box = document.getElementById("svcRows");
     box.innerHTML = svcDraft.map((s,i)=>
@@ -3280,9 +3370,10 @@ function openEditTAModal(taId){
 function requestCancelItem(orderId){
   const o = state.orders.find(x=>x.id === orderId);
   if(!o) return;
-  const isDone = o.status === "hoan_thanh";
+  const isDone = o.status === "hoan_thanh" || o.status === "da_giao";
   const isCooking = o.status === "dang_lam";
   const isPendingCK = o.status === "cho_ck";
+  const isDelivering = o.status === "dang_giao";
   if(isDone){
     if(!isManager()){ alert("Cần QL xác nhận."); return; }
     if(!confirm('Món đã hoàn thành. Hủy sẽ HOÀN LẠI NGUYÊN LIỆU. Tiếp tục?')) return;
@@ -3294,8 +3385,8 @@ function requestCancelItem(orderId){
       if(pin !== state.settings.managerPin){ alert("Sai PIN!"); return; }
     }
     if(!confirm('Món đang chế biến. Hủy vẫn tính phí NVL đã dùng?')) return;
-  } else if(isPendingCK){
-    if(!confirm('Đơn chờ CK. Hủy đơn này?')) return;
+  } else if(isPendingCK || isDelivering){
+    if(!confirm('Đơn đang ' + (isPendingCK?'chờ CK':'giao') + '. Hủy đơn này?')) return;
   } else {
     if(!confirm('Hủy "' + o.name + '" ×' + o.qty + '?')) return;
     if(state.settings.cancelApproval && !isManager()){
@@ -3316,7 +3407,7 @@ function requestCancelItem(orderId){
   save(); renderAll();
 }
   /* ============================================================
-   IN HÓA ĐƠN
+   IN HÓA ĐƠN — KHỔ MÁY IN NHIỆT 80mm (Fix #10)
    ============================================================ */
 function printBill(id, type, itemsOverride, totalOverride, doPrint, discountInfo){
   const isTA = isTakeawayId(id);
@@ -3339,9 +3430,9 @@ function printBill(id, type, itemsOverride, totalOverride, doPrint, discountInfo
   const title = type === "final" ? "HÓA ĐƠN THANH TOÁN" : (type === "pending" ? "PHIẾU ĐỀ NGHỊ TT" : "PHIẾU TẠM TÍNH");
   const code = (state.invoices.find(inv=>inv.table === id && inv.type === "final" && Math.abs((inv.total||0) - total) < 1)||{}).code || genInvoiceCode(Date.now());
   const locLine = isTA
-    ? 'Đơn: <b>' + esc(id) + '</b>' + (meta ? '<br>Khách: <b>' + esc(meta.name) + '</b> — ĐT: ' + esc(meta.phone) : '') + (meta && !meta.pickup && meta.address ? '<br>ĐC: ' + esc(meta.address) : (meta && meta.pickup ? '<br>Khách tự đến lấy' : ''))
+    ? 'Đơn: <b>' + esc(id) + '</b>' + (meta ? '<br>Khách: <b>' + esc(meta.name) + '</b><br>ĐT: ' + esc(meta.phone) : '') + (meta && !meta.pickup && meta.address ? '<br>ĐC: ' + esc(meta.address) : (meta && meta.pickup ? '<br>Khách tự đến lấy' : ''))
     : 'Bàn: <b>' + esc(id) + (kids.length ? ' + ' + kids.join(", ") : '') + '</b>';
-  const w = window.open("", "_blank", "width=420,height=700");
+  const w = window.open("", "_blank", "width=380,height=800");
   if(!w){ alert("Không mở được cửa sổ in."); return; }
   const now = new Date();
   const timeStr = now.toLocaleString("vi-VN",{hour:"2-digit",minute:"2-digit",day:"2-digit",month:"2-digit",year:"numeric"});
@@ -3350,49 +3441,55 @@ function printBill(id, type, itemsOverride, totalOverride, doPrint, discountInfo
   const invoiceSymbol = state.settings.invoiceSymbol || "";
   const bankInfo = state.settings.bank;
   const bankName = (BANK_LIST.find(x=>x.id===bankInfo.bankId)||{}).name || bankInfo.bankId;
-  let billItems = items.map(i=>'<tr><td style="padding:3px 4px;vertical-align:top">' +
-    '<div>' + esc(i.name) + (i.note ? ' <i style="color:#666;font-size:10px">(' + esc(i.note) + ')</i>' : '') + '</div>' +
-    '</td><td style="text-align:center;padding:3px 4px">' + i.qty + '</td>' +
-    '<td style="text-align:right;padding:3px 4px">' + Number(i.price||0).toLocaleString('vi-VN') + '</td>' +
-    '<td style="text-align:right;padding:3px 4px;font-weight:600">' + (i.qty*i.price).toLocaleString('vi-VN') + '</td></tr>').join("");
+  let billItems = items.map(i=>'<tr>' +
+    '<td style="padding:2px 2px;vertical-align:top;font-size:11px">' + esc(i.name) + (i.note ? ' <span style="font-size:9px;color:#555">(' + esc(i.note) + ')</span>' : '') + '</td>' +
+    '<td style="text-align:center;padding:2px;font-size:11px">' + i.qty + '</td>' +
+    '<td style="text-align:right;padding:2px;font-size:11px">' + Number(i.price||0).toLocaleString('vi-VN') + '</td>' +
+    '<td style="text-align:right;padding:2px;font-size:11px;font-weight:600">' + (i.qty*i.price).toLocaleString('vi-VN') + '</td></tr>').join("");
   let svcRows = "";
   svcsBillable.forEach(s=>{
-    svcRows += '<tr><td style="padding:3px 4px">' + esc(s.note || 'Dịch vụ') + '</td>' +
-      '<td style="text-align:center;padding:3px 4px">1</td>' +
-      '<td style="text-align:right;padding:3px 4px">' + (Number(s.price)||0).toLocaleString('vi-VN') + '</td>' +
-      '<td style="text-align:right;padding:3px 4px;font-weight:600">' + (Number(s.price)||0).toLocaleString('vi-VN') + '</td></tr>';
+    svcRows += '<tr><td style="padding:2px;font-size:11px">' + esc(s.note || 'Dịch vụ') + '</td>' +
+      '<td style="text-align:center;padding:2px;font-size:11px">1</td>' +
+      '<td style="text-align:right;padding:2px;font-size:11px">' + (Number(s.price)||0).toLocaleString('vi-VN') + '</td>' +
+      '<td style="text-align:right;padding:2px;font-size:11px;font-weight:600">' + (Number(s.price)||0).toLocaleString('vi-VN') + '</td></tr>';
   });
   if(deliveryFee > 0){
-    svcRows += '<tr><td style="padding:3px 4px">Phí giao</td><td style="text-align:center;padding:3px 4px">1</td>' +
-      '<td style="text-align:right;padding:3px 4px">' + deliveryFee.toLocaleString('vi-VN') + '</td>' +
-      '<td style="text-align:right;padding:3px 4px;font-weight:600">' + deliveryFee.toLocaleString('vi-VN') + '</td></tr>';
+    svcRows += '<tr><td style="padding:2px;font-size:11px">Phí giao</td><td style="text-align:center;padding:2px;font-size:11px">1</td>' +
+      '<td style="text-align:right;padding:2px;font-size:11px">' + deliveryFee.toLocaleString('vi-VN') + '</td>' +
+      '<td style="text-align:right;padding:2px;font-size:11px;font-weight:600">' + deliveryFee.toLocaleString('vi-VN') + '</td></tr>';
   }
-  // QR ngân hàng hiển thị ngay (Fix #6)
   const qrUrl = (type === "final" && isBankConfigured() && bankInfo.showOnBill !== false) ? buildBankQrUrl(total, 'Thanh toan ' + code) : "";
   w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + title + ' ' + esc(code) + '</title>' +
     '<style>' +
-    '@page{size:A5 portrait;margin:6mm 5mm}' +
-    'body{font-family:"Times New Roman",Arial,sans-serif;font-size:11px;padding:0;margin:0 auto;max-width:280px;color:#000}' +
-    'h1{text-align:center;font-size:15px;margin:4px 0;font-weight:900;letter-spacing:.5px}' +
-    '.brand-contact{font-size:9px;color:#333;text-align:center;margin-bottom:4px;line-height:1.3}' +
-    '.center{text-align:center}.title{font-size:13px;font-weight:800;margin:6px 0;text-align:center;letter-spacing:.5px}' +
-    '.invoice-code{font-size:10px;text-align:center;color:#444;margin-bottom:4px}' +
-    '.info-line{font-size:10.5px;margin:2px 0}' +
-    'hr{border:none;border-top:1px dashed #333;margin:5px 0}' +
-    'table.items{width:100%;border-collapse:collapse;font-size:10.5px}' +
-    'table.items thead th{background:#f0f0f0;padding:3px 4px;border-top:1px solid #999;border-bottom:1px solid #999;font-size:10px;text-align:left;font-weight:800}' +
+    // Fix #10: Khổ máy in nhiệt 80mm (72mm usable width)
+    '@page{size:80mm auto;margin:2mm 3mm}' +
+    'html,body{margin:0;padding:0}' +
+    'body{font-family:"Times New Roman",Arial,sans-serif;font-size:11px;width:74mm;max-width:74mm;margin:0 auto;color:#000;line-height:1.3}' +
+    'h1{text-align:center;font-size:14px;margin:2px 0;font-weight:900;letter-spacing:.3px}' +
+    '.brand-contact{font-size:9px;color:#333;text-align:center;margin-bottom:3px;line-height:1.35}' +
+    '.center{text-align:center}' +
+    '.title{font-size:12px;font-weight:800;margin:5px 0;text-align:center;letter-spacing:.3px}' +
+    '.invoice-code{font-size:9px;text-align:center;color:#444;margin-bottom:3px}' +
+    '.info-line{font-size:10px;margin:1px 0}' +
+    'hr{border:none;border-top:1px dashed #000;margin:4px 0}' +
+    'table.items{width:100%;border-collapse:collapse}' +
+    'table.items thead th{background:transparent;padding:2px;border-top:1px solid #000;border-bottom:1px solid #000;font-size:10px;text-align:left;font-weight:800}' +
     'table.items thead th.r{text-align:right}table.items thead th.c{text-align:center}' +
-    '.totals{font-size:11px;margin-top:3px}.totals .row{display:flex;justify-content:space-between;padding:2px 0}' +
-    '.grand{font-size:14px;font-weight:900;border-top:2px solid #000;padding-top:5px;margin-top:4px;display:flex;justify-content:space-between}' +
-    '.note{font-size:9.5px;color:#444;font-style:italic;margin-top:6px;line-height:1.35}' +
-    '.qrwrap{text-align:center;margin:6px 0}' +
-    '.qrwrap img{width:130px;height:130px;background:#fff;padding:2px;border:1px solid #999;border-radius:4px}' +
-    '.footer{text-align:center;font-size:10.5px;margin-top:6px;font-weight:700}' +
-    '.dev{font-size:8.5px;color:#888;text-align:center;margin-top:4px;font-style:italic}' +
-    '.sign{display:flex;justify-content:space-between;margin-top:8px;font-size:9px;text-align:center}' +
-    '.sign > div{flex:1}.sign .line{margin-top:18px;border-top:1px dotted #666;padding-top:2px}' +
-    '@media print{.noprint{display:none}}' +
+    '.totals{font-size:10.5px;margin-top:2px}.totals .row{display:flex;justify-content:space-between;padding:1px 0}' +
+    '.grand{font-size:13px;font-weight:900;border-top:2px solid #000;border-bottom:2px solid #000;padding:4px 0;margin-top:3px;margin-bottom:3px;display:flex;justify-content:space-between}' +
+    '.note{font-size:9px;color:#333;font-style:italic;margin-top:4px;line-height:1.35}' +
+    '.qrwrap{text-align:center;margin:5px 0}' +
+    '.qrwrap img{width:140px;height:140px;background:#fff;padding:2px;border:1px solid #000;border-radius:4px}' +
+    '.footer{text-align:center;font-size:10.5px;margin-top:5px;font-weight:700}' +
+    '.dev{font-size:8.5px;color:#666;text-align:center;margin-top:3px;font-style:italic}' +
+    // Fix #10: Chữ ký DÀI hơn
+    '.sign{display:flex;justify-content:space-between;margin-top:10px;font-size:9px;text-align:center;gap:6px}' +
+    '.sign > div{flex:1;min-width:0}' +
+    '.sign .line{margin-top:36px;border-top:1px dotted #333;padding-top:3px;font-style:italic;color:#555}' +
+    '.sign .role{font-weight:700;font-size:9.5px}' +
+    '@media print{.noprint{display:none}body{width:74mm}}' +
     '</style></head><body>' +
+    '<div class="noprint" style="text-align:center;margin-bottom:6px"><button onclick="window.print()" style="padding:6px 14px;font-size:12px">🖨️ In</button></div>' +
     '<h1>' + esc(brand.name||"ỐC NƯỚNG") + '</h1>' +
     (brand.address || brand.phone ? '<div class="brand-contact">' +
       (brand.address ? '📍 ' + esc(brand.address) : '') +
@@ -3401,33 +3498,34 @@ function printBill(id, type, itemsOverride, totalOverride, doPrint, discountInfo
       (taxCode ? '<br>MST: ' + esc(taxCode) : '') +
     '</div>' : '') +
     '<div class="title">' + title + '</div>' +
-    '<div class="invoice-code">Số HĐ: <b>' + esc(code) + '</b>' + (invoiceSymbol ? ' · Ký hiệu: ' + esc(invoiceSymbol) : '') + '</div>' +
+    '<div class="invoice-code">Số: <b>' + esc(code) + '</b>' + (invoiceSymbol ? ' · Ký hiệu: ' + esc(invoiceSymbol) : '') + '</div>' +
     '<hr><div class="info-line">' + locLine + '</div>' +
     '<div class="info-line">Thời gian: ' + timeStr + '</div><hr>' +
-    '<table class="items"><thead><tr><th>Món</th><th class="c">SL</th><th class="r">Đơn giá</th><th class="r">T.Tiền</th></tr></thead><tbody>' +
+    '<table class="items"><thead><tr><th>Món</th><th class="c">SL</th><th class="r">Đ.Giá</th><th class="r">T.Tiền</th></tr></thead><tbody>' +
       billItems + svcRows +
     '</tbody></table><hr>' +
     '<div class="totals">' +
       '<div class="row"><span>Tạm tính:</span><b>' + subtotal.toLocaleString('vi-VN') + ' đ</b></div>' +
       (discount > 0 ? '<div class="row"><span>Giảm giá:</span><b>- ' + discount.toLocaleString('vi-VN') + ' đ</b></div>' : '') +
       (useTax ? '<div class="row"><span>VAT (' + taxRate + '%):</span><b>' + tax.toLocaleString('vi-VN') + ' đ</b></div>' : '') +
-      '<div class="grand"><span>TỔNG CỘNG:</span><span>' + total.toLocaleString('vi-VN') + ' đ</span></div>' +
+      '<div class="grand"><span>TỔNG:</span><span>' + total.toLocaleString('vi-VN') + ' đ</span></div>' +
     '</div>' +
     (svcFree.length ? '<div class="note">DV miễn phí: ' + svcFree.map(s=>esc(s.note||'')).filter(Boolean).join(", ") + '</div>' : '') +
     (type !== "final" ? '<div class="note" style="text-align:center;color:#9B2A1A;font-weight:700">※ Phiếu ' + (type === "pending" ? 'đề nghị thanh toán' : 'tạm tính') + ' — chưa phải HĐ chính thức.</div>' : '') +
     (qrUrl ?
       '<hr><div class="center" style="font-size:10px;font-weight:700">💳 QUÉT QR ĐỂ THANH TOÁN</div>' +
       '<div class="qrwrap"><img src="' + qrUrl + '" referrerpolicy="no-referrer"></div>' +
-      '<div class="center" style="font-size:9px;color:#555;line-height:1.4">' +
-        '<b>' + esc(bankName) + '</b><br>STK: <b>' + esc(bankInfo.accountNumber||"") + '</b><br>Chủ TK: ' + esc(bankInfo.accountHolder||"") +
+      '<div class="center" style="font-size:9px;color:#333;line-height:1.4">' +
+        '<b>' + esc(bankName) + '</b><br>STK: <b>' + esc(bankInfo.accountNumber||"") + '</b><br>Chủ TK: <b>' + esc(bankInfo.accountHolder||"—") + '</b>' +
       '</div>' : '') +
-    '<hr><div class="sign">' +
-      '<div>Khách hàng<div class="line">(Ký, ghi rõ họ tên)</div></div>' +
-      '<div>Nhân viên<div class="line">(Ký, ghi rõ họ tên)</div></div>' +
+    '<hr>' +
+    '<div class="sign">' +
+      '<div><div class="role">Khách hàng</div><div class="line">(Ký, ghi rõ họ tên)</div></div>' +
+      '<div><div class="role">Nhân viên</div><div class="line">(Ký, ghi rõ họ tên)</div></div>' +
     '</div>' +
     '<div class="footer">Cảm ơn Quý khách và hẹn gặp lại! 🙏</div>' +
-    '<div class="dev">Hoá đơn phát hành bởi ' + esc(brand.dev||"Tiểu Nhị") + '</div>' +
-    (doPrint !== false ? '<script>setTimeout(()=>window.print(),500);<\/script>' : '') +
+    '<div class="dev">HĐ phát hành bởi ' + esc(brand.dev||"Tiểu Nhị") + '</div>' +
+    (doPrint !== false ? '<script>setTimeout(()=>window.print(),400);<\/script>' : '') +
     '</body></html>');
   w.document.close();
 }
@@ -3491,6 +3589,21 @@ function renderPayModal(){
     '</div>' +
     '<input id="payLoyaltyName" value="' + esc(loyaltyCustomer ? loyaltyCustomer.name : payLoyalty.name) + '" placeholder="Tên khách (tùy chọn)" style="width:100%;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);color:#fff;margin-top:.35rem" autocomplete="off">' +
   '</div>' : '';
+  // Fix #7: Hiện đầy đủ tên chủ TK
+  const bankInfoHtml = isBankConfigured() ? (function(){
+    const b = state.settings.bank;
+    const bankName = (BANK_LIST.find(x=>x.id===b.bankId)||{}).name || b.bankId;
+    return '<div class="card" style="margin-top:.7rem;background:var(--bg);text-align:center;border:1px dashed var(--money)">' +
+      '<b>💳 QR thanh toán</b>' +
+      '<img id="payQrImg" src="' + buildBankQrUrl(tt.total, 'Thanh toan ' + id) + '" style="width:220px;height:220px;margin:.5rem auto;display:block;background:#fff;border-radius:10px;border:1px solid var(--border);padding:4px" referrerpolicy="no-referrer" onerror="this.style.display=\'none\';document.getElementById(\'payQrFallback\').style.display=\'\'">' +
+      '<div id="payQrFallback" style="display:none" class="empty tiny">⚠️ Không tải được QR</div>' +
+      '<div class="svc-summary" style="border-color:var(--money);text-align:left;margin-top:.4rem">' +
+        '<div class="row"><span>🏦 NH:</span><b>' + esc(bankName) + '</b></div>' +
+        '<div class="row"><span>💳 STK:</span><b>' + esc(b.accountNumber||"—") + '</b></div>' +
+        '<div class="row"><span>👤 Chủ TK:</span><b>' + esc(b.accountHolder||"— chưa nhập —") + '</b></div>' +
+      '</div>' +
+    '</div>';
+  })() : '';
   root.innerHTML = '<div class="modal-back" id="mb"><div class="modal">' +
     '<button class="close-x" id="mc">✕</button>' +
     '<h3>' + title + '</h3>' + taLine +
@@ -3508,9 +3621,7 @@ function renderPayModal(){
       '<input type="number" id="payDiscValue" min="0" value="' + (payDiscount.value||0) + '" placeholder="Giá trị" ' + (payDiscount.type===''?'disabled':'') + '>' +
     '</div>' +
     loyaltyHtml +
-    (isBankConfigured() ? '<div class="card" style="margin-top:.7rem;background:var(--bg);text-align:center;border:1px dashed var(--money)"><b>💳 QR thanh toán</b>' +
-      '<img id="payQrImg" src="' + buildBankQrUrl(tt.total, 'Thanh toan ' + id) + '" style="width:200px;height:200px;margin:.5rem auto;display:block;background:#fff;border-radius:10px;border:1px solid var(--border);padding:4px" referrerpolicy="no-referrer" onerror="this.style.display=\'none\'">' +
-      '<div class="tiny">STK: <b>' + esc((state.settings.bank.accountNumber||"")) + '</b> · ' + esc((BANK_LIST.find(b=>b.id===state.settings.bank.bankId)||{}).name||"") + '</div></div>' : '') +
+    bankInfoHtml +
     '<div style="margin-top:.8rem;background:var(--bg);padding:.6rem;border-radius:8px">' +
       '<div class="row"><span>Tạm tính:</span><b id="paySub">' + VND(tt.sub) + '</b></div>' +
       (payDiscount.type ? '<div class="row"><span style="color:var(--danger)">− Giảm:</span><b id="payDiscLine" style="color:var(--danger)">' + VND(tt.disc) + '</b></div>' : '') +
@@ -3635,17 +3746,17 @@ function renderPayModal(){
 }
 
 /* ============================================================
-   QR MANG VỀ — có upload/URL + in QR ngân hàng (#4, #6)
+   QR MANG VỀ — Upload ảnh / URL / In (Fix #1, #7)
    ============================================================ */
 function openTakeawayQRModal(){
   const baseUrl = state.settings.qrUrlBase || (location.origin + location.pathname);
   const url = baseUrl + "?table=TAKEAWAY";
-  const custom = state.qrTakeaway || "";
+  const custom = state.qrTakeaway || qrImagesCache["TAKEAWAY"] || "";
   const root = document.getElementById("modalRoot");
   modalLocked = true;
   let qrImg = "";
   if(custom){
-    qrImg = '<img src="' + esc(custom) + '" referrerpolicy="no-referrer" style="max-width:100%;max-height:280px;border-radius:8px">';
+    qrImg = '<img src="' + esc(custom.startsWith("data:") ? custom : proxiedImgUrl(custom)) + '" referrerpolicy="no-referrer" style="max-width:100%;max-height:280px;border-radius:8px">';
   } else {
     try{ const qr = qrcode(0,"M"); qr.addData(url); qr.make(); qrImg = qr.createImgTag(5,5); }catch(e){}
   }
@@ -3656,10 +3767,11 @@ function openTakeawayQRModal(){
       '<div style="background:#fff;padding:10px;border-radius:12px;display:inline-block;border:1px solid var(--border)">' + qrImg + '</div>' +
     '</div>' +
     '<div class="tiny" style="text-align:center;word-break:break-all;color:var(--muted)">' + esc(url) + '</div>' +
+    (custom ? '<div class="tiny" style="color:var(--money);text-align:center;margin-top:.3rem">✓ Đang dùng ảnh QR tùy chỉnh</div>' : '') +
     '<div class="row" style="margin-top:.7rem;gap:.3rem;flex-wrap:wrap">' +
-      '<label class="btn small secondary" style="cursor:pointer;margin:0;flex:1">🖼️ Upload<input type="file" id="tqUpload" accept="image/*" style="display:none"></label>' +
-      '<button class="btn small warn" id="tqUrl" style="flex:1">🔗 URL</button>' +
-      (custom ? '<button class="btn small danger" id="tqRemove" style="flex:1">🗑️ Xoá</button>' : '') +
+      '<label class="btn small secondary" style="cursor:pointer;margin:0;flex:1">🖼️ Upload ảnh<input type="file" id="tqUpload" accept="image/*" style="display:none"></label>' +
+      '<button class="btn small warn" id="tqUrl" style="flex:1">🔗 Nhập URL</button>' +
+      (custom ? '<button class="btn small danger" id="tqRemove" style="flex:1">🗑️ Xoá ảnh</button>' : '') +
     '</div>' +
     '<div class="row" style="margin-top:.5rem;gap:.3rem">' +
       '<button class="btn secondary" id="tqClose" style="flex:1">← Đóng</button>' +
@@ -3671,36 +3783,38 @@ function openTakeawayQRModal(){
   document.getElementById("mc").onclick = close;
   document.getElementById("mb").onclick = e=>{ if(e.target.id === "mb") close(); };
   document.getElementById("tqClose").onclick = close;
-  // Upload ảnh QR
   const upInput = document.getElementById("tqUpload");
   if(upInput) upInput.onchange = async ()=>{
     const f = upInput.files[0]; if(!f) return;
     try{
       const dataUrl = await readImageAsResizedDataUrl(f, 500, 500, 0.75);
       state.qrTakeaway = dataUrl;
-      if(fbQrRef) fbQrRef.child("TAKEAWAY").set(dataUrl).catch(e=>console.error(e));
+      saveQrImage("TAKEAWAY", dataUrl);
       save();
       modalLocked = false; root.innerHTML = "";
       renderAll();
       openTakeawayQRModal();
       alert("✓ Đã lưu QR mang về");
-    }catch(err){ alert("Lỗi đọc ảnh"); }
+    }catch(err){ alert("Lỗi đọc ảnh: " + err.message); }
   };
   document.getElementById("tqUrl").onclick = ()=>{
     const u = prompt("Dán URL ảnh QR (Imgur/Postimages):", state.qrTakeaway||"");
     if(u === null) return;
-    const url = u.trim();
-    state.qrTakeaway = url;
-    if(fbQrRef) fbQrRef.child("TAKEAWAY").set(url || null).catch(e=>console.error(e));
+    const urlVal = u.trim();
+    if(!urlVal){ alert("Chưa nhập URL"); return; }
+    state.qrTakeaway = urlVal;
+    saveQrImage("TAKEAWAY", urlVal);
     save();
     modalLocked = false; root.innerHTML = "";
     renderAll();
     openTakeawayQRModal();
+    alert("✓ Đã lưu URL QR");
   };
   const rmBtn = document.getElementById("tqRemove");
   if(rmBtn) rmBtn.onclick = ()=>{
     if(!confirm("Xóa QR tùy chỉnh? Sẽ dùng QR tự sinh.")) return;
     state.qrTakeaway = "";
+    qrImagesCache["TAKEAWAY"] = "";
     if(fbQrRef) fbQrRef.child("TAKEAWAY").remove().catch(e=>console.error(e));
     save();
     modalLocked = false; root.innerHTML = "";
@@ -3710,10 +3824,12 @@ function openTakeawayQRModal(){
   document.getElementById("tqPrint").onclick = ()=>{
     const w = window.open("", "_blank");
     if(!w) return;
-    const qrShow = custom ? '<img src="' + esc(custom) + '" style="max-width:200px">' : (function(){ try{ const qr = qrcode(0,"M"); qr.addData(url); qr.make(); return qr.createImgTag(5,5); }catch(e){ return ""; } })();
+    const qrShow = custom
+      ? '<img src="' + esc(custom.startsWith("data:") ? custom : proxiedImgUrl(custom)) + '" style="max-width:220px">'
+      : (function(){ try{ const qr = qrcode(0,"M"); qr.addData(url); qr.make(); return qr.createImgTag(5,5); }catch(e){ return ""; } })();
     w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>QR Mang về</title>' +
-      '<style>body{font-family:Arial,sans-serif;text-align:center;padding:20px}h2{color:#9B2A1A;margin:0 0 6px}.sub{color:#666;font-size:13px;margin-bottom:14px}.qr{margin:10px auto;padding:10px;border:2px solid #9B2A1A;border-radius:12px;display:inline-block;background:#FFF3E0}.url{font-size:10px;color:#888;word-break:break-all;margin-top:8px}@media print{.noprint{display:none}}</style></head><body>' +
-      '<div class="noprint" style="margin-bottom:10px"><button onclick="window.print()" style="padding:8px 16px;font-size:14px">🖨️ In</button></div>' +
+      '<style>@page{size:80mm auto;margin:4mm}body{font-family:Arial,sans-serif;text-align:center;padding:10px;width:72mm;margin:0 auto}h2{color:#9B2A1A;margin:0 0 4px;font-size:15px}.sub{color:#333;font-size:11px;margin-bottom:10px;font-weight:700}.qr{margin:8px auto;padding:8px;border:2px solid #9B2A1A;border-radius:10px;display:inline-block;background:#FFF3E0}.url{font-size:9px;color:#555;word-break:break-all;margin-top:6px}@media print{.noprint{display:none}}</style></head><body>' +
+      '<div class="noprint" style="margin-bottom:8px"><button onclick="window.print()" style="padding:6px 14px;font-size:12px">🖨️ In</button></div>' +
       '<h2>' + esc(state.brand.name) + '</h2>' +
       '<div class="sub">🥡 QUÉT QR ĐỂ ĐẶT MÓN MANG VỀ</div>' +
       '<div class="qr">' + qrShow + '</div>' +
@@ -3736,7 +3852,7 @@ function renderQl(){
   const subnav = document.getElementById("qlSubnav");
   const subs = [
     ["menu","🍽️ Menu"],["kho","📦 Kho"],["report","📊 Báo cáo"],["hoadon","🧾 Hóa đơn"],
-    ["call","🔔 Tin"],["music","🎵 Nhạc"],["qr","🔗 QR"]
+    ["call","🔔 Tin"],["qr","🔗 QR"]
   ];
   if(isManager()){
     subs.splice(2, 0, ["finance","💰 Tài chính"]);
@@ -3754,12 +3870,11 @@ function renderQl(){
   else if(currentQlTab === "report") renderQlReport(content);
   else if(currentQlTab === "hoadon") renderQlHoadon(content);
   else if(currentQlTab === "call") renderQlCall(content);
-  else if(currentQlTab === "music") renderQlMusicAdmin(content);
   else if(currentQlTab === "qr") renderQlQr(content);
   else if(currentQlTab === "customer") renderQlCustomer(content);
   else if(currentQlTab === "settings") renderQlSettings(content);
 }
-// MENU ADMIN có SEARCH (#9)
+// MENU ADMIN có SEARCH
 let menuAdminSearch = "";
 function renderQlMenu(el){
   const showFin = canSeeFinance();
@@ -3773,7 +3888,6 @@ function renderQlMenu(el){
     '<div id="menuAdmin" style="margin-top:.5rem;max-height:520px;overflow:auto"></div></div>';
   document.getElementById("btnAddMenu").onclick = ()=>{ if(isManager()) openMenuEditor(""); };
   document.getElementById("btnAddCat").onclick = ()=>{ if(isManager()) addNewCategory(); };
-  // Search input — debounce nhẹ để không lag
   const searchInp = document.getElementById("menuSearch");
   let searchTmr;
   searchInp.oninput = e=>{
@@ -3894,11 +4008,10 @@ function renderQlKho(el){
 }
 
 /* ============================================================
-   BULK PURCHASE — auto-fill giá cũ (#5)
+   BULK PURCHASE — auto-fill giá cũ
    ============================================================ */
 function openBulkPurchaseModal(){
   if(!isManager()) return alert("🔒 Chỉ QL");
-  // Khởi tạo: dòng đầu auto-fill giá
   const firstIng = state.ingredients[0];
   purchaseDraft = [{ingId: firstIng ? firstIng.id : "", qty:1, unitPrice: firstIng ? firstIng.price : 0}];
   const root = document.getElementById("modalRoot");
@@ -3935,7 +4048,6 @@ function openBulkPurchaseModal(){
       '</tr>';
     }).join("");
     updateTotal();
-    // Đổi NL → auto-fill giá cũ
     body.querySelectorAll("[data-bf='ingId']").forEach(sel=>{
       sel.onchange = ()=>{
         const i = parseInt(sel.dataset.i);
@@ -4337,7 +4449,7 @@ function renderQlReport(el){
 }
 
 /* ============================================================
-   HÓA ĐƠN, TIN NHẮN, NHẠC ADMIN, QR, KHÁCH
+   HÓA ĐƠN, TIN NHẮN, QR, KHÁCH
    ============================================================ */
 function renderQlHoadon(el){
   const invs = toArr(state.invoices).slice().sort((a,b)=>(Number(b.ts)||0) - (Number(a.ts)||0));
@@ -4402,32 +4514,17 @@ function renderQlCall(el){
     if(c){ c.handled = true; save(); renderAll(); }
   });
 }
-function renderQlMusicAdmin(el){
-  const queue = state.musicQueue.slice().reverse();
-  const playing = state.musicQueue.find(m=>m.playing);
-  const pending = state.musicQueue.filter(m=>!m.played && !m.playing && !m.skipped);
-  el.innerHTML = '<div class="card"><div class="row"><b>🎵 Hàng đợi nhạc</b>' +
-    '<span class="muted tiny">' + pending.length + ' chờ · ' + (playing?'1 phát':'0') + '</span></div></div>' +
-  (queue.length ? '<div class="card">' + queue.slice(0,30).map(m=>{
-    const ytId = extractYouTubeId(m.url);
-    return '<div class="music-row">' +
-      '<div style="flex:1;min-width:0"><b>' + esc(m.title) + '</b>' +
-        '<div class="mc-meta">' + esc(m.artist||"—") + ' · ' + (isTakeawayId(m.table)?'🥡 ':'Bàn ') + esc(m.table) + ' · ' + fmtTime(m.ts) + '</div></div>' +
-      '<span class="badge ' + (m.playing?'paid':(m.played?'st':(m.skipped?'void':'new'))) + '">' + (m.playing?'🔊':(m.played?'✓':(m.skipped?'✗':'⏳'))) + '</span>' +
-      (ytId && !m.played ? '<a class="btn small" style="background:#E91E63;margin-left:.4rem" href="https://youtu.be/' + ytId + '" target="_blank">▶️</a>' : '') +
-    '</div>';
-  }).join("") + '</div>' : '<div class="empty">Chưa có</div>');
-}
 let qrSelected = new Set();
 function renderQlQr(el){
   if(!qrSelected.size) visibleTables().forEach(t=>qrSelected.add(t.id));
-  const customCount = Object.keys(state.qrImages).length + Object.keys(qrImagesCache).length;
+  const customCount = Object.keys(state.qrImages).length + Object.keys(qrImagesCache).filter(k=>k!=="TAKEAWAY").length;
   const baseUrl = state.settings.qrUrlBase || (location.origin + location.pathname);
   const takeawayUrl = baseUrl + "?table=TAKEAWAY";
+  const hasTakeawayQR = !!(state.qrTakeaway || qrImagesCache["TAKEAWAY"]);
   el.innerHTML = '<div class="card"><div class="row"><b>🥡 QR Đặt mang về</b>' +
     '<button class="btn small" id="qrTakeawayBtn">📱 Xem & In</button></div>' +
-    '<div class="muted tiny">QR riêng cho khách đặt món mang về. Link: <code>' + esc(takeawayUrl) + '</code></div>' +
-    (state.qrTakeaway ? '<div class="tiny" style="color:var(--money);margin-top:.3rem">✓ Đã có QR tùy chỉnh</div>' : '') +
+    '<div class="muted tiny">QR riêng cho khách đặt món mang về. Link: <code style="word-break:break-all">' + esc(takeawayUrl) + '</code></div>' +
+    (hasTakeawayQR ? '<div class="tiny" style="color:var(--money);margin-top:.3rem">✓ Đã có QR tùy chỉnh (ảnh hoặc URL)</div>' : '') +
   '</div>' +
   '<div class="card"><div class="row"><b>🔗 QR theo bàn</b>' +
     '<div style="display:flex;gap:.3rem;flex-wrap:wrap">' +
@@ -4442,7 +4539,7 @@ function renderQlQr(el){
       visibleTables().map(t=>'<label style="display:flex;align-items:center;gap:.3rem;padding:.35rem .5rem;border:1px solid var(--border);border-radius:8px;font-size:.82rem;cursor:pointer;background:var(--bg)">' +
         '<input type="checkbox" data-qr="' + t.id + '" ' + (qrSelected.has(t.id)?'checked':'') + ' style="width:auto">Bàn ' + t.id + '</label>').join("") +
     '</div></div>' +
-  '<div class="card"><div class="row"><b>🖼️ Upload QR</b>' +
+  '<div class="card"><div class="row"><b>🖼️ Upload QR bàn</b>' +
     '<div style="display:flex;gap:.3rem;flex-wrap:wrap">' +
       '<label class="btn small secondary" style="cursor:pointer;margin:0">📁 Upload nhiều<input type="file" id="qrBulkUpload" multiple accept="image/*" style="display:none"></label>' +
       '<button class="btn small warn" id="qrUrlFromLink">🔗 Nhập URL</button>' +
@@ -4454,7 +4551,7 @@ function renderQlQr(el){
         let autoImg = "";
         try{ const qr = qrcode(0,"M"); qr.addData(url); qr.make(); autoImg = qr.createImgTag(3,3); }catch(e){}
         return '<div class="qr-up-card"><div class="tname">' + t.id + (custom?' <span class="tiny" style="color:var(--money)">✓</span>':'') + '</div>' +
-          '<div class="preview">' + (custom ? '<img src="' + esc(custom) + '" referrerpolicy="no-referrer">' : '<div style="font-size:.7rem;color:var(--muted);padding:.3rem">' + (autoImg||'—') + '</div>') + '</div>' +
+          '<div class="preview">' + (custom ? '<img src="' + esc(custom.startsWith("data:") ? custom : proxiedImgUrl(custom)) + '" referrerpolicy="no-referrer">' : '<div style="font-size:.7rem;color:var(--muted);padding:.3rem">' + (autoImg||'—') + '</div>') + '</div>' +
           '<div class="actions">' +
             '<label class="pillbtn" style="cursor:pointer;background:var(--primary);color:#fff;border:none">' + (custom?'Đổi':'Upload') +
               '<input type="file" data-qr-up="' + t.id + '" accept="image/*" style="display:none"></label>' +
@@ -4553,7 +4650,7 @@ function printQRCodes(tableIds){
     const custom = state.qrImages[id] || qrImagesCache[id];
     const url = baseUrl + "?table=" + id;
     let qrImg;
-    if(custom) qrImg = '<img src="' + esc(custom) + '" referrerpolicy="no-referrer">';
+    if(custom) qrImg = '<img src="' + esc(custom.startsWith("data:") ? custom : proxiedImgUrl(custom)) + '" referrerpolicy="no-referrer">';
     else { try{ const qr = qrcode(0, "M"); qr.addData(url); qr.make(); qrImg = qr.createImgTag(4,4); }catch(e){ qrImg = ""; } }
     html += '<div class="cell"><h3>BÀN ' + id + '</h3>' + qrImg + '<p>' + url + '</p></div>';
   });
@@ -4594,20 +4691,54 @@ function renderQlCustomer(el){
 }
 
 /* ============================================================
-   CÀI ĐẶT — Thêm toggle #3
+   CÀI ĐẶT — Upload ảnh cho Logo (Fix #1)
    ============================================================ */
 function renderQlSettings(el){
   const totalImagesKB = totalImagesSizeKB();
   const cols = getVisibleCols();
   const rows = getVisibleRows();
+  const rawLogo = (state.brand.logo||"").trim();
+  const rawAppLogo = (state.brand.appLogo||"").trim();
+  const logoPreviewHtml = rawLogo.startsWith("http") || rawLogo.startsWith("data:")
+    ? '<img src="' + esc(proxiedImgUrl(rawLogo)) + '" style="width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid var(--border)" referrerpolicy="no-referrer" onerror="this.style.display=\'none\'">'
+    : '<div style="width:60px;height:60px;border-radius:50%;background:var(--bg);border:2px dashed var(--border);display:flex;align-items:center;justify-content:center;font-size:1.8rem">' + (rawLogo && rawLogo.length <= 4 ? esc(rawLogo) : '🐚') + '</div>';
+  const appLogoPreviewHtml = rawAppLogo.startsWith("http") || rawAppLogo.startsWith("data:")
+    ? '<img src="' + esc(proxiedImgUrl(rawAppLogo)) + '" style="width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid var(--border)" referrerpolicy="no-referrer" onerror="this.style.display=\'none\'">'
+    : '<div style="width:60px;height:60px;border-radius:50%;background:var(--bg);border:2px dashed var(--border);display:flex;align-items:center;justify-content:center;font-size:1.8rem">' + (rawAppLogo && rawAppLogo.length <= 4 ? esc(rawAppLogo) : '🏮') + '</div>';
+  // Fix #7: Bank info
+  const b = state.settings.bank;
+  const bankPreviewHtml = (b.qrImageUrl || b.accountNumber)
+    ? '<div style="text-align:center"><img src="' + esc(buildBankQrUrl(0, "test")) + '" style="max-width:200px;max-height:200px;border-radius:10px;border:1px solid var(--border);background:#fff;padding:4px" referrerpolicy="no-referrer" onerror="this.style.display=\'none\';this.parentElement.innerHTML=\'<div class=empty>⚠️ Không tải được QR</div>\'"></div>'
+    : '<div class="empty">Chưa cấu hình — nhập STK hoặc URL ảnh QR</div>';
   el.innerHTML = '<div class="card"><b>🏪 Thương hiệu</b>' +
-    '<label class="fl">🐚 Logo QUÁN (URL ảnh) <input id="setLogo" value="' + esc(state.brand.logo) + '" placeholder="https://i.imgur.com/logo.jpg" inputmode="url" autocomplete="off"></label>' +
-    '<label class="fl">🏮 Logo APP (URL ảnh) <input id="setAppLogo" value="' + esc(state.brand.appLogo||"") + '" placeholder="https://i.imgur.com/tieunhi.jpg" inputmode="url" autocomplete="off"></label>' +
+    // Fix #1: Logo upload + URL + Preview
+    '<div style="display:flex;gap:.6rem;align-items:center;margin-top:.5rem;padding:.6rem;background:var(--bg);border-radius:10px">' +
+      '<div id="logoPrev">' + logoPreviewHtml + '</div>' +
+      '<div style="flex:1;min-width:0">' +
+        '<div class="tiny" style="font-weight:700;margin-bottom:.3rem">🐚 Logo QUÁN</div>' +
+        '<div style="display:flex;gap:.3rem;flex-wrap:wrap">' +
+          '<label class="btn small secondary" style="cursor:pointer">📁 Upload<input type="file" id="logoUpload" accept="image/*" style="display:none"></label>' +
+          (rawLogo.startsWith("http") || rawLogo.startsWith("data:") ? '<button class="btn small danger" id="logoRemove">🗑️</button>' : '') +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+    '<label class="fl">Hoặc dán URL/emoji <input id="setLogo" value="' + esc(state.brand.logo) + '" placeholder="https://... hoặc 🐚" autocomplete="off"></label>' +
+    '<div style="display:flex;gap:.6rem;align-items:center;margin-top:.5rem;padding:.6rem;background:var(--bg);border-radius:10px">' +
+      '<div id="appLogoPrev">' + appLogoPreviewHtml + '</div>' +
+      '<div style="flex:1;min-width:0">' +
+        '<div class="tiny" style="font-weight:700;margin-bottom:.3rem">🏮 Logo APP</div>' +
+        '<div style="display:flex;gap:.3rem;flex-wrap:wrap">' +
+          '<label class="btn small secondary" style="cursor:pointer">📁 Upload<input type="file" id="appLogoUpload" accept="image/*" style="display:none"></label>' +
+          (rawAppLogo.startsWith("http") || rawAppLogo.startsWith("data:") ? '<button class="btn small danger" id="appLogoRemove">🗑️</button>' : '') +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+    '<label class="fl">Hoặc dán URL/emoji <input id="setAppLogo" value="' + esc(state.brand.appLogo||"") + '" placeholder="https://... hoặc 🏮" autocomplete="off"></label>' +
     '<label class="fl">Tên quán <input id="setName" value="' + esc(state.brand.name) + '" autocomplete="off"></label>' +
     '<label class="fl">Khẩu hiệu <input id="setSub" value="' + esc(state.brand.sub) + '" autocomplete="off"></label>' +
     '<label class="fl">📍 Địa chỉ <input id="setAddress" value="' + esc(state.brand.address||"") + '" autocomplete="off"></label>' +
     '<label class="fl">📞 SĐT <input id="setPhone" value="' + esc(state.brand.phone||"") + '" autocomplete="off"></label>' +
-    '<label class="fl">📱 SĐT Zalo (đặt bàn) <input id="setZaloPhone" value="' + esc(state.settings.zaloPhone||"") + '" placeholder="0901234567" inputmode="tel" autocomplete="off"></label>' +
+    '<label class="fl">📱 SĐT Zalo <input id="setZaloPhone" value="' + esc(state.settings.zaloPhone||"") + '" placeholder="0901234567" inputmode="tel" autocomplete="off"></label>' +
     '<label class="fl">🕒 Giờ mở <input id="setHours" value="' + esc(state.brand.openHours||"") + '" autocomplete="off"></label>' +
     '<label class="fl">Developer <input id="setDev" value="' + esc(state.brand.dev) + '" autocomplete="off"></label></div>' +
   '<div class="card"><b>🧾 Hóa đơn</b>' +
@@ -4635,28 +4766,27 @@ function renderQlSettings(el){
   '<div class="card"><b>👥 Khách thân thiết</b>' +
     '<label class="fl" style="margin-top:.4rem"><input type="checkbox" id="setLoyalty" ' + (state.settings.loyaltyEnabled!==false?"checked":"") + ' style="width:auto"> Bật tích điểm</label>' +
     '<div class="muted tiny" style="margin-top:.3rem">100.000đ = 1 điểm · 100 điểm = 1 bậc</div></div>' +
-  // FIX #3: Toggle khách hủy món
   '<div class="card"><b>🚫 Khách tự hủy món</b>' +
-    '<label class="fl" style="margin-top:.4rem"><input type="checkbox" id="setAllowCustCancel" ' + (state.settings.allowCustomerCancel!==false?"checked":"") + ' style="width:auto"> Cho phép khách tự hủy món (khi bếp chưa nhận)</label>' +
-    '<div class="muted tiny" style="margin-top:.3rem">Nếu TẮT: khách phải gọi NV để hủy.</div></div>' +
-  // FIX #12: Yêu cầu SĐT khi quét QR
+    '<label class="fl" style="margin-top:.4rem"><input type="checkbox" id="setAllowCustCancel" ' + (state.settings.allowCustomerCancel!==false?"checked":"") + ' style="width:auto"> Cho phép khách tự hủy món (khi bếp chưa nhận)</label></div>' +
   '<div class="card"><b>📱 Xác thực SĐT khi quét QR</b>' +
     '<label class="fl" style="margin-top:.4rem"><input type="checkbox" id="setRequirePhone" ' + (state.settings.requirePhoneQR!==false?"checked":"") + ' style="width:auto"> Yêu cầu khách nhập SĐT trước khi đặt món</label>' +
-    '<div class="muted tiny" style="margin-top:.3rem">Giúp chống phá rối + tự động nhận diện khách hàng thân thiết.</div></div>' +
-  // FIX #14: Yêu cầu CK trước cho mang về
-  '<div class="card"><b>💳 Mang về - Xác nhận CK trước</b>' +
-    '<label class="fl" style="margin-top:.4rem"><input type="checkbox" id="setRequireTAPay" ' + (state.settings.requireTakeawayPayment!==false?"checked":"") + ' style="width:auto"> Yêu cầu CK trước khi bếp làm món</label>' +
-    '<div class="muted tiny" style="margin-top:.3rem">Khách sẽ thấy QR ngân hàng khi đặt mang về. Bếp chờ NV xác nhận.</div></div>' +
+    '<div class="muted tiny" style="margin-top:.3rem">Chống phá rối + nhận diện khách quen.</div></div>' +
+  '<div class="card"><b>💳 Mang về - CK trước khi vào bếp</b>' +
+    '<label class="fl" style="margin-top:.4rem"><input type="checkbox" id="setRequireTAPay" ' + (state.settings.requireTakeawayPayment!==false?"checked":"") + ' style="width:auto"> BẮT BUỘC xác nhận CK trước khi bếp làm</label>' +
+    '<div class="muted tiny" style="margin-top:.3rem">⚠️ Khuyến nghị BẬT — tránh bị phá đơn</div></div>' +
   '<div class="card"><b>💼 Kế toán</b>' +
     '<label class="fl" style="margin-top:.4rem"><input type="checkbox" id="setLaborInPL" ' + (state.settings.laborInPL?"checked":"") + ' style="width:auto"> Tính tiền công vào COGS</label>' +
     '<div class="muted tiny" style="margin-top:.3rem">⚠️ Mặc định TẮT để tránh trùng lương NV</div></div>' +
+  // Fix #7: Bank QR với preview và tên chủ TK
   '<div class="card"><b>🏦 Ngân hàng — QR</b>' +
-    '<label class="fl" style="margin-top:.4rem"><input type="checkbox" id="bankEnabled" ' + (state.settings.bank.enabled?"checked":"") + ' style="width:auto"> Bật QR</label>' +
-    '<label class="fl">NH <select id="bankId">' + BANK_LIST.map(b=>'<option value="' + b.id + '" ' + (state.settings.bank.bankId===b.id?"selected":"") + '>' + b.name + '</option>').join("") + '</select></label>' +
-    '<label class="fl">STK <input id="bankAcc" value="' + esc(state.settings.bank.accountNumber||"") + '" autocomplete="off"></label>' +
-    '<label class="fl">Chủ TK <input id="bankHolder" value="' + esc(state.settings.bank.accountHolder||"") + '" autocomplete="off"></label>' +
-    '<label class="fl">URL ảnh QR riêng <input id="bankQrUrl" value="' + esc(state.settings.bank.qrImageUrl||"") + '" autocomplete="off"></label>' +
-    '<label class="fl" style="margin-top:.5rem"><input type="checkbox" id="bankOnBill" ' + (state.settings.bank.showOnBill!==false?"checked":"") + ' style="width:auto"> In kèm QR trên bill</label></div>' +
+    '<label class="fl" style="margin-top:.4rem"><input type="checkbox" id="bankEnabled" ' + (b.enabled?"checked":"") + ' style="width:auto"> Bật QR thanh toán</label>' +
+    '<label class="fl">NH <select id="bankId">' + BANK_LIST.map(x=>'<option value="' + x.id + '" ' + (b.bankId===x.id?"selected":"") + '>' + x.name + '</option>').join("") + '</select></label>' +
+    '<label class="fl">STK <input id="bankAcc" value="' + esc(b.accountNumber||"") + '" placeholder="VD: 0123456789" autocomplete="off"></label>' +
+    '<label class="fl">👤 Chủ TK <input id="bankHolder" value="' + esc(b.accountHolder||"") + '" placeholder="VD: NGUYEN VAN A" autocomplete="off"></label>' +
+    '<label class="fl">URL ảnh QR riêng (tùy chọn) <input id="bankQrUrl" value="' + esc(b.qrImageUrl||"") + '" placeholder="https://i.imgur.com/qr.png" autocomplete="off"></label>' +
+    '<label class="fl" style="margin-top:.5rem"><input type="checkbox" id="bankOnBill" ' + (b.showOnBill!==false?"checked":"") + ' style="width:auto"> In QR trên bill</label>' +
+    '<div id="bankPreview" style="margin-top:.5rem">' + bankPreviewHtml + '</div>' +
+  '</div>' +
   '<div class="card"><b>💰 Số dư đầu kỳ</b>' +
     '<label class="fl">Tiền mặt + NH <input type="number" id="setOpening" value="' + (state.settings.openingBalance||0) + '" step="100000"></label></div>' +
   '<div class="card"><b>⚙️ Hệ thống</b>' +
@@ -4679,23 +4809,71 @@ function renderQlSettings(el){
     '<label class="btn secondary small" style="cursor:pointer">⬆️ Nhập <input type="file" id="btnImport" accept=".json" style="display:none"></label>' +
     '<button class="btn danger small" id="btnReset">↺ Reset</button></div></div>';
   modalLocked = false;
+  
+  // Fix #1: Upload Logo QUÁN
+  const logoUploadInp = document.getElementById("logoUpload");
+  if(logoUploadInp) logoUploadInp.onchange = async ()=>{
+    const f = logoUploadInp.files[0]; if(!f) return;
+    try{
+      const dataUrl = await readImageAsResizedDataUrl(f, 300, 300, 0.8);
+      document.getElementById("setLogo").value = dataUrl;
+      const prev = document.getElementById("logoPrev");
+      prev.innerHTML = '<img src="' + esc(dataUrl) + '" style="width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid var(--ok)">';
+      // Auto-save state
+      state.brand.logo = dataUrl;
+      save(); renderAll();
+      alert("✓ Đã lưu Logo QUÁN");
+      currentQlTab = "settings";
+      renderQl();
+    }catch(err){ alert("Lỗi: " + err.message); }
+  };
+  const logoRmBtn = document.getElementById("logoRemove");
+  if(logoRmBtn) logoRmBtn.onclick = ()=>{
+    if(!confirm("Xóa Logo QUÁN?")) return;
+    state.brand.logo = "";
+    save(); renderAll();
+    renderQl();
+  };
+  const appLogoUploadInp = document.getElementById("appLogoUpload");
+  if(appLogoUploadInp) appLogoUploadInp.onchange = async ()=>{
+    const f = appLogoUploadInp.files[0]; if(!f) return;
+    try{
+      const dataUrl = await readImageAsResizedDataUrl(f, 300, 300, 0.8);
+      document.getElementById("setAppLogo").value = dataUrl;
+      const prev = document.getElementById("appLogoPrev");
+      prev.innerHTML = '<img src="' + esc(dataUrl) + '" style="width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid var(--ok)">';
+      state.brand.appLogo = dataUrl;
+      save(); renderAll();
+      alert("✓ Đã lưu Logo APP");
+      currentQlTab = "settings";
+      renderQl();
+    }catch(err){ alert("Lỗi: " + err.message); }
+  };
+  const appLogoRmBtn = document.getElementById("appLogoRemove");
+  if(appLogoRmBtn) appLogoRmBtn.onclick = ()=>{
+    if(!confirm("Xóa Logo APP?")) return;
+    state.brand.appLogo = "";
+    save(); renderAll();
+    renderQl();
+  };
+  
   document.getElementById("setSave").onclick = ()=>{
     const pin = document.getElementById("setPin").value.trim();
     if(!pin || pin.length < 4){ alert("PIN >= 4 ký tự"); return; }
-    const rawLogo = document.getElementById("setLogo").value.trim().replace(/^['"]|['"]$/g,'').trim();
-    if(rawLogo && !rawLogo.startsWith("http") && !rawLogo.startsWith("data:") && rawLogo.length > 4){
+    const rawLogoVal = document.getElementById("setLogo").value.trim().replace(/^['"]|['"]$/g,'').trim();
+    if(rawLogoVal && !rawLogoVal.startsWith("http") && !rawLogoVal.startsWith("data:") && rawLogoVal.length > 4){
       alert("⚠️ Logo QUÁN không đúng. Phải là URL ảnh HOẶC emoji."); return;
     }
-    const rawAppLogo = document.getElementById("setAppLogo").value.trim().replace(/^['"]|['"]$/g,'').trim();
-    if(rawAppLogo && !rawAppLogo.startsWith("http") && !rawAppLogo.startsWith("data:") && rawAppLogo.length > 4){
+    const rawAppLogoVal = document.getElementById("setAppLogo").value.trim().replace(/^['"]|['"]$/g,'').trim();
+    if(rawAppLogoVal && !rawAppLogoVal.startsWith("http") && !rawAppLogoVal.startsWith("data:") && rawAppLogoVal.length > 4){
       alert("⚠️ Logo APP không đúng. Phải là URL ảnh HOẶC emoji."); return;
     }
     const newCols = Array.from(document.querySelectorAll("[data-col]:checked")).map(x=>x.dataset.col);
     const newRows = Array.from(document.querySelectorAll("[data-row]:checked")).map(x=>parseInt(x.dataset.row));
-    if(!newCols.length){ alert("Cần ít nhất 1 cột bàn"); return; }
-    if(!newRows.length){ alert("Cần ít nhất 1 hàng bàn"); return; }
-    state.brand.logo = rawLogo;
-    state.brand.appLogo = rawAppLogo;
+    if(!newCols.length){ alert("Cần ít nhất 1 cột"); return; }
+    if(!newRows.length){ alert("Cần ít nhất 1 hàng"); return; }
+    state.brand.logo = rawLogoVal;
+    state.brand.appLogo = rawAppLogoVal;
     state.brand.name = document.getElementById("setName").value.trim() || "ỐC NƯỚNG";
     state.brand.sub = document.getElementById("setSub").value.trim();
     state.brand.address = document.getElementById("setAddress").value.trim();
@@ -4741,7 +4919,7 @@ function renderQlSettings(el){
     else alert(url);
   };
   document.getElementById("btnPurgeImages").onclick = ()=>{
-    if(!confirm("Xoá TẤT CẢ ảnh menu upload? (QR vẫn giữ)")) return;
+    if(!confirm("Xoá TẤT CẢ ảnh menu upload? (Logo + QR vẫn giữ)")) return;
     imagesCache = {};
     state.menu.forEach(m=>{ m.imgData = ""; });
     if(fbImagesRef) fbImagesRef.set(null).catch(e=>console.error(e));
@@ -4781,6 +4959,7 @@ function renderQlSettings(el){
         state = migrateState(remote);
         applyImagesCache();
         applyQrCache();
+        if(qrImagesCache["TAKEAWAY"]) state.qrTakeaway = qrImagesCache["TAKEAWAY"];
         saveLocal();
         renderAll();
         setTimeout(()=>{ suppressWrite = false; }, 500);
@@ -5027,7 +5206,7 @@ function openMenuEditor(id){
 }
 
 /* ============================================================
-   RENDER ALL + INIT
+   RENDER ALL + INIT — END OF FILE
    ============================================================ */
 function renderAll(opts){
   opts = opts || {};
