@@ -53,7 +53,6 @@ header{position:sticky;top:0;z-index:100;background:linear-gradient(180deg,var(-
 .pillbtn.on{background:var(--ok);border-color:var(--ok)}
 .pillbtn.off{background:var(--danger);border-color:var(--danger)}
 .pillbtn.x{background:transparent;color:#F0A090;border-color:#F0A090;font-weight:700}
-.pillbtn.qr-ta{background:linear-gradient(135deg,#7A4080,#6E1A0E);border-color:#9A5FB0}
 nav.main{display:flex;gap:.4rem;overflow-x:auto;padding:.35rem 0 .25rem;justify-content:center}
 nav.main::-webkit-scrollbar{display:none}
 nav.main button{flex:0 0 auto;padding:.5rem .9rem;border-radius:999px;border:1px solid rgba(232,190,86,.3);background:rgba(0,0,0,.2);color:#F0E0C0;font-size:.82rem;cursor:pointer;white-space:nowrap;font-weight:600}
@@ -62,7 +61,7 @@ nav.subnav{display:flex;gap:.35rem;overflow-x:auto;margin-bottom:.6rem;padding-b
 nav.subnav::-webkit-scrollbar{display:none}
 nav.subnav button{flex:0 0 auto;padding:.42rem .75rem;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:.78rem;cursor:pointer;white-space:nowrap;font-weight:600}
 nav.subnav button.active{background:linear-gradient(135deg,var(--primary-d),var(--primary));color:#fff;border-color:var(--primary-d)}
-main{max-width:960px;margin:0 auto;padding:.9rem;padding-bottom:calc(7rem + env(safe-area-inset-bottom,0px))}
+main{max-width:960px;margin:0 auto;padding:.9rem;padding-bottom:calc(9rem + env(safe-area-inset-bottom,0px))}
 section{display:none}
 section.active{display:block}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:.85rem;margin-bottom:.7rem;box-shadow:var(--shadow)}
@@ -119,7 +118,7 @@ select:focus,input:focus,textarea:focus{outline:2px solid var(--gold-l);outline-
 .badge.service{background:var(--gold-d)}.badge.out{background:var(--danger)}.badge.temp{background:var(--warn)}
 .badge.paid{background:var(--ok)}.badge.void{background:var(--muted);text-decoration:line-through}
 .badge.ta{background:var(--ta)}.badge.new{background:var(--p2)}.badge.cooking{background:var(--warn)}
-.badge.locked{background:var(--p2)}.badge.schedule{background:var(--p4)}
+.badge.locked{background:var(--p2)}.badge.schedule{background:var(--p4)}.badge.pending{background:var(--warn)}
 .kgroup{border:1.5px solid var(--border);border-radius:12px;padding:.7rem;margin-bottom:.6rem;background:var(--surface);box-shadow:var(--shadow)}
 .kgroup.hot{border-color:var(--danger)}
 .kgroup.cooking{border-color:var(--warn);background:color-mix(in srgb,var(--warn) 6%,var(--surface))}
@@ -243,10 +242,10 @@ input[type="number"]{text-align:right}
 .cart-row .cr-qty span{min-width:28px;text-align:center;font-weight:800;font-size:1rem;color:var(--primary-d)}
 .cart-row .cr-rm{background:none;border:none;color:var(--danger);font-size:.72rem;cursor:pointer;text-decoration:underline;font-weight:600}
 .cart-footer{position:sticky;bottom:0;background:var(--surface);border-top:2px solid var(--border);padding:.7rem .3rem .3rem;margin-top:.5rem}
-.gacha-trigger{display:block;width:100%;padding:1.15rem 1rem;margin-bottom:.7rem;border:none;border-radius:18px;background:linear-gradient(135deg,var(--gold) 0%,var(--brick) 50%,var(--brick-d) 100%);color:#fff;cursor:pointer;box-shadow:0 8px 28px rgba(155,42,26,.45);text-align:left}
-.gacha-trigger .gi{font-size:2.5rem}
-.gacha-trigger .gt{font-size:1.2rem;font-weight:900;letter-spacing:.06em}
-.gacha-trigger .gs{font-size:.75rem;opacity:.92;margin-top:.15rem}
+.gacha-trigger{display:block;width:100%;padding:1.1rem 1rem;margin-bottom:.7rem;border:none;border-radius:18px;background:linear-gradient(135deg,var(--gold) 0%,var(--brick) 50%,var(--brick-d) 100%);color:#fff;cursor:pointer;box-shadow:0 8px 28px rgba(155,42,26,.45);text-align:left}
+.gacha-trigger .gi{font-size:2.4rem}
+.gacha-trigger .gt{font-size:1.15rem;font-weight:900;letter-spacing:.05em}
+.gacha-trigger .gs{font-size:.74rem;opacity:.92;margin-top:.15rem}
 .gacha-dice{font-size:4.5rem;text-align:center;display:block;margin:.5rem auto;line-height:1}
 .gacha-dice.rolling{animation:diceRoll .5s ease-in-out infinite}
 @keyframes diceRoll{0%{transform:rotate(0) scale(1)}25%{transform:rotate(90deg) scale(1.15)}50%{transform:rotate(180deg) scale(.95)}75%{transform:rotate(270deg) scale(1.15)}100%{transform:rotate(360deg) scale(1)}}
@@ -291,8 +290,14 @@ input[type="number"]{text-align:right}
 .booking-info .bi-line{font-size:.82rem;margin-top:.2rem;display:flex;gap:.4rem;align-items:flex-start}
 .booking-info .bi-line b{color:var(--primary-d);flex:0 0 auto;min-width:70px}
 .zalo-book{background:linear-gradient(135deg,#E8F5E9,#C8E6C9);border-color:#4A7C4F;margin-bottom:.6rem}
-
-/* Mobile khách — gọn hơn */
+.search-input{width:100%;padding:.55rem .8rem;border:1.5px solid var(--primary);border-radius:10px;font-size:.9rem;background:var(--surface)}
+.phone-gate{position:fixed;inset:0;background:rgba(58,24,16,.85);display:flex;align-items:center;justify-content:center;z-index:300;padding:1rem}
+.phone-gate .pg-box{background:var(--surface);border-radius:20px;padding:1.5rem;max-width:400px;width:100%;border-top:4px solid var(--gold);text-align:center}
+.phone-gate .pg-box h2{margin:0 0 .5rem;color:var(--primary-d);font-size:1.3rem}
+.phone-gate .pg-box p{margin:.3rem 0 1rem;color:var(--muted);font-size:.85rem}
+.phone-gate .pg-box input{width:100%;padding:.75rem;font-size:1.1rem;text-align:center;letter-spacing:.1em;border:2px solid var(--border);border-radius:12px;margin-bottom:.7rem}
+.phone-gate .pg-box button{width:100%;padding:.85rem;font-size:1rem;font-weight:800;border:none;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--primary-d));color:#fff;cursor:pointer}
+.phone-gate .pg-box .verified{color:var(--ok);font-weight:700;font-size:.85rem;margin-top:.5rem}
 body.mode-khach header{position:static}
 body.mode-khach .header-top{padding:.3rem 0}
 body.mode-khach .gacha-trigger{padding:.7rem .8rem;border-radius:14px;margin-bottom:.5rem}
@@ -307,7 +312,7 @@ body.mode-khach .menu-card .m-name{font-size:.88rem}
 body.mode-khach .menu-card .m-price{font-size:.78rem}
 body.mode-khach .menu-card .m-actions button{width:30px;height:30px;font-size:.95rem}
 body.mode-khach .m-rating{font-size:.7rem}
-body.mode-khach main{padding:.5rem}
+body.mode-khach main{padding:.5rem;padding-bottom:8.5rem}
 body.mode-khach .card{padding:.6rem;margin-bottom:.5rem}
 
 @media (max-width:600px){
@@ -334,7 +339,6 @@ body.mode-khach .card{padding:.6rem;margin-bottom:.5rem}
   body.mode-khach .menu-card .m-actions .qn{font-size:.9rem;min-width:22px}
   body.mode-khach .menu-cat-h{padding:.4rem .6rem}
   body.mode-khach .menu-cat-h .cn{font-size:.85rem}
-  body.mode-khach .suggest-wrap .gacha-trigger{padding:.6rem}
 }
 </style>
 </head>
@@ -351,10 +355,10 @@ body.mode-khach .card{padding:.6rem;margin-bottom:.5rem}
   </div>
   <div class="header-bottom">
     <div class="left-actions">
-      <button class="pillbtn qr-ta" id="btnQRTakeaway" title="QR mang về">🥡 QR</button>
-      <button class="pillbtn" id="btnRefresh" title="Kéo dữ liệu">🔄</button>
+      <button class="pillbtn" id="btnQRTakeaway" title="QR mang về">🥡 QR</button>
     </div>
     <div class="right-status">
+      <button class="pillbtn" id="btnRefresh" title="Làm mới dữ liệu">🔄</button>
       <span class="sync-dot" id="syncDot"></span>
       <span id="syncStatus" class="tiny">Khởi động...</span>
       <span id="modeSub" class="tiny"></span>
@@ -370,6 +374,7 @@ body.mode-khach .card{padding:.6rem;margin-bottom:.5rem}
   <div id="storageBanner"></div>
   <div id="bookingBanner"></div>
   <section id="sec-khach">
+    <div id="phoneGateWrap"></div>
     <div class="card row" id="khachTableBar">
       <div><b>Bàn của bạn</b><div class="muted" id="khachSub"></div></div>
       <select id="selTable"></select>
@@ -398,6 +403,7 @@ body.mode-khach .card{padding:.6rem;margin-bottom:.5rem}
   <section id="sec-bep">
     <div class="card row"><b>🔥 Hàng đợi bếp</b><span class="muted" id="kCount"></span></div>
     <div class="note">UT hiệu dụng = UT gốc − ⌊phút chờ / 10⌋. Kho tự trừ khi món <b>hoàn thành</b>.</div>
+    <div class="ksec-title pending" id="kPendingTitle" style="display:none">⏳ Chờ xác nhận CK</div><div id="kPending"></div>
     <div class="ksec-title food">🍜 Món ăn</div><div id="kFood"></div>
     <div class="ksec-title beer">🍺 Bia</div><div id="kBeer"></div>
     <div class="ksec-title drink">🥤 Nước ngọt</div><div id="kDrink"></div>
@@ -671,12 +677,8 @@ function visibleTables(){
   const showCols = state.settings.showCols || ["A","B","C","D"];
   return TABLES.filter(t=>showRows.includes(t.row) && showCols.includes(t.col));
 }
-function getVisibleCols(){
-  return state.settings.showCols || ["A","B","C","D"];
-}
-function getVisibleRows(){
-  return state.settings.showRows || [1,2,3,4,5,6,7,8,9,10,11,12];
-}
+function getVisibleCols(){ return state.settings.showCols || ["A","B","C","D"]; }
+function getVisibleRows(){ return state.settings.showRows || [1,2,3,4,5,6,7,8,9,10,11,12]; }
 function genInvoiceCode(ts){
   const d = new Date(ts||Date.now());
   const y = String(d.getFullYear()).slice(2);
@@ -685,11 +687,15 @@ function genInvoiceCode(ts){
   state.seq = (state.seq||0) + 1;
   return "HD" + y + m + dd + "-" + String(state.seq).padStart(4,'0');
 }
+function isPhoneValid(phone){
+  return phone && /^0[0-9]{9,10}$/.test(phone.replace(/\D/g,''));
+}
+function normalizePhone(p){ return String(p||"").replace(/\D/g,''); }
 
 /* ============================================================
    STATE + FIREBASE
    ============================================================ */
-const STKEY = "ocnuong_v22_state";
+const STKEY = "ocnuong_v23_state";
 const clientId = "c_" + Date.now().toString(36) + Math.random().toString(36).slice(2,8);
 let firebaseReady = false, fbRef = null, fbImagesRef = null, fbQrRef = null, fbArchiveRef = null, fbConnected = false, writeTimer = null, suppressWrite = false;
 let remoteSeeded = false;
@@ -697,7 +703,7 @@ let imagesCache = {};
 let qrImagesCache = {};
 let archiveCache = {};
 let currentVibe = "chill";
-let currentDrinkFilter = "all";
+let currentCatFilter = "all"; // Fix #8: filter danh mục món ăn
 let svcDraft = [];
 let purchaseDraft = [];
 
@@ -735,7 +741,7 @@ function seed(){
   return {
     orders: [], invoices: [], calls: [],
     purchases: [], expenses: [], recurringExpenses: [],
-    qrImages: {}, takeawayMeta: {}, takeawayCounter: 0,
+    qrImages: {}, qrTakeaway: "", takeawayMeta: {}, takeawayCounter: 0,
     customers: {}, monthlySummary: {}, musicQueue: [],
     bookings: {},
     seq: 1,
@@ -756,6 +762,9 @@ function seed(){
       invoiceSymbol: "1C24TAA",
       taxCode: "",
       zaloPhone: "",
+      allowCustomerCancel: true, // Fix #3
+      requirePhoneQR: true,       // Fix #12
+      requireTakeawayPayment: true, // Fix #14
       bank: {enabled:false,bankId:"VCB",accountNumber:"",accountHolder:"",qrImageUrl:"",showOnBill:true}
     },
     meta: {lastUpdate:0,lastClient:""}
@@ -767,6 +776,7 @@ function migrateState(st){
     qty: Number(o.qty)||0, price: Number(o.price)||0, prio: Number(o.prio)||1,
     prep: Number(o.prep)||5, ts: Number(o.ts)||Date.now(),
     scheduledAt: Number(o.scheduledAt)||0,
+    paymentStatus: o.paymentStatus || "",
     status: o.status || "cho_bep", table: String(o.table||""), name: String(o.name||"")
   }));
   st.invoices = toArr(st.invoices).map(inv=>({...inv,
@@ -858,6 +868,7 @@ function migrateState(st){
   });
   st.tableNotes = st.tableNotes && typeof st.tableNotes === "object" ? st.tableNotes : {};
   st.qrImages = st.qrImages && typeof st.qrImages === "object" ? st.qrImages : {};
+  st.qrTakeaway = String(st.qrTakeaway || "").slice(0, 500000);
   st.takeawayMeta = st.takeawayMeta && typeof st.takeawayMeta === "object" ? st.takeawayMeta : {};
   st.takeawayCounter = Number(st.takeawayCounter)||0;
   st.seq = Number(st.seq)||1;
@@ -873,7 +884,10 @@ function migrateState(st){
     laborInPL: false,
     invoiceSymbol: "1C24TAA",
     taxCode: "",
-    zaloPhone: ""
+    zaloPhone: "",
+    allowCustomerCancel: true,
+    requirePhoneQR: true,
+    requireTakeawayPayment: true
   }, st.settings||{});
   delete st.settings.loyaltyPointRate;
   st.settings.bank = Object.assign({enabled:false,bankId:"VCB",accountNumber:"",accountHolder:"",qrImageUrl:"",showOnBill:true}, st.settings.bank||{});
@@ -1181,7 +1195,7 @@ function typeOfItem(itemId){
   const m = state.menu.find(x=>x.id === itemId);
   return m ? typeOf(m.cat) : "food";
 }
-function statusLabel(s){ return {cho_bep:"⏳ Chờ",dang_lam:"🔥 Đang làm",hoan_thanh:"✅ Xong",huy:"❌ Hủy"}[s] || s; }
+function statusLabel(s){ return {cho_bep:"⏳ Chờ",cho_ck:"💳 Chờ CK",dang_lam:"🔥 Đang làm",hoan_thanh:"✅ Xong",huy:"❌ Hủy"}[s] || s; }
 function callTypeInfo(type){ return CALL_PRESETS.find(p=>p.type === type) || {icon:"💬", label:"Khác"}; }
 function getVibe(){ return VIBES[currentVibe] || VIBES.chill; }
 function isBillableItem(m){
@@ -1192,7 +1206,7 @@ function isBillableItem(m){
 }
 
 /* ============================================================
-   HEADER — Logo URL fix (#13)
+   HEADER — Logo URL fix, đồng bộ gọn, nút 🔄 cạnh đồng bộ
    ============================================================ */
 function renderHeader(){
   document.getElementById("brandName").textContent = state.brand.name;
@@ -1204,7 +1218,6 @@ function renderHeader(){
   if(state.brand.openHours) parts.push("🕒 " + esc(state.brand.openHours));
   c.innerHTML = parts.join(" · ");
 
-  // Logo QUÁN — fix #13: xử lý URL chính xác
   const logoBox = document.getElementById("logoBox");
   const rawLogo = (state.brand.logo||"").trim();
   if(rawLogo.startsWith("http") || rawLogo.startsWith("data:")){
@@ -1215,7 +1228,6 @@ function renderHeader(){
     logoBox.innerHTML = '<span style="font-size:2.6rem">🐚</span>';
   }
 
-  // Logo APP
   const appLogoBox = document.getElementById("appLogoBox");
   const rawAppLogo = (state.brand.appLogo||"").trim();
   if(rawAppLogo.startsWith("http") || rawAppLogo.startsWith("data:")){
@@ -1263,6 +1275,8 @@ document.getElementById("btnRefresh").onclick = async ()=>{
       renderAll();
       setTimeout(()=>{ suppressWrite = false; }, 500);
       setSyncStatus("synced", "🟢 Đã làm mới");
+      // Ẩn text sau 2s
+      setTimeout(()=>{ updateSyncUI(); }, 2000);
     } else { alert("Firebase trống."); }
   }catch(e){ alert("Lỗi: " + (e.code || e.message)); }
 };
@@ -1311,7 +1325,8 @@ function renderBookingBanner(){
   el.innerHTML = '<div class="alert-banner info">🔒 <b>' + locks.length + ' bàn đã đặt:</b> ' +
     locks.map(t=>{
       const b = state.bookings[t];
-      return '<div style="margin-top:.4rem"><b>Bàn ' + t + '</b> — ' + esc(b.customerName||"") +
+      const merged = b.mergedTables && b.mergedTables.length ? ' (ghép ' + b.mergedTables.join(",") + ')' : '';
+      return '<div style="margin-top:.4rem"><b>Bàn ' + t + '</b>' + merged + ' — ' + esc(b.customerName||"") +
         (b.time?' lúc ' + esc(b.time):'') + ' · ' + (b.guests||2) + ' khách' +
         (b.phone?' · 📞 ' + esc(b.phone):'') + '</div>';
     }).join("") + '</div>';
@@ -1347,7 +1362,7 @@ function renderCallButton(){
   const b = document.getElementById("btnCallStaff");
   if(MODE !== "khach"){ b.style.display = "none"; return; }
   b.style.display = "";
-  const real = currentKhachMode === "takeaway" ? "TA_TEMP" : resolveTable(currentTable);
+  const real = currentKhachMode === "takeaway" ? "TAKEAWAY" : resolveTable(currentTable);
   const myCall = state.calls.find(c=>c.table === real && !c.handled);
   if(myCall){ b.classList.add("called"); b.textContent = "✓ Đã gửi"; b.disabled = true; }
   else { b.classList.remove("called"); b.textContent = "🔔 Gọi NV"; b.disabled = false; }
@@ -1390,7 +1405,54 @@ function sendCall(type, message){
 }
 
 /* ============================================================
-   BOOKING LOCK BOX (khách)
+   PHONE GATE — Xác thực SĐT khi quét QR (#12)
+   ============================================================ */
+let guestPhone = ""; // Session only — lưu tạm trong RAM
+function isGuestVerified(){ return !state.settings.requirePhoneQR || !!guestPhone; }
+function renderPhoneGate(){
+  const wrap = document.getElementById("phoneGateWrap");
+  if(!wrap) return;
+  if(MODE !== "khach" || isGuestVerified()){ wrap.innerHTML = ""; return; }
+  wrap.innerHTML = '<div class="phone-gate" id="phoneGateModal"><div class="pg-box">' +
+    '<h2>📱 Nhập SĐT để đặt món</h2>' +
+    '<p>Quán cần SĐT để liên hệ khi cần thiết và tích điểm khách hàng thân thiết.</p>' +
+    '<input type="tel" id="pgPhone" placeholder="0901234567" inputmode="tel" maxlength="15" autocomplete="tel">' +
+    '<button id="pgConfirm">Tiếp tục</button>' +
+    '<div id="pgErr" style="color:var(--danger);font-size:.8rem;margin-top:.5rem;display:none"></div>' +
+    '<div class="tiny muted" style="margin-top:.8rem">VD: 0901 234 567</div>' +
+  '</div></div>';
+  const inp = document.getElementById("pgPhone");
+  const btn = document.getElementById("pgConfirm");
+  const err = document.getElementById("pgErr");
+  const submit = ()=>{
+    const phone = normalizePhone(inp.value);
+    if(!isPhoneValid(phone)){
+      err.textContent = "SĐT không hợp lệ. Vui lòng nhập 10-11 số, bắt đầu bằng 0.";
+      err.style.display = "";
+      return;
+    }
+    guestPhone = phone;
+    // Nếu SĐT đã có trong hệ thống → tự gán tên
+    if(state.customers[phone] && state.customers[phone].name){
+      // Khách quen
+    }
+    wrap.innerHTML = "";
+    renderKhach();
+    // Thông báo cho bếp (nếu đang ở bàn)
+    if(!isTakeawayQR && qTable){
+      const real = resolveTable(qTable);
+      if(!state.tableSessions[real]){
+        // Chỉ tạo session khách khi thực sự đặt món đầu tiên
+      }
+    }
+  };
+  btn.onclick = submit;
+  inp.onkeydown = e=>{ if(e.key === "Enter") submit(); };
+  setTimeout(()=>inp.focus(), 200);
+}
+
+/* ============================================================
+   BOOKING LOCK BOX
    ============================================================ */
 function renderBookingLockBox(){
   const box = document.getElementById("bookingLockBox");
@@ -1408,9 +1470,7 @@ function renderBookingLockBox(){
       (b.date || b.time ? '<div class="bi-line"><b>🕒 Thời gian:</b><span>' + esc((b.date||"") + " " + (b.time||"")) + '</span></div>' : '') +
       (b.note ? '<div class="bi-line"><b>📝 Ghi chú:</b><span>' + esc(b.note) + '</span></div>' : '') +
     '</div>' +
-    '<div class="tiny" style="margin-top:.5rem;color:var(--danger);font-weight:700">' +
-      '⛔ Bàn đang khóa. Vui lòng đợi NV xác nhận khách đã tới.' +
-    '</div>' +
+    '<div class="tiny" style="margin-top:.5rem;color:var(--danger);font-weight:700">⛔ Bàn đang khóa. Vui lòng đợi NV xác nhận.</div>' +
     '<button class="btn small secondary" id="btnCallOpenTable" style="margin-top:.5rem;width:100%">🔔 Gọi NV mở bàn</button>' +
   '</div>';
   const btn = document.getElementById("btnCallOpenTable");
@@ -1422,7 +1482,7 @@ function renderBookingLockBox(){
 }
 
 /* ============================================================
-   MODE TABS
+   MODE TABS + ZALO
    ============================================================ */
 function renderModeTabs(){
   const wrap = document.getElementById("modeTabsWrap");
@@ -1439,10 +1499,6 @@ function renderModeTabs(){
     currentKhachMode = b.dataset.mode; cart = {}; renderKhach();
   });
 }
-
-/* ============================================================
-   ZALO ĐẶT BÀN (#4)
-   ============================================================ */
 function renderZaloBook(){
   const el = document.getElementById("zaloBookWrap");
   if(!el) return;
@@ -1462,14 +1518,14 @@ function renderZaloBook(){
 }
 
 /* ============================================================
-   TA INFO BAR
+   TA INFO BAR (Mang về) — không reload (#11)
    ============================================================ */
 function renderTAInfoBar(){
   const wrap = document.getElementById("taInfoWrap");
   if(!wrap) return;
   if(currentKhachMode !== "takeaway"){ wrap.innerHTML = ""; return; }
   const nameValid = taInfo.name.trim().length >= 2;
-  const phoneValid = taInfo.phone && /^[0-9+\-\s]{8,15}$/.test(taInfo.phone.replace(/\s/g,''));
+  const phoneValid = isPhoneValid(taInfo.phone);
   const addrRequired = !taInfo.pickup;
   const addrValid = !addrRequired || taInfo.address.trim().length >= 5;
   const ready = nameValid && phoneValid && addrValid;
@@ -1477,22 +1533,27 @@ function renderTAInfoBar(){
     '<div class="row"><b>🥡 Đơn mang về</b>' +
       '<span class="badge ' + (ready?'paid':'out') + '">' + (ready?'✓ Sẵn sàng':'Cần nhập') + '</span>' +
     '</div>' +
-    '<label class="fl">Tên khách <span style="color:var(--danger)">*</span><input id="taName" value="' + esc(taInfo.name) + '"></label>' +
-    '<label class="fl">SĐT <span style="color:var(--danger)">*</span><input id="taPhone" value="' + esc(taInfo.phone) + '" inputmode="tel"></label>' +
+    '<label class="fl">Tên khách <span style="color:var(--danger)">*</span>' +
+      '<input id="taName" value="' + esc(taInfo.name) + '" autocomplete="off"></label>' +
+    '<label class="fl">SĐT <span style="color:var(--danger)">*</span>' +
+      '<input id="taPhone" value="' + esc(taInfo.phone) + '" inputmode="tel" autocomplete="off"></label>' +
     '<label class="fl" style="margin-top:.5rem"><input type="checkbox" id="taPickup" ' + (taInfo.pickup?'checked':'') + ' style="width:auto"> Khách tự đến lấy</label>';
   if(!taInfo.pickup){
-    html += '<label class="fl">Địa chỉ <span style="color:var(--danger)">*</span><input id="taAddress" value="' + esc(taInfo.address) + '"></label>' +
+    html += '<label class="fl">Địa chỉ <span style="color:var(--danger)">*</span>' +
+      '<input id="taAddress" value="' + esc(taInfo.address) + '" autocomplete="street-address"></label>' +
       '<div class="tiny muted">Phí giao: <b>' + VND(state.settings.deliveryFee||0) + '</b></div>';
   }
-  html += '<label class="fl">Ghi chú <input id="taNote" value="' + esc(taInfo.note) + '"></label></div>';
+  html += '<label class="fl">Ghi chú <input id="taNote" value="' + esc(taInfo.note) + '" autocomplete="off"></label></div>';
   wrap.innerHTML = html;
-  let tmr;
-  const refresh = ()=>{ clearTimeout(tmr); tmr = setTimeout(()=>renderKhach(), 400); };
-  document.getElementById("taName").oninput = e=>{ taInfo.name = e.target.value; refresh(); };
-  document.getElementById("taPhone").oninput = e=>{ taInfo.phone = e.target.value; refresh(); };
-  const addrEl = document.getElementById("taAddress");
-  if(addrEl) addrEl.oninput = e=>{ taInfo.address = e.target.value; refresh(); };
-  document.getElementById("taNote").oninput = e=>{ taInfo.note = e.target.value; };
+  // Input update trực tiếp, KHÔNG rebuild (Fix #11)
+  const nameI = document.getElementById("taName");
+  const phoneI = document.getElementById("taPhone");
+  const addrI = document.getElementById("taAddress");
+  const noteI = document.getElementById("taNote");
+  if(nameI) nameI.oninput = e=>{ taInfo.name = e.target.value; };
+  if(phoneI) phoneI.oninput = e=>{ taInfo.phone = e.target.value; };
+  if(addrI) addrI.oninput = e=>{ taInfo.address = e.target.value; };
+  if(noteI) noteI.oninput = e=>{ taInfo.note = e.target.value; };
   document.getElementById("taPickup").onchange = e=>{ taInfo.pickup = e.target.checked; renderKhach(); };
 }
 function cartCount(){ return Object.values(cart).reduce((s,c)=>s + c.qty, 0); }
@@ -1520,30 +1581,41 @@ function renderCartBottomBar(){
 }
 
 /* ============================================================
-   DRINK FILTER
+   FILTER THEO DANH MỤC MÓN ĂN (#8)
    ============================================================ */
-function renderDrinkFilter(){
+function renderCatFilter(){
   const wrap = document.getElementById("drinkFilterWrap");
   if(!wrap) return;
-  wrap.innerHTML = '<div class="filter-bar">' +
-    '<button class="' + (currentDrinkFilter==='all'?'active':'') + '" data-df="all">🍽️ Tất cả</button>' +
-    '<button class="' + (currentDrinkFilter==='beer'?'active':'') + '" data-df="beer">🍺 Bia</button>' +
-    '<button class="' + (currentDrinkFilter==='softdrink'?'active':'') + '" data-df="softdrink">🥤 Nước ngọt</button>' +
-  '</div>';
-  wrap.querySelectorAll("[data-df]").forEach(b=>b.onclick = ()=>{
-    currentDrinkFilter = b.dataset.df; renderKhach();
+  const cats = getCats().filter(c=>state.menu.some(m=>m.cat === c));
+  let html = '<div class="filter-bar">';
+  html += '<button class="' + (currentCatFilter==='all'?'active':'') + '" data-cf="all">🍽️ Tất cả</button>';
+  cats.forEach(cat=>{
+    html += '<button class="' + (currentCatFilter===cat?'active':'') + '" data-cf="' + esc(cat) + '">' + catIcon(cat) + ' ' + esc(cat) + '</button>';
+  });
+  html += '</div>';
+  wrap.innerHTML = html;
+  wrap.querySelectorAll("[data-cf]").forEach(b=>b.onclick = ()=>{
+    currentCatFilter = b.dataset.cf;
+    renderKhach();
   });
 }
 function catVisible(cat){
-  if(currentDrinkFilter === "beer") return cat !== "Nước ngọt";
-  if(currentDrinkFilter === "softdrink") return cat !== "Bia";
-  return true;
+  if(currentCatFilter === "all") return true;
+  return cat === currentCatFilter;
 }
 
 /* ============================================================
    MENU KHÁCH
    ============================================================ */
 function renderKhach(){
+  // Gate SĐT
+  renderPhoneGate();
+  if(!isGuestVerified()){
+    const menuDiv = document.getElementById("menuList");
+    if(menuDiv) menuDiv.innerHTML = "";
+    renderCartBottomBar();
+    return;
+  }
   const sel = document.getElementById("selTable");
   const khachSub = document.getElementById("khachSub");
   if(MODE === "khach"){
@@ -1576,7 +1648,7 @@ function renderKhach(){
   renderBookingLockBox();
   renderTAInfoBar();
   renderSuggestWrap();
-  renderDrinkFilter();
+  renderCatFilter();
 
   const real = MODE === "khach" ? resolveTable(currentTable) : null;
   const locked = real && isTableLocked(real);
@@ -1585,19 +1657,17 @@ function renderKhach(){
 
   if(locked){
     menuDiv.innerHTML = '<div class="empty" style="padding:2rem 0;color:var(--p2);font-weight:700">🔒 Bàn đặt trước<br><span class="tiny" style="font-weight:400">Không đặt được món.</span></div>';
-    renderMusicBox();
-    renderMyOrders();
-    renderCartBottomBar();
+    renderMusicBox(); renderMyOrders(); renderCartBottomBar();
     return;
   }
   if(notOpened){
     menuDiv.innerHTML = '<div class="empty" style="padding:2rem 0;color:var(--danger);font-weight:700">⛔ Bàn chưa mở<br><span class="tiny" style="font-weight:400">Vui lòng đợi NV xác nhận khách đã tới.</span></div>' +
       '<button class="btn secondary" id="btnCallOpen2" style="width:100%">🔔 Gọi NV mở bàn</button>';
-    const b = document.getElementById("btnCallOpen2");
+    const b = document.getElementById("btnOpen2");
     if(b) b.onclick = ()=>{ sendCall("other", "Xin mở bàn"); alert("Đã gửi."); };
-    renderMusicBox();
-    renderMyOrders();
-    renderCartBottomBar();
+    const b2 = document.getElementById("btnCallOpen2");
+    if(b2) b2.onclick = ()=>{ sendCall("other", "Xin mở bàn"); alert("Đã gửi."); };
+    renderMusicBox(); renderMyOrders(); renderCartBottomBar();
     return;
   }
 
@@ -1670,9 +1740,7 @@ function renderKhach(){
     cur.qty += m.caseSize; cart[id] = cur;
     renderKhach(); renderCartBottomBar();
   });
-  menuDiv.querySelectorAll("button[data-sched]").forEach(b=>b.onclick = ()=>{
-    openScheduleModal(b.dataset.sched);
-  });
+  menuDiv.querySelectorAll("button[data-sched]").forEach(b=>b.onclick = ()=>{ openScheduleModal(b.dataset.sched); });
   menuDiv.querySelectorAll("input.m-noteinput").forEach(inp=>{
     inp.oninput = ()=>{
       const id = inp.dataset.id;
@@ -1698,7 +1766,6 @@ function openScheduleModal(itemId){
   root.innerHTML = '<div class="modal-back" id="mb"><div class="modal">' +
     '<button class="close-x" id="mc">✕</button>' +
     '<h3>⏰ Hẹn giờ làm món</h3>' +
-    '<div class="tiny muted">Món vào hàng đợi bếp đúng giờ hẹn.</div>' +
     '<label class="fl">Ngày <input type="date" id="schedDate" value="' + dateStr + '"></label>' +
     '<label class="fl">Giờ <input type="time" id="schedTime" value="' + timeStr + '"></label>' +
     '<div class="filter-bar" style="margin-top:.5rem">' +
@@ -1741,15 +1808,17 @@ function renderMyOrders(){
   }
   const real = resolveTable(currentTable);
   const mine = state.orders.filter(o=>o.table === real && o.status !== "huy");
+  const canCancel = state.settings.allowCustomerCancel !== false;
   if(mine.length){
-    box.innerHTML = '<div class="tiny muted" style="margin-bottom:.4rem">💡 Hủy được khi bếp <b>chưa xác nhận</b>.</div>';
+    box.innerHTML = '<div class="tiny muted" style="margin-bottom:.4rem">' + 
+      (canCancel ? '💡 Hủy được khi bếp <b>chưa xác nhận</b>.' : '💡 Liên hệ NV nếu muốn hủy món.') + '</div>';
   } else {
     box.innerHTML = '<div class="empty">Chưa gọi món</div>';
     return;
   }
   mine.slice().reverse().forEach(o=>{
     const done = o.status === "hoan_thanh";
-    const canCancel = o.status === "cho_bep";
+    const canCancelRow = canCancel && o.status === "cho_bep";
     const d = document.createElement("div"); d.className = "item" + (done ? " served" : "");
     let ratingHtml = "";
     if(done){
@@ -1769,8 +1838,8 @@ function renderMyOrders(){
           (o.note ? ' <span class="notetag">📝 ' + esc(o.note) + '</span>' : '') + schedHtml +
         '</div>' +
         '<div style="display:flex;align-items:center;gap:.4rem;flex:0 0 auto">' +
-          '<span class="badge ' + (o.status==='cho_bep'?'new':(o.status==='dang_lam'?'cooking':'st')) + '">' + statusLabel(o.status) + '</span>' +
-          (canCancel ? '<button class="pillbtn x" data-cust-cancel="' + o.id + '">✕</button>' : "") +
+          '<span class="badge ' + (o.status==='cho_bep'?'new':(o.status==='dang_lam'?'cooking':(o.status==='cho_ck'?'pending':'st'))) + '">' + statusLabel(o.status) + '</span>' +
+          (canCancelRow ? '<button class="pillbtn x" data-cust-cancel="' + o.id + '">✕</button>' : "") +
         '</div>' +
       '</div>' + ratingHtml + '</div>';
     box.appendChild(d);
@@ -1781,6 +1850,7 @@ function renderMyOrders(){
 function customerCancelOrder(orderId){
   const o = state.orders.find(x=>x.id === orderId);
   if(!o) return;
+  if(state.settings.allowCustomerCancel === false){ alert("Tính năng hủy món đang tắt. Vui lòng gọi NV."); return; }
   if(o.status !== "cho_bep"){ alert("Bếp đã bắt đầu. Gọi NV."); return; }
   if(!confirm('Hủy "' + o.name + '" ×' + o.qty + '?')) return;
   state.orders = state.orders.filter(x=>x.id !== orderId);
@@ -1803,7 +1873,7 @@ function rateOrder(orderId, star){
 }
 
 /* ============================================================
-   SEND TO KITCHEN — check open table (#10)
+   GỬI BẾP — DINE-IN
    ============================================================ */
 function doSendToKitchen(){
   if(sending) return;
@@ -1826,7 +1896,8 @@ function doSendToKitchen(){
       id: uid("o"), table: real, itemId: id, name: m.name,
       qty: c.qty, price: m.price, prio: m.prio, prep: m.prep,
       note: (c.note||"").trim(), status: "cho_bep", ts: now,
-      scheduledAt: c.scheduledAt||0, deducted: false
+      scheduledAt: c.scheduledAt||0, deducted: false,
+      customerPhone: guestPhone || ""
     });
   });
   cart = {}; save();
@@ -1834,17 +1905,89 @@ function doSendToKitchen(){
   alert("✓ Đã gửi bếp!");
   renderAll();
 }
+
+/* ============================================================
+   GỬI MANG VỀ — Cần CK trước khi vào bếp (#14)
+   ============================================================ */
 function doSendTakeaway(){
   if(sending) return;
   const nameValid = taInfo.name.trim().length >= 2;
-  const phoneValid = taInfo.phone && /^[0-9+\-\s]{8,15}$/.test(taInfo.phone.replace(/\s/g,''));
+  const phoneValid = isPhoneValid(taInfo.phone);
   const addrRequired = !taInfo.pickup;
   const addrValid = !addrRequired || taInfo.address.trim().length >= 5;
   if(!nameValid){ alert("Nhập tên khách"); return; }
-  if(!phoneValid){ alert("SĐT không hợp lệ"); return; }
+  if(!phoneValid){ alert("SĐT không hợp lệ (10-11 số, bắt đầu bằng 0)"); return; }
   if(!addrValid){ alert("Nhập địa chỉ"); return; }
   const n = cartCount();
   if(n === 0){ alert("Chưa chọn món"); return; }
+  
+  // Nếu bật yêu cầu CK trước → mở modal xác nhận
+  if(state.settings.requireTakeawayPayment !== false){
+    openTakeawayPayConfirm();
+    return;
+  }
+  // Không yêu cầu → gửi thẳng
+  finalizeTakeawayOrder("");
+}
+
+function openTakeawayPayConfirm(){
+  const total = Object.entries(cart).reduce((s,[id,c])=>{
+    const m = state.menu.find(x=>x.id === id);
+    return s + (m ? m.price * c.qty : 0);
+  }, 0);
+  const deliveryFee = (!taInfo.pickup) ? (state.settings.deliveryFee||0) : 0;
+  const grand = total + deliveryFee;
+  const root = document.getElementById("modalRoot");
+  modalLocked = true;
+  const bankCfg = isBankConfigured();
+  let qrHtml = '';
+  if(bankCfg){
+    qrHtml = '<div style="text-align:center;margin:.6rem 0">' +
+      '<img src="' + buildBankQrUrl(grand, 'Don mang ve') + '" style="width:200px;height:200px;background:#fff;padding:6px;border-radius:10px;border:1px solid var(--border)" referrerpolicy="no-referrer" onerror="this.style.display=\'none\';document.getElementById(\'tpcQrErr\').style.display=\'\'">' +
+      '<div id="tpcQrErr" style="display:none;color:var(--danger);font-size:.8rem">⚠️ Không tải được QR</div>' +
+    '</div>' +
+    '<div class="tiny" style="text-align:center;color:var(--muted)">' +
+      '🏦 <b>' + esc((BANK_LIST.find(b=>b.id===state.settings.bank.bankId)||{}).name||"") + '</b><br>' +
+      'STK: <b>' + esc(state.settings.bank.accountNumber||"") + '</b><br>' +
+      'Chủ TK: ' + esc(state.settings.bank.accountHolder||"") +
+    '</div>';
+  } else {
+    qrHtml = '<div class="empty" style="padding:1rem 0">⚠️ Chưa cấu hình ngân hàng. Vui lòng liên hệ NV để thanh toán.</div>';
+  }
+  root.innerHTML = '<div class="modal-back" id="mb"><div class="modal">' +
+    '<button class="close-x" id="mc">✕</button>' +
+    '<h3>💳 Xác nhận thanh toán trước</h3>' +
+    '<div class="svc-summary" style="border-color:var(--money)">' +
+      '<div class="row"><span>Tổng món:</span><b>' + VND(total) + '</b></div>' +
+      (deliveryFee > 0 ? '<div class="row"><span>Phí giao:</span><b>' + VND(deliveryFee) + '</b></div>' : '') +
+      '<div class="row" style="border-top:1px dashed var(--border);padding-top:.3rem;margin-top:.3rem"><b>TỔNG CK:</b><b style="color:var(--money);font-size:1.1rem">' + VND(grand) + '</b></div>' +
+    '</div>' +
+    '<div class="tiny muted" style="margin-top:.5rem">' +
+      'Vui lòng chuyển khoản đúng số tiền, sau đó NV xác nhận và gửi bếp.' +
+    '</div>' +
+    qrHtml +
+    '<div class="row" style="margin-top:.8rem">' +
+      '<button class="btn secondary" id="tpcCancel">← Quay lại</button>' +
+      '<button class="btn ok" id="tpcSent" style="flex:1">✓ Đã chuyển khoản</button>' +
+    '</div>' +
+    '<button class="btn warn small" id="tpcSkip" style="width:100%;margin-top:.4rem">⏭️ Bỏ qua — Thanh toán sau</button>' +
+  '</div></div>';
+  const close = ()=>{ modalLocked = false; root.innerHTML = ""; renderAll(); };
+  document.getElementById("mc").onclick = close;
+  document.getElementById("mb").onclick = e=>{ if(e.target.id === "mb") close(); };
+  document.getElementById("tpcCancel").onclick = close;
+  document.getElementById("tpcSent").onclick = ()=>{
+    modalLocked = false; root.innerHTML = "";
+    finalizeTakeawayOrder("pending_confirm");
+  };
+  document.getElementById("tpcSkip").onclick = ()=>{
+    if(!confirm("Bạn chọn thanh toán SAU. Đơn sẽ chờ NV xác nhận trước khi vào bếp. Tiếp tục?")) return;
+    modalLocked = false; root.innerHTML = "";
+    finalizeTakeawayOrder("skip_payment");
+  };
+}
+
+function finalizeTakeawayOrder(paymentMode){
   sending = true;
   const now = nowMs();
   const taId = nextTAId();
@@ -1854,6 +1997,9 @@ function doSendTakeaway(){
     address: taInfo.pickup ? "" : taInfo.address.trim(),
     note: taInfo.note.trim(), pickup: !!taInfo.pickup
   });
+  // Nếu paymentMode = pending_confirm → status = cho_ck (bếp chưa thấy)
+  // Nếu skip_payment → status = cho_bep (bếp thấy luôn)
+  const orderStatus = (paymentMode === "pending_confirm") ? "cho_ck" : "cho_bep";
   Object.entries(cart).forEach(([id,c])=>{
     if(!c.qty) return;
     const m = state.menu.find(x=>x.id === id);
@@ -1861,15 +2007,21 @@ function doSendTakeaway(){
     state.orders.push({
       id: uid("o"), table: taId, itemId: id, name: m.name,
       qty: c.qty, price: m.price, prio: m.prio, prep: m.prep,
-      note: (c.note||"").trim(), status: "cho_bep", ts: now,
-      scheduledAt: c.scheduledAt||0, deducted: false
+      note: (c.note||"").trim(), status: orderStatus, ts: now,
+      scheduledAt: c.scheduledAt||0, deducted: false,
+      paymentStatus: (paymentMode === "pending_confirm") ? "pending" : "later",
+      customerPhone: taInfo.phone.trim()
     });
   });
   cart = {};
   taInfo = {name:"",phone:"",address:"",note:"",pickup:false};
   save();
   setTimeout(()=>{ sending = false; }, 400);
-  alert("✓ Đã gửi đơn " + taId);
+  if(paymentMode === "pending_confirm"){
+    alert("✓ Đã gửi đơn " + taId + "!\nNV sẽ kiểm tra chuyển khoản và bắt đầu làm món.");
+  } else {
+    alert("✓ Đã gửi đơn " + taId + " (thanh toán sau).");
+  }
   renderAll();
 }
 
@@ -1935,17 +2087,18 @@ function renderCartModal(){
 }
 
 /* ============================================================
-   GACHA SLOT MACHINE (#12)
+   GACHA — ĂN GÌ CŨNG ĐƯỢC (#1)
+   Ra TOÀN BỘ MÓN (nhiều món một lượt)
    ============================================================ */
 function renderSuggestWrap(){
   const wrap = document.getElementById("suggestWrap");
   if(!wrap) return;
   wrap.innerHTML = '<button class="gacha-trigger" id="btnOpenGacha">' +
     '<div style="display:flex;align-items:center;gap:.75rem">' +
-      '<span class="gi">🎰</span>' +
+      '<span class="gi">🎲</span>' +
       '<div style="flex:1;min-width:0">' +
-        '<div class="gt">VÒNG QUAY MAY MẮN</div>' +
-        '<div class="gs">Quay từng món — hồi hộp hơn!</div>' +
+        '<div class="gt">ĂN GÌ CŨNG ĐƯỢC</div>' +
+        '<div class="gs">Quán gợi ý combo món cho nhóm bạn</div>' +
       '</div>' +
       '<span style="font-size:1.6rem;opacity:.85">✨</span>' +
     '</div></button>';
@@ -1958,66 +2111,155 @@ function gachaScore(m){
   const ratingBonus = m.ratingCount > 0 ? (m.ratingSum/m.ratingCount) * 5 : 0;
   return Math.max(1, margin * 100 + tagBonus + ratingBonus + Math.random()*50 + 15);
 }
+function weightedPick(pool){
+  if(!pool.length) return null;
+  const scored = pool.map(m=>({m, score: gachaScore(m)}));
+  const total = scored.reduce((s,x)=>s+x.score, 0);
+  let r = Math.random() * total;
+  for(const x of scored){ r -= x.score; if(r <= 0) return x.m; }
+  return scored[scored.length-1].m;
+}
+// Gacha: ra TOÀN BỘ MÓN — mỗi danh mục được chọn, chọn 1 món (không trùng)
+function gachaRollAll(selectedCats, guests){
+  const result = [];
+  const usedIds = new Set();
+  selectedCats.forEach(cat=>{
+    const pool = state.menu.filter(m => m.cat === cat && m.available && isItemOrderable(m) && !usedIds.has(m.id));
+    if(!pool.length) return;
+    const pick = weightedPick(pool);
+    if(!pick) return;
+    usedIds.add(pick.id);
+    let qty = 1;
+    if(cat === "Bia") qty = Math.max(2, guests * 2);
+    else if(cat === "Nước ngọt") qty = Math.max(1, Math.ceil(guests / 2));
+    result.push({itemId: pick.id, qty, cat});
+  });
+  return result;
+}
 function openGachaModal(){
   modalLocked = true;
   const root = document.getElementById("modalRoot");
-  let selected = new Set(["Ốc hương","Hàu","Combo nướng","Bia"]);
+  let guests = 4;
+  let selected = new Set(["Món khai vị","Ốc hương","Hàu","Combo nướng","Bia"]);
   let result = [];
   let rolling = false;
   const availableCats = getCats().filter(cat=>cat !== "Khăn & Dụng cụ" && cat !== "Gọi thêm" && state.menu.some(m=>m.cat === cat));
 
-  function pickOne(){
-    const pool = state.menu.filter(m => selected.has(m.cat) && m.available && isItemOrderable(m));
-    if(!pool.length) return null;
-    const scored = pool.map(m=>({m, score: gachaScore(m)}));
-    const total = scored.reduce((s,x)=>s+x.score, 0);
-    let r = Math.random() * total;
-    for(const x of scored){ r -= x.score; if(r <= 0) return x.m; }
-    return scored[scored.length-1].m;
+  function buildItemHtml(r, i){
+    const m = state.menu.find(x=>x.id === r.itemId);
+    if(!m) return '';
+    const raw = m.imgData || m.img;
+    const imgHtml = raw
+      ? '<img src="' + esc(proxiedImgUrl(raw)) + '" referrerpolicy="no-referrer" onerror="this.parentElement.textContent=\'' + esc(m.emoji||'🍽️') + '\'">'
+      : '<span>' + esc(m.emoji||'🍽️') + '</span>';
+    const tagTxt = m.tag === 'best' ? ' · 🔥' : (m.tag === 'good' ? ' · 👍' : '');
+    const ratingTxt = m.ratingCount > 0 ? ' · ⭐' + (m.ratingSum/m.ratingCount).toFixed(1) : '';
+    return '<div class="gacha-item" data-idx="' + i + '">' +
+      '<div class="gi-img">' + imgHtml + '</div>' +
+      '<div class="gi-info">' +
+        '<div class="gi-name">' + esc(m.name) + '</div>' +
+        '<div class="gi-meta">' + VND(m.price) + tagTxt + ratingTxt + ' · ' + VND(m.price * r.qty) + '</div>' +
+      '</div>' +
+      '<div class="gi-qty">' +
+        '<button data-gdec="' + i + '">−</button>' +
+        '<span data-qty="' + i + '">' + r.qty + '</span>' +
+        '<button data-ginc="' + i + '">+</button>' +
+      '</div>' +
+      '<button class="gi-rm" data-grm="' + i + '" title="Xoá">✕</button>' +
+    '</div>';
   }
-  function addResult(m, qty){
-    if(!m) return;
-    const existing = result.find(x=>x.itemId === m.id);
-    if(existing) existing.qty += qty;
-    else result.push({itemId: m.id, qty});
+  function updateTotal(){
+    const el = document.getElementById("gTotal");
+    if(!el) return;
+    el.textContent = result.length + ' món · ' + result.reduce((s,x)=>s+x.qty,0) + ' phần';
   }
-
+  function bindListEvents(){
+    root.querySelectorAll("[data-ginc]").forEach(b=>b.onclick = ()=>{
+      const i = parseInt(b.dataset.ginc);
+      if(!result[i]) return;
+      result[i].qty++;
+      const s = root.querySelector('[data-qty="' + i + '"]'); if(s) s.textContent = result[i].qty;
+      const meta = b.closest(".gacha-item").querySelector(".gi-meta");
+      const m = state.menu.find(x=>x.id === result[i].itemId);
+      if(meta && m){
+        const tagTxt = m.tag === 'best' ? ' · 🔥' : (m.tag === 'good' ? ' · 👍' : '');
+        const ratingTxt = m.ratingCount > 0 ? ' · ⭐' + (m.ratingSum/m.ratingCount).toFixed(1) : '';
+        meta.textContent = VND(m.price) + tagTxt + ratingTxt + ' · ' + VND(m.price * result[i].qty);
+      }
+      updateTotal();
+    });
+    root.querySelectorAll("[data-gdec]").forEach(b=>b.onclick = ()=>{
+      const i = parseInt(b.dataset.gdec);
+      if(!result[i]) return;
+      if(result[i].qty > 1){
+        result[i].qty--;
+        const s = root.querySelector('[data-qty="' + i + '"]'); if(s) s.textContent = result[i].qty;
+        const meta = b.closest(".gacha-item").querySelector(".gi-meta");
+        const m = state.menu.find(x=>x.id === result[i].itemId);
+        if(meta && m){
+          const tagTxt = m.tag === 'best' ? ' · 🔥' : (m.tag === 'good' ? ' · 👍' : '');
+          const ratingTxt = m.ratingCount > 0 ? ' · ⭐' + (m.ratingSum/m.ratingCount).toFixed(1) : '';
+          meta.textContent = VND(m.price) + tagTxt + ratingTxt + ' · ' + VND(m.price * result[i].qty);
+        }
+        updateTotal();
+      } else {
+        const item = b.closest(".gacha-item");
+        item.classList.add("removing");
+        setTimeout(()=>{
+          result.splice(i, 1);
+          const list = document.getElementById("gList");
+          if(list){ list.innerHTML = result.map((r,j)=>buildItemHtml(r,j)).join(""); bindListEvents(); }
+          updateTotal();
+          if(!result.length) render();
+        }, 260);
+      }
+    });
+    root.querySelectorAll("[data-grm]").forEach(b=>b.onclick = ()=>{
+      const i = parseInt(b.dataset.grm);
+      if(!result[i]) return;
+      const item = b.closest(".gacha-item");
+      item.classList.add("removing");
+      setTimeout(()=>{
+        result.splice(i, 1);
+        const list = document.getElementById("gList");
+        if(list){ list.innerHTML = result.map((r,j)=>buildItemHtml(r,j)).join(""); bindListEvents(); }
+        updateTotal();
+        if(!result.length) render();
+      }, 260);
+    });
+  }
   function render(){
-    const totalQty = result.reduce((s,x)=>s+x.qty,0);
     let html = '<div class="modal-back" id="mb"><div class="modal" style="max-width:560px">' +
       '<button class="close-x" id="mc">✕</button>' +
-      '<h3 style="text-align:center;color:var(--primary-d);margin:.2rem 0">🎰 Vòng quay may mắn</h3>' +
-      '<div class="tiny muted" style="text-align:center;margin-bottom:.5rem">Quay nhận 1 món bất kỳ từ danh mục đã chọn</div>' +
-      '<div class="gacha-dice ' + (rolling?'rolling':'') + '" style="font-size:5.5rem">' + (rolling ? '🎲' : '🎰') + '</div>' +
-      '<div style="margin-top:.5rem"><div class="tiny muted" style="margin-bottom:.3rem">Danh mục:</div>' +
+      '<h3 style="text-align:center;color:var(--primary-d);margin:.2rem 0">🎲 Ăn gì cũng được</h3>' +
+      '<div class="tiny muted" style="text-align:center;margin-bottom:.5rem">Chọn nhóm bạn muốn gì → quay ra combo toàn bộ món</div>' +
+      '<div class="gacha-dice ' + (rolling?'rolling':'') + '">🎲</div>' +
+      '<label class="fl" style="margin-top:0">Số khách' +
+        '<input type="number" id="gGuests" value="' + guests + '" min="1" max="30"></label>' +
+      '<div style="margin-top:.5rem"><div class="tiny muted" style="margin-bottom:.3rem">Chọn nhóm món:</div>' +
       '<div class="cat-chips">';
     availableCats.forEach(cat=>{
       html += '<button class="cat-chip ' + (selected.has(cat)?'on':'') + '" data-cat="' + esc(cat) + '">' + catIcon(cat) + ' ' + esc(cat) + '</button>';
     });
     html += '</div></div>' +
-      '<button class="gacha-roll" id="gRoll" ' + (rolling?'disabled':'') + ' style="margin-top:.7rem;font-size:1.3rem;padding:1.3rem">' +
-        (rolling ? '🎰 ĐANG QUAY...' : '🎰 QUAY NGAY') +
-      '</button>' +
-      '<div style="text-align:center;margin-top:.3rem" class="tiny muted">Tổng: ' + result.length + ' món · ' + totalQty + ' phần</div>';
+      '<div class="row" style="margin-top:.4rem;gap:.3rem">' +
+        '<button class="btn secondary small" id="gAllCats">Chọn tất cả</button>' +
+        '<button class="btn secondary small" id="gClearCats">Bỏ chọn</button>' +
+        '<button class="btn secondary small" id="gRec">Gợi ý tốt</button>' +
+      '</div>' +
+      '<button class="gacha-roll" id="gRoll" ' + (rolling?'disabled':'') + ' style="margin-top:.6rem">' +
+        (rolling ? '🎲 ĐANG QUAY...' : (result.length ? '🎲 QUAY LẠI' : '🎲 QUAY NGAY')) +
+      '</button>';
     if(result.length){
-      html += '<div style="margin-top:.7rem"><div class="tiny" style="font-weight:800;margin-bottom:.3rem">✨ Món đã nhận:</div><div id="gList">';
-      result.forEach((r,i)=>{
-        const m = state.menu.find(x=>x.id === r.itemId);
-        if(!m) return;
-        const raw = m.imgData || m.img;
-        const imgHtml = raw ? '<img src="' + esc(proxiedImgUrl(raw)) + '" referrerpolicy="no-referrer" onerror="this.parentElement.textContent=\'' + esc(m.emoji||'🍽️') + '\'">' : '<span>' + esc(m.emoji||'🍽️') + '</span>';
-        html += '<div class="gacha-item" data-idx="' + i + '">' +
-          '<div class="gi-img">' + imgHtml + '</div>' +
-          '<div class="gi-info"><div class="gi-name">' + esc(m.name) + '</div>' +
-            '<div class="gi-meta">' + VND(m.price) + ' · ' + VND(m.price * r.qty) + '</div></div>' +
-          '<div class="gi-qty"><button data-gdec="' + i + '">−</button><span>' + r.qty + '</span><button data-ginc="' + i + '">+</button></div>' +
-          '<button class="gi-rm" data-grm="' + i + '">✕</button>' +
-        '</div>';
-      });
-      html += '</div>' +
-        '<div class="row" style="margin-top:.6rem;gap:.4rem">' +
-          '<button class="btn secondary small" id="gClear" style="flex:0 0 auto">🗑️ Xóa</button>' +
-          '<button class="btn ok" id="gAdd" style="flex:1">🛒 Thêm tất cả</button>' +
+      html += '<div style="margin-top:.8rem">' +
+        '<div class="row" style="margin-bottom:.4rem"><b>✨ Combo gợi ý</b>' +
+        '<span class="tiny muted" id="gTotal">' + result.length + ' món</span></div>' +
+        '<div id="gList">';
+      result.forEach((r,i)=>{ html += buildItemHtml(r,i); });
+      html += '</div></div>' +
+        '<div class="row" style="margin-top:.7rem;gap:.4rem">' +
+          '<button class="btn secondary small" id="gClear" style="flex:0 0 auto">🗑️ Xóa hết</button>' +
+          '<button class="btn ok" id="gAdd" style="flex:1">🛒 Thêm vào giỏ</button>' +
         '</div>';
     }
     html += '<button class="btn secondary" id="gBack" style="width:100%;margin-top:.5rem">← Đóng</button></div></div>';
@@ -2029,37 +2271,41 @@ function openGachaModal(){
     document.getElementById("mc").onclick = close;
     document.getElementById("mb").onclick = e=>{ if(e.target.id === "mb") close(); };
     document.getElementById("gBack").onclick = close;
+    document.getElementById("gGuests").oninput = e => { guests = Math.max(1, Math.min(30, parseInt(e.target.value)||1)); };
     root.querySelectorAll("[data-cat]").forEach(b=>b.onclick = ()=>{
       const cat = b.dataset.cat;
       if(selected.has(cat)) selected.delete(cat); else selected.add(cat);
       b.classList.toggle("on");
     });
-    document.getElementById("gRoll").onclick = ()=>{
+    document.getElementById("gAllCats").onclick = ()=>{ availableCats.forEach(c=>selected.add(c)); root.querySelectorAll("[data-cat]").forEach(b=>b.classList.add("on")); };
+    document.getElementById("gClearCats").onclick = ()=>{ selected.clear(); root.querySelectorAll("[data-cat]").forEach(b=>b.classList.remove("on")); };
+    document.getElementById("gRec").onclick = ()=>{
+      const scored = availableCats.map(cat=>{
+        const items = state.menu.filter(m => m.cat === cat && m.available && isItemOrderable(m));
+        if(!items.length) return {cat, score:0};
+        return {cat, score: items.reduce((s,m)=>s + gachaScore(m), 0) / items.length};
+      }).filter(x=>x.score>0).sort((a,b)=>b.score - a.score).slice(0,5);
+      selected = new Set(scored.map(x=>x.cat));
+      render();
+    };
+    document.getElementById("gRoll").onclick = () => {
       if(rolling || !selected.size){ if(!selected.size) alert("Chọn ít nhất 1 danh mục"); return; }
       rolling = true; render();
       setTimeout(()=>{
-        const m = pickOne();
-        if(m){
-          let qty = 1;
-          if(m.cat === "Bia") qty = 4;
-          addResult(m, qty);
-        } else {
-          alert("Không có món nào khả dụng.");
-        }
+        result = gachaRollAll(Array.from(selected), guests);
+        if(!result.length) alert("Không có món nào khả dụng trong danh mục đã chọn.");
         rolling = false; render();
       }, 800);
     };
-    root.querySelectorAll("[data-ginc]").forEach(b=>b.onclick = ()=>{ const i = parseInt(b.dataset.ginc); if(result[i]){ result[i].qty++; render(); } });
-    root.querySelectorAll("[data-gdec]").forEach(b=>b.onclick = ()=>{ const i = parseInt(b.dataset.gdec); if(!result[i]) return; if(result[i].qty > 1){ result[i].qty--; render(); } else { result.splice(i,1); render(); } });
-    root.querySelectorAll("[data-grm]").forEach(b=>b.onclick = ()=>{ const i = parseInt(b.dataset.grm); result.splice(i,1); render(); });
+    bindListEvents();
     const clr = document.getElementById("gClear");
-    if(clr) clr.onclick = ()=>{ if(confirm("Xóa hết?")){ result = []; render(); } };
+    if(clr) clr.onclick = ()=>{ if(confirm("Xoá hết?")){ result = []; render(); } };
     const add = document.getElementById("gAdd");
     if(add) add.onclick = ()=>{
       if(!result.length) return;
       result.forEach(r=>{ const cur = cart[r.itemId] || {qty:0, note:"", scheduledAt:0}; cur.qty += r.qty; cart[r.itemId] = cur; });
       modalLocked = false; root.innerHTML = "";
-      alert("✓ Đã thêm " + result.length + " món");
+      alert("✓ Đã thêm " + result.length + " món vào giỏ");
       renderAll();
     };
   }
@@ -2146,6 +2392,7 @@ function openMusicOrderModal(){
 function tableOrders(t){ return state.orders.filter(o=>o.table === t && o.status !== "huy"); }
 function tableTotal(t){ return tableOrders(t).reduce((s,o)=>s + o.qty*o.price, 0); }
 function taTotal(taId){ return tableOrders(taId).reduce((s,o)=>s + o.qty*o.price, 0); }
+
 function tableCellEl(t){
   const el = document.createElement("div");
   const isMergedInto = state.merges[t.id];
@@ -2187,9 +2434,11 @@ function taCardEl(taId){
   const total = taTotal(taId);
   const os = tableOrders(taId);
   const hasCall = state.calls.some(c=>c.table === taId && !c.handled);
+  const pendingCK = os.some(o=>o.status === "cho_ck");
   const el = document.createElement("div");
   el.className = "ta-card";
   const badge = meta.pickup ? '<span class="badge p3">🏃 Tự lấy</span>' : '<span class="badge ta">🛵 Giao</span>';
+  const ckBadge = pendingCK ? '<span class="badge pending">💳 Chờ CK</span> ' : '';
   el.innerHTML = '<div class="ta-h"><div style="flex:1;min-width:0">' +
       '<div class="ta-id">🥡 ' + taId + ' ' + (hasCall?'<span style="color:var(--danger)">🔔</span>':'') + '</div>' +
       '<div class="ta-name">' + esc(meta.name||"(không tên)") + ' · ' + esc(meta.phone||"") + '</div>' +
@@ -2197,7 +2446,7 @@ function taCardEl(taId){
       (meta.note ? '<div class="ta-info">📝 ' + esc(meta.note) + '</div>' : '') +
       '<div class="ta-info">⏱ ' + minsAgo(state.tableSessions[taId]) + "' · " + os.reduce((s,o)=>s+o.qty,0) + ' món</div>' +
     '</div><div style="text-align:right;flex:0 0 auto">' +
-      badge + '<div class="ta-total">' + VND(total) + '</div>' +
+      ckBadge + badge + '<div class="ta-total">' + VND(total) + '</div>' +
     '</div></div>';
   el.onclick = ()=>{ activeModalTA = taId; activeModalTable = null; actionMode = null; renderModal(); };
   return el;
@@ -2222,7 +2471,7 @@ function renderPV(){
     const cols = getVisibleCols();
     const rows = getVisibleRows();
     content.innerHTML = '<div class="card"><b>Sơ đồ bàn</b>' +
-      '<div class="muted tiny">Xanh = trống · Vàng = có khách · Tím = ghép · <b style="color:var(--p2)">Xanh dương = đã đặt (khóa)</b>.</div></div>' +
+      '<div class="muted tiny">Xanh = trống · Vàng = có khách · Tím = ghép · <b style="color:var(--p2)">Xanh dương = đã đặt</b>.</div></div>' +
       '<div class="tbl-matrix" id="tableGrid" style="grid-template-columns:24px repeat(' + cols.length + ',1fr)"></div>';
     const grid = document.getElementById("tableGrid");
     const mc = txt => { const d = document.createElement("div"); d.className="mcell"; d.textContent = txt; return d; };
@@ -2244,44 +2493,58 @@ function renderPV(){
     const list = document.getElementById("taList");
     tas.forEach(ta => list.appendChild(taCardEl(ta)));
   } else if(currentPvTab === "booking"){
-    const locked = Object.keys(state.bookings).filter(t=>state.bookings[t].locked);
-    const unlocked = Object.keys(state.bookings).filter(t=>!state.bookings[t].locked);
+    // Nhóm theo groupId để hiển thị đặt bàn gộp
+    const groups = {}; // groupId hoặc tableId → {tables: [], info}
+    Object.keys(state.bookings).forEach(t=>{
+      const b = state.bookings[t];
+      const key = b.groupId || ("single_" + t);
+      if(!groups[key]) groups[key] = {tables: [], info: b, groupId: b.groupId||""};
+      groups[key].tables.push(t);
+    });
+    const groupList = Object.values(groups).sort((a,b)=>b.info.createdAt - a.info.createdAt);
+    const lockedGroups = groupList.filter(g=>g.info.locked);
+    const unlockedGroups = groupList.filter(g=>!g.info.locked);
     content.innerHTML = '<div class="card"><b>🔒 Quản lý đặt bàn</b>' +
-      '<div class="row" style="margin-top:.5rem"><button class="btn small" id="btnNewBooking">+ Đặt bàn mới</button></div></div>' +
-      (locked.length ? '<div class="card"><b>Đã khóa (' + locked.length + ')</b><div id="bookLockList"></div></div>' : '') +
-      (unlocked.length ? '<div class="card"><b>Chưa khóa (' + unlocked.length + ')</b><div id="bookUnlockList"></div></div>' : '') +
-      (!locked.length && !unlocked.length ? '<div class="empty">Chưa có đặt bàn</div>' : '');
-    const mkRow = (t, b)=>{
+      '<div class="row" style="margin-top:.5rem"><button class="btn small" id="btnNewBooking">+ Đặt bàn mới</button></div>' +
+      '<div class="muted tiny" style="margin-top:.3rem">💡 Đặt nhiều bàn cùng lúc = <b>ghép bàn</b> (VD: sinh nhật 4-5 bàn liền).</div></div>' +
+      (lockedGroups.length ? '<div class="card"><b>Đã khóa (' + lockedGroups.length + ' nhóm)</b><div id="bookLockList"></div></div>' : '') +
+      (unlockedGroups.length ? '<div class="card"><b>Chưa khóa (' + unlockedGroups.length + ' nhóm)</b><div id="bookUnlockList"></div></div>' : '') +
+      (!lockedGroups.length && !unlockedGroups.length ? '<div class="empty">Chưa có đặt bàn</div>' : '');
+    
+    const mkRow = (g)=>{
+      const b = g.info;
       const d = document.createElement("div");
       d.className = "item";
       d.style.cssText = "flex-direction:column;align-items:stretch;gap:.3rem";
-      const merged = b.mergedTables && b.mergedTables.length ? '<div class="tiny" style="color:var(--p4)">🔗 Ghép: ' + b.mergedTables.join(", ") + '</div>' : '';
+      const tblTxt = g.tables.length > 1 ? '🔗 Ghép: <b>' + g.tables.join(", ") + '</b>' : '<b>Bàn ' + g.tables[0] + '</b>';
       d.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem">' +
         '<div style="flex:1;min-width:0">' +
-          '<b>Bàn ' + t + '</b> ' + (b.locked ? '<span class="badge locked">🔒 ĐÃ KHÓA</span>' : '<span class="badge st">Chưa khóa</span>') +
+          tblTxt + ' ' + (b.locked ? '<span class="badge locked">🔒 ĐÃ KHÓA</span>' : '<span class="badge st">Chưa khóa</span>') +
           '<div class="tiny" style="margin-top:.2rem">👤 ' + esc(b.customerName||"—") + ' · ' + esc(b.phone||"") + '</div>' +
           '<div class="tiny">👥 ' + (b.guests||2) + ' khách · 🕒 ' + esc((b.date||"") + " " + (b.time||"")) + '</div>' +
-          (b.note ? '<div class="tiny" style="color:var(--warn)">📝 ' + esc(b.note) + '</div>' : '') + merged +
+          (b.note ? '<div class="tiny" style="color:var(--warn)">📝 ' + esc(b.note) + '</div>' : '') +
         '</div></div>' +
         '<div class="row" style="gap:.3rem;margin-top:.3rem">' +
           (b.locked
-            ? '<button class="btn ok small" data-book-unlock="' + t + '">🔓 Mở bàn</button>'
-            : '<button class="btn warn small" data-book-lock="' + t + '">🔒 Khóa lại</button>') +
-          '<button class="btn secondary small" data-book-edit="' + t + '">✏️</button>' +
-          '<button class="btn danger small" data-book-del="' + t + '">🗑️</button>' +
+            ? '<button class="btn ok small" data-book-unlock="' + g.tables[0] + '">🔓 Mở bàn (khách tới)</button>'
+            : '<button class="btn warn small" data-book-lock="' + g.tables[0] + '">🔒 Khóa lại</button>') +
+          '<button class="btn secondary small" data-book-edit="' + g.tables[0] + '">✏️</button>' +
+          '<button class="btn danger small" data-book-del="' + g.tables[0] + '">🗑️</button>' +
         '</div>';
       return d;
     };
     const l1 = document.getElementById("bookLockList");
-    if(l1) locked.forEach(t=> l1.appendChild(mkRow(t, state.bookings[t])));
+    if(l1) lockedGroups.forEach(g=> l1.appendChild(mkRow(g)));
     const l2 = document.getElementById("bookUnlockList");
-    if(l2) unlocked.forEach(t=> l2.appendChild(mkRow(t, state.bookings[t])));
+    if(l2) unlockedGroups.forEach(g=> l2.appendChild(mkRow(g)));
+    
     document.getElementById("btnNewBooking").onclick = ()=>openBookingModal("");
+    
     document.querySelectorAll("[data-book-unlock]").forEach(b=>b.onclick = ()=>{
-      const t = b.dataset.bookUnlock;
-      const bk = state.bookings[t];
+      const t0 = b.dataset.bookUnlock;
+      const bk = state.bookings[t0];
       if(!bk) return;
-      const list = bk.mergedTables && bk.mergedTables.length ? bk.mergedTables : [t];
+      const list = (bk.groupId && bk.mergedTables && bk.mergedTables.length) ? bk.mergedTables : [t0];
       if(!confirm("Xác nhận khách đã tới — MỞ " + list.length + " BÀN: " + list.join(", ") + "?")) return;
       list.forEach(tid=>{
         const bkk = state.bookings[tid];
@@ -2289,21 +2552,25 @@ function renderPV(){
         if(!state.tableSessions[tid]) state.tableSessions[tid] = nowMs();
       });
       save(); renderAll();
-      alert("✓ Đã mở " + list.length + " bàn.");
+      alert("✓ Đã mở " + list.length + " bàn. Khách có thể đặt món.");
     });
     document.querySelectorAll("[data-book-lock]").forEach(b=>b.onclick = ()=>{
-      const t = b.dataset.bookLock;
-      const bk = state.bookings[t];
+      const t0 = b.dataset.bookLock;
+      const bk = state.bookings[t0];
       if(!bk) return;
-      bk.locked = true; state.bookings[t] = bk;
+      const list = (bk.groupId && bk.mergedTables && bk.mergedTables.length) ? bk.mergedTables : [t0];
+      list.forEach(tid=>{
+        const bkk = state.bookings[tid];
+        if(bkk){ bkk.locked = true; state.bookings[tid] = bkk; }
+      });
       save(); renderAll();
     });
     document.querySelectorAll("[data-book-edit]").forEach(b=>b.onclick = ()=>openBookingModal(b.dataset.bookEdit));
     document.querySelectorAll("[data-book-del]").forEach(b=>b.onclick = ()=>{
-      const t = b.dataset.bookDel;
-      const bk = state.bookings[t];
+      const t0 = b.dataset.bookDel;
+      const bk = state.bookings[t0];
       if(!bk) return;
-      const list = bk.mergedTables && bk.mergedTables.length ? bk.mergedTables : [t];
+      const list = (bk.groupId && bk.mergedTables && bk.mergedTables.length) ? bk.mergedTables : [t0];
       if(!confirm("Xóa đặt bàn " + list.join(", ") + "?")) return;
       list.forEach(tid=>{ delete state.bookings[tid]; });
       save(); renderAll();
@@ -2312,7 +2579,7 @@ function renderPV(){
 }
 
 /* ============================================================
-   BẾP
+   BẾP — 3 trạng thái + chờ CK
    ============================================================ */
 function groupBy(list){
   const g = {};
@@ -2341,9 +2608,10 @@ function tblStr(tables){
   return Object.entries(tables).map(([t,q])=> isTakeawayId(t) ? '🥡' + t + '(' + q + ')' : t + '(' + q + ')').join(", ");
 }
 function renderBep(){
-  const active = state.orders.filter(o=>o.status === "cho_bep" || o.status === "dang_lam");
-  const scheduled = active.filter(o=> isScheduled(o));
-  const normal = active.filter(o=> !isScheduled(o));
+  const active = state.orders.filter(o=>o.status === "cho_bep" || o.status === "dang_lam" || o.status === "cho_ck");
+  const pendingCK = active.filter(o=>o.status === "cho_ck");
+  const scheduled = active.filter(o=> o.status !== "cho_ck" && isScheduled(o));
+  const normal = active.filter(o=> o.status !== "cho_ck" && !isScheduled(o));
   const food = [], beer = [], softdrink = [], service = [];
   normal.forEach(o=>{
     const tp = typeOfItem(o.itemId);
@@ -2354,8 +2622,13 @@ function renderBep(){
   });
   const countNew = active.filter(o=>o.status === "cho_bep").reduce((s,o)=>s+o.qty,0);
   const countCooking = active.filter(o=>o.status === "dang_lam").reduce((s,o)=>s+o.qty,0);
+  const countCK = pendingCK.reduce((s,o)=>s+o.qty,0);
   const countSched = scheduled.reduce((s,o)=>s+o.qty,0);
-  document.getElementById("kCount").textContent = countNew + " chờ · " + countCooking + " nấu · " + countSched + " hẹn";
+  document.getElementById("kCount").textContent = countCK + " chờ CK · " + countNew + " chờ · " + countCooking + " nấu · " + countSched + " hẹn";
+  // Khu chờ CK chỉ hiện khi có
+  const kpTitle = document.getElementById("kPendingTitle");
+  if(kpTitle) kpTitle.style.display = pendingCK.length ? "" : "none";
+  renderKGroup("kPending", groupBy(pendingCK), "pending");
   renderKGroup("kFood", groupBy(food), "food");
   renderKGroup("kBeer", groupBy(beer), "beer");
   renderKGroup("kDrink", groupBy(softdrink), "drink");
@@ -2372,14 +2645,21 @@ function renderKGroup(elId, groups, kind, isSched){
   groups.forEach(g=>{
     const div = document.createElement("div");
     const isCooking = g.status === "dang_lam";
-    div.className = "kgroup" + (g.hot ? " hot" : "") + (g.hasTA ? " ta" : "") + (isCooking ? " cooking" : "") + (g.isSched ? " scheduled" : "");
+    const isPendingCK = g.status === "cho_ck";
+    div.className = "kgroup" + (g.hot ? " hot" : "") + (g.hasTA ? " ta" : "") + (isCooking ? " cooking" : "") + (g.isSched ? " scheduled" : "") + (isPendingCK ? " scheduled" : "");
     const bumpTxt = g.bump > 0 ? ' → <b style="color:var(--danger)">UT ' + g.effPrio + '</b>' : "";
-    const statusBadge = isCooking
-      ? '<span class="badge cooking">🔥 Đang làm</span>'
-      : '<span class="badge new">⏳ Chờ</span>';
+    let statusBadge = "";
+    if(isPendingCK) statusBadge = '<span class="badge pending">💳 Chờ CK</span>';
+    else if(isCooking) statusBadge = '<span class="badge cooking">🔥 Đang làm</span>';
+    else statusBadge = '<span class="badge new">⏳ Chờ</span>';
     const schedBadge = g.scheduledAt ? '<span class="badge schedule">⏰ ' + fmtDateTime(g.scheduledAt) + '</span>' : '';
     let btnHtml = "";
-    if(isCooking){
+    if(isPendingCK){
+      btnHtml = '<div class="kbtns">' +
+        '<button class="btn ok kbtn small-k" data-ids="' + g.ids.join(",") + '" data-action="confirm_ck">✓ Đã nhận CK</button>' +
+        '<button class="btn danger kbtn small-k" data-ids="' + g.ids.join(",") + '" data-action="cancel_ck">✕ Hủy</button>' +
+      '</div>';
+    } else if(isCooking){
       const label = (kind === "beer" || kind === "drink") ? "✓ Đã phục vụ" : (kind === "service" ? "✓ Đã giao" : "✓ Xong");
       btnHtml = '<button class="btn ok kbtn" data-ids="' + g.ids.join(",") + '" data-action="complete">' + label + '</button>';
     } else {
@@ -2408,6 +2688,21 @@ function renderKGroup(elId, groups, kind, isSched){
         ids.forEach(id=>{
           const o = state.orders.find(x=>x.id === id);
           if(o && o.status === "cho_bep"){ o.status = "dang_lam"; o.startedAt = now; }
+        });
+        save(); renderAll(); return;
+      }
+      if(action === "confirm_ck"){
+        ids.forEach(id=>{
+          const o = state.orders.find(x=>x.id === id);
+          if(o && o.status === "cho_ck"){ o.status = "cho_bep"; o.paymentStatus = "confirmed"; o.ts = now; }
+        });
+        save(); renderAll(); return;
+      }
+      if(action === "cancel_ck"){
+        if(!confirm("Hủy đơn này?")) return;
+        ids.forEach(id=>{
+          const o = state.orders.find(x=>x.id === id);
+          if(o && o.status === "cho_ck"){ o.status = "huy"; }
         });
         save(); renderAll(); return;
       }
@@ -2519,6 +2814,7 @@ function renderModal(){
   const rows = os.map(o=>{
     const done = o.status === "hoan_thanh";
     const cooking = o.status === "dang_lam";
+    const pendingCK = o.status === "cho_ck";
     const type = typeOfItem(o.itemId);
     const typeBadge = type === "beer" ? '<span class="badge beer">🍺</span>' :
                       type === "softdrink" ? '<span class="badge drink">🥤</span>' :
@@ -2530,9 +2826,9 @@ function renderModal(){
     const schedTag = isScheduled(o) ? ' <span class="scheduletag">⏰ ' + fmtDateTime(o.scheduledAt) + '</span>' : '';
     return '<div class="item' + (done ? " served" : "") + '">' +
       '<div class="name" style="flex:1;min-width:0">' +
-        (done ? "✅ " : (cooking ? "🔥 " : "")) + typeBadge + ' ' + esc(o.name) + ' ×' + o.qty +
+        (done ? "✅ " : (cooking ? "🔥 " : (pendingCK ? "💳 " : ""))) + typeBadge + ' ' + esc(o.name) + ' ×' + o.qty +
         (o.note ? ' <span class="notetag">📝 ' + esc(o.note) + '</span>' : '') + schedTag +
-        ' <span class="badge ' + (o.status==='cho_bep'?'new':(cooking?'cooking':'st')) + '">' + statusLabel(o.status) + '</span>' +
+        ' <span class="badge ' + (o.status==='cho_bep'?'new':(cooking?'cooking':(pendingCK?'pending':'st'))) + '">' + statusLabel(o.status) + '</span>' +
       '</div>' +
       '<div style="display:flex;align-items:center;gap:.4rem;flex:0 0 auto">' +
         '<span>' + VND(o.qty*o.price) + '</span>' + cancelBtn +
@@ -2600,7 +2896,6 @@ function renderModal(){
   }
   const svcEnabled = state.settings.serviceFeeEnabled !== false && !isTA;
   const totalPreview = tableTotal(id) + (isTA ? 0 : getTableSvcTotal(id));
-  // Nút mở bàn nếu chưa mở (không phải TA)
   const openBtn = (!isTA && !opened) ? '<button class="btn ok" id="mOpenTable" style="width:100%;margin-top:.5rem">🔓 Mở bàn — Khách đã tới</button>' : '';
   root.innerHTML = '<div class="modal-back" id="mb"><div class="modal">' +
     '<button class="close-x" id="mc">✕</button>' +
@@ -2611,7 +2906,7 @@ function renderModal(){
     '<div class="row" style="margin-top:.7rem"><b>Tổng: ' + VND(totalPreview) + '</b>' +
       '<div style="display:flex;gap:.3rem;flex-wrap:wrap">' +
         (!isTA ? '<button class="btn secondary small" id="mNote">📌</button>' : '') +
-        (!isTA ? '<button class="btn secondary small" id="mBook">' + (booking?'📅':'📅') + '</button>' : '') +
+        (!isTA ? '<button class="btn secondary small" id="mBook">📅</button>' : '') +
         (svcEnabled ? '<button class="btn secondary small" id="mSvc">➕ DV</button>' : '') +
       '</div></div>' +
     actionUI +
@@ -2659,13 +2954,23 @@ function renderModal(){
   if(openTblBtn) openTblBtn.onclick = ()=>{
     if(!confirm("Xác nhận khách đã tới — MỞ BÀN " + id + "?")) return;
     if(!state.tableSessions[id]) state.tableSessions[id] = nowMs();
+    // Nếu có booking đang khóa → mở hết các bàn cùng nhóm
+    const bk = state.bookings[id];
+    if(bk && bk.locked){
+      const list = (bk.groupId && bk.mergedTables && bk.mergedTables.length) ? bk.mergedTables : [id];
+      list.forEach(tid=>{
+        const bkk = state.bookings[tid];
+        if(bkk){ bkk.locked = false; state.bookings[tid] = bkk; }
+        if(!state.tableSessions[tid]) state.tableSessions[tid] = nowMs();
+      });
+    }
     save(); renderAll();
   };
   const bUnlock = document.getElementById("mBookUnlock");
   if(bUnlock) bUnlock.onclick = ()=>{
     if(!confirm("Xác nhận khách đã tới — Mở bàn?")) return;
     const bk = state.bookings[id]; if(!bk) return;
-    const list = bk.mergedTables && bk.mergedTables.length ? bk.mergedTables : [id];
+    const list = (bk.groupId && bk.mergedTables && bk.mergedTables.length) ? bk.mergedTables : [id];
     list.forEach(tid=>{
       const bkk = state.bookings[tid];
       if(bkk){ bkk.locked = false; state.bookings[tid] = bkk; }
@@ -2674,14 +2979,19 @@ function renderModal(){
     save(); renderAll();
   };
   const bLock = document.getElementById("mBookLock");
-  if(bLock) bLock.onclick = ()=>{ const bk = state.bookings[id]; if(!bk) return; bk.locked = true; save(); renderAll(); };
+  if(bLock) bLock.onclick = ()=>{
+    const bk = state.bookings[id]; if(!bk) return;
+    const list = (bk.groupId && bk.mergedTables && bk.mergedTables.length) ? bk.mergedTables : [id];
+    list.forEach(tid=>{ const bkk = state.bookings[tid]; if(bkk){ bkk.locked = true; state.bookings[tid] = bkk; } });
+    save(); renderAll();
+  };
   const bEdit = document.getElementById("mBookEdit");
   if(bEdit) bEdit.onclick = ()=>openBookingModal(id);
   const bDel = document.getElementById("mBookDel");
   if(bDel) bDel.onclick = ()=>{
     if(!confirm("Xóa đặt bàn?")) return;
     const bk = state.bookings[id];
-    const list = bk && bk.mergedTables && bk.mergedTables.length ? bk.mergedTables : [id];
+    const list = (bk && bk.groupId && bk.mergedTables && bk.mergedTables.length) ? bk.mergedTables : [id];
     list.forEach(t=>{ delete state.bookings[t]; });
     save(); renderAll();
   };
@@ -2727,7 +3037,7 @@ function renderModal(){
 }
 
 /* ============================================================
-   BOOKING MODAL — Đa bàn + ghép (#3)
+   BOOKING MODAL — ĐA BÀN + GHÉP (#3, #7, #13)
    ============================================================ */
 function openBookingModal(tableId){
   const existing = tableId ? getBooking(tableId) : null;
@@ -2736,22 +3046,26 @@ function openBookingModal(tableId){
   const root = document.getElementById("modalRoot");
   modalLocked = true;
   let html = '<div class="modal-back" id="mb"><div class="modal"><button class="close-x" id="mc">✕</button>' +
-    '<h3>📅 ' + (existing?'Sửa đặt bàn ' + tableId:'Đặt bàn mới') + '</h3>' +
-    '<div class="muted tiny">Bàn đặt sẽ bị khóa — khách quét QR không đặt được đến khi NV mở bàn.</div>';
+    '<h3>📅 ' + (existing?'Sửa đặt bàn ' + tableId:'Đặt bàn mới') + '</h3>';
   if(!existing){
-    html += '<label class="fl">Chọn bàn (tích nhiều để <b>ghép bàn</b>)</label>' +
+    html += '<div class="muted tiny" style="margin-bottom:.5rem">💡 Tích nhiều bàn để <b>ghép bàn</b> (VD: sinh nhật 4-5 bàn liền).</div>' +
+      '<label class="fl">Chọn bàn</label>' +
       '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(60px,1fr));gap:.35rem;background:var(--bg);padding:.5rem;border-radius:10px">' +
         availTables.map(t=>'<label style="display:flex;gap:.25rem;align-items:center;font-size:.82rem;padding:.3rem .4rem;background:var(--surface);border-radius:6px;cursor:pointer">' +
           '<input type="checkbox" data-bkt="' + t.id + '" style="width:auto">' + t.id + '</label>').join("") +
+      '</div>' +
+      '<div class="row" style="gap:.3rem;margin-top:.4rem">' +
+        '<button type="button" class="btn small secondary" id="bkSelectAll">Chọn tất cả</button>' +
+        '<button type="button" class="btn small secondary" id="bkSelectNone">Bỏ chọn</button>' +
       '</div>';
   }
-  html += '<label class="fl">Tên khách <input id="bkName" value="' + esc(b.customerName) + '"></label>' +
-    '<label class="fl">SĐT <input id="bkPhone" value="' + esc(b.phone) + '" inputmode="tel"></label>' +
+  html += '<label class="fl">Tên khách <input id="bkName" value="' + esc(b.customerName) + '" autocomplete="off"></label>' +
+    '<label class="fl">SĐT <input id="bkPhone" value="' + esc(b.phone) + '" inputmode="tel" autocomplete="off"></label>' +
     '<label class="fl">Số khách <input type="number" id="bkGuests" value="' + (b.guests||2) + '" min="1"></label>' +
     '<label class="fl">Ngày <input type="date" id="bkDate" value="' + esc(b.date) + '"></label>' +
     '<label class="fl">Giờ <input type="time" id="bkTime" value="' + esc(b.time) + '"></label>' +
-    '<label class="fl">Ghi chú <input id="bkNote" value="' + esc(b.note) + '"></label>' +
-    '<label class="fl" style="margin-top:.5rem"><input type="checkbox" id="bkLocked" ' + (b.locked?'checked':'') + ' style="width:auto"> 🔒 Khóa bàn ngay</label>' +
+    '<label class="fl">Ghi chú <input id="bkNote" value="' + esc(b.note) + '" placeholder="VD: Sinh nhật, bàn gần cửa sổ..." autocomplete="off"></label>' +
+    '<label class="fl" style="margin-top:.5rem"><input type="checkbox" id="bkLocked" ' + (b.locked?'checked':'') + ' style="width:auto"> 🔒 Khóa bàn (chặn khách quét QR đặt món)</label>' +
     '<div class="row" style="margin-top:.8rem">' +
       '<button class="btn secondary" id="bkCancel">Hủy</button>' +
       (existing ? '<button class="btn zalo" id="bkZalo">📱 Zalo</button>' : '') +
@@ -2762,11 +3076,18 @@ function openBookingModal(tableId){
   document.getElementById("mc").onclick = close;
   document.getElementById("mb").onclick = e=>{ if(e.target.id === "mb") close(); };
   document.getElementById("bkCancel").onclick = close;
+  // Nút chọn tất cả (chỉ khi tạo mới)
+  const selAll = document.getElementById("bkSelectAll");
+  if(selAll) selAll.onclick = ()=> root.querySelectorAll("[data-bkt]").forEach(c=>c.checked = true);
+  const selNone = document.getElementById("bkSelectNone");
+  if(selNone) selNone.onclick = ()=> root.querySelectorAll("[data-bkt]").forEach(c=>c.checked = false);
+  // Nút Zalo (chỉ khi sửa)
   const zaloBtn = document.getElementById("bkZalo");
   if(zaloBtn) zaloBtn.onclick = ()=>{
     const staffZalo = state.settings.zaloPhone || state.brand.phone || "";
-    const msg = "Xin chào " + (state.brand.name||"") + "! Tôi muốn đặt bàn " + tableId +
-      (b.date?' ngày ' + b.date:'') + (b.time?' lúc ' + b.time:'') + ' cho ' + (b.guests||2) + ' khách.';
+    const bk = getBooking(tableId) || b;
+    const msg = "Xin chào " + (state.brand.name||"") + "! Tôi đặt bàn " + tableId +
+      (bk.date?' ngày ' + bk.date:'') + (bk.time?' lúc ' + bk.time:'') + ' cho ' + (bk.guests||2) + ' khách.';
     if(staffZalo){
       const url = "https://zalo.me/" + staffZalo.replace(/\D/g,'');
       if(navigator.clipboard) navigator.clipboard.writeText(msg).then(()=>alert("✓ Đã copy tin nhắn. Mở Zalo...")).catch(()=>alert(msg));
@@ -2788,6 +3109,7 @@ function openBookingModal(tableId){
       createdAt: existing ? existing.createdAt : Date.now()
     };
     if(existing){
+      // Cập nhật giữ nguyên groupId + mergedTables
       setBooking(tableId, Object.assign({}, existing, info));
       close();
       alert("✓ Đã lưu đặt bàn " + tableId);
@@ -2795,14 +3117,21 @@ function openBookingModal(tableId){
       const selected = Array.from(root.querySelectorAll("[data-bkt]:checked")).map(x=>x.dataset.bkt);
       if(!selected.length){ alert("Chọn ít nhất 1 bàn"); return; }
       const groupId = selected.length > 1 ? uid("bk") : "";
+      // QUAN TRỌNG: chỉ set booking cho bàn được chọn, không đụng bàn khác
       selected.forEach(t=>{
+        const existingB = state.bookings[t];
+        // Nếu bàn đã có booking cũ, ghi đè
         setBooking(t, Object.assign({}, info, {
           groupId,
           mergedTables: selected.length > 1 ? selected : null
         }));
       });
       close();
-      alert("✓ Đã đặt " + selected.length + " bàn: " + selected.join(", "));
+      if(selected.length > 1){
+        alert("✓ Đã đặt " + selected.length + " bàn (ghép): " + selected.join(", "));
+      } else {
+        alert("✓ Đã đặt bàn " + selected[0]);
+      }
     }
   };
 }
@@ -2836,7 +3165,7 @@ function openSvcModal(tableId){
     box.innerHTML = svcDraft.map((s,i)=>
       '<div style="padding:.5rem .3rem;border-bottom:1px dashed var(--border)">' +
         '<div style="display:flex;gap:.4rem;align-items:center">' +
-          '<input data-sf="note" data-i="' + i + '" placeholder="Tên DV" value="' + esc(s.note||"") + '" style="flex:1">' +
+          '<input data-sf="note" data-i="' + i + '" placeholder="Tên DV" value="' + esc(s.note||"") + '" style="flex:1" autocomplete="off">' +
           '<button class="row-del" data-sd="' + i + '" style="background:none;border:none;color:var(--danger);font-size:1rem;cursor:pointer">✕</button>' +
         '</div>' +
         '<div style="display:flex;gap:.4rem;align-items:center;margin-top:.35rem">' +
@@ -2895,7 +3224,7 @@ function openSvcModal(tableId){
 }
 
 /* ============================================================
-   TABLE NOTE + EDIT TA + CANCEL ITEM
+   TABLE NOTE + EDIT TA + CANCEL
    ============================================================ */
 function openTableNoteModal(t){
   const root = document.getElementById("modalRoot");
@@ -2923,11 +3252,11 @@ function openEditTAModal(taId){
   modalLocked = true;
   root.innerHTML = '<div class="modal-back" id="mb"><div class="modal"><button class="close-x" id="mc">✕</button>' +
     '<h3>✏️ Sửa ' + taId + '</h3>' +
-    '<label class="fl">Tên <input id="eTaName" value="' + esc(meta.name) + '"></label>' +
-    '<label class="fl">SĐT <input id="eTaPhone" value="' + esc(meta.phone) + '" inputmode="tel"></label>' +
+    '<label class="fl">Tên <input id="eTaName" value="' + esc(meta.name) + '" autocomplete="off"></label>' +
+    '<label class="fl">SĐT <input id="eTaPhone" value="' + esc(meta.phone) + '" inputmode="tel" autocomplete="off"></label>' +
     '<label class="fl" style="margin-top:.5rem"><input type="checkbox" id="eTaPickup" ' + (meta.pickup?'checked':'') + ' style="width:auto"> Khách tự đến lấy</label>' +
-    '<label class="fl" id="eTaAddrWrap" style="' + (meta.pickup?'display:none':'') + '">Địa chỉ <input id="eTaAddr" value="' + esc(meta.address) + '"></label>' +
-    '<label class="fl">Ghi chú <input id="eTaNote" value="' + esc(meta.note) + '"></label>' +
+    '<label class="fl" id="eTaAddrWrap" style="' + (meta.pickup?'display:none':'') + '">Địa chỉ <input id="eTaAddr" value="' + esc(meta.address) + '" autocomplete="street-address"></label>' +
+    '<label class="fl">Ghi chú <input id="eTaNote" value="' + esc(meta.note) + '" autocomplete="off"></label>' +
     '<div class="row" style="margin-top:.8rem"><button class="btn secondary" id="eTaCancel">Hủy</button>' +
     '<button class="btn ok" id="eTaSave">💾 Lưu</button></div></div></div>';
   const close = ()=>{ modalLocked = false; root.innerHTML = ""; renderAll(); };
@@ -2953,6 +3282,7 @@ function requestCancelItem(orderId){
   if(!o) return;
   const isDone = o.status === "hoan_thanh";
   const isCooking = o.status === "dang_lam";
+  const isPendingCK = o.status === "cho_ck";
   if(isDone){
     if(!isManager()){ alert("Cần QL xác nhận."); return; }
     if(!confirm('Món đã hoàn thành. Hủy sẽ HOÀN LẠI NGUYÊN LIỆU. Tiếp tục?')) return;
@@ -2964,6 +3294,8 @@ function requestCancelItem(orderId){
       if(pin !== state.settings.managerPin){ alert("Sai PIN!"); return; }
     }
     if(!confirm('Món đang chế biến. Hủy vẫn tính phí NVL đã dùng?')) return;
+  } else if(isPendingCK){
+    if(!confirm('Đơn chờ CK. Hủy đơn này?')) return;
   } else {
     if(!confirm('Hủy "' + o.name + '" ×' + o.qty + '?')) return;
     if(state.settings.cancelApproval && !isManager()){
@@ -2984,7 +3316,7 @@ function requestCancelItem(orderId){
   save(); renderAll();
 }
   /* ============================================================
-   IN HÓA ĐƠN — CHUẨN HÓA ĐƠN
+   IN HÓA ĐƠN
    ============================================================ */
 function printBill(id, type, itemsOverride, totalOverride, doPrint, discountInfo){
   const isTA = isTakeawayId(id);
@@ -3004,10 +3336,10 @@ function printBill(id, type, itemsOverride, totalOverride, doPrint, discountInfo
   const tax = Math.round(taxBase * taxRate / 100);
   const total = totalOverride != null ? totalOverride : (taxBase + tax);
   const kids = isTA ? [] : mergedChildren(id);
-  const title = type === "final" ? "HÓA ĐƠN THANH TOÁN" : (type === "pending" ? "PHIẾU ĐỀ NGHỊ THANH TOÁN" : "PHIẾU TẠM TÍNH");
+  const title = type === "final" ? "HÓA ĐƠN THANH TOÁN" : (type === "pending" ? "PHIẾU ĐỀ NGHỊ TT" : "PHIẾU TẠM TÍNH");
   const code = (state.invoices.find(inv=>inv.table === id && inv.type === "final" && Math.abs((inv.total||0) - total) < 1)||{}).code || genInvoiceCode(Date.now());
   const locLine = isTA
-    ? 'Đơn hàng: <b>' + esc(id) + '</b>' + (meta ? '<br>Khách: <b>' + esc(meta.name) + '</b> — ĐT: ' + esc(meta.phone) : '') + (meta && !meta.pickup && meta.address ? '<br>ĐC: ' + esc(meta.address) : (meta && meta.pickup ? '<br>Hình thức: Khách tự đến lấy' : ''))
+    ? 'Đơn: <b>' + esc(id) + '</b>' + (meta ? '<br>Khách: <b>' + esc(meta.name) + '</b> — ĐT: ' + esc(meta.phone) : '') + (meta && !meta.pickup && meta.address ? '<br>ĐC: ' + esc(meta.address) : (meta && meta.pickup ? '<br>Khách tự đến lấy' : ''))
     : 'Bàn: <b>' + esc(id) + (kids.length ? ' + ' + kids.join(", ") : '') + '</b>';
   const w = window.open("", "_blank", "width=420,height=700");
   if(!w){ alert("Không mở được cửa sổ in."); return; }
@@ -3020,8 +3352,7 @@ function printBill(id, type, itemsOverride, totalOverride, doPrint, discountInfo
   const bankName = (BANK_LIST.find(x=>x.id===bankInfo.bankId)||{}).name || bankInfo.bankId;
   let billItems = items.map(i=>'<tr><td style="padding:3px 4px;vertical-align:top">' +
     '<div>' + esc(i.name) + (i.note ? ' <i style="color:#666;font-size:10px">(' + esc(i.note) + ')</i>' : '') + '</div>' +
-    '</td>' +
-    '<td style="text-align:center;padding:3px 4px">' + i.qty + '</td>' +
+    '</td><td style="text-align:center;padding:3px 4px">' + i.qty + '</td>' +
     '<td style="text-align:right;padding:3px 4px">' + Number(i.price||0).toLocaleString('vi-VN') + '</td>' +
     '<td style="text-align:right;padding:3px 4px;font-weight:600">' + (i.qty*i.price).toLocaleString('vi-VN') + '</td></tr>').join("");
   let svcRows = "";
@@ -3032,27 +3363,26 @@ function printBill(id, type, itemsOverride, totalOverride, doPrint, discountInfo
       '<td style="text-align:right;padding:3px 4px;font-weight:600">' + (Number(s.price)||0).toLocaleString('vi-VN') + '</td></tr>';
   });
   if(deliveryFee > 0){
-    svcRows += '<tr><td style="padding:3px 4px">Phí giao hàng</td><td style="text-align:center;padding:3px 4px">1</td>' +
+    svcRows += '<tr><td style="padding:3px 4px">Phí giao</td><td style="text-align:center;padding:3px 4px">1</td>' +
       '<td style="text-align:right;padding:3px 4px">' + deliveryFee.toLocaleString('vi-VN') + '</td>' +
       '<td style="text-align:right;padding:3px 4px;font-weight:600">' + deliveryFee.toLocaleString('vi-VN') + '</td></tr>';
   }
+  // QR ngân hàng hiển thị ngay (Fix #6)
+  const qrUrl = (type === "final" && isBankConfigured() && bankInfo.showOnBill !== false) ? buildBankQrUrl(total, 'Thanh toan ' + code) : "";
   w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + title + ' ' + esc(code) + '</title>' +
     '<style>' +
     '@page{size:A5 portrait;margin:6mm 5mm}' +
     'body{font-family:"Times New Roman",Arial,sans-serif;font-size:11px;padding:0;margin:0 auto;max-width:280px;color:#000}' +
     'h1{text-align:center;font-size:15px;margin:4px 0;font-weight:900;letter-spacing:.5px}' +
     '.brand-contact{font-size:9px;color:#333;text-align:center;margin-bottom:4px;line-height:1.3}' +
-    '.center{text-align:center}' +
-    '.title{font-size:13px;font-weight:800;margin:6px 0;text-align:center;letter-spacing:.5px}' +
+    '.center{text-align:center}.title{font-size:13px;font-weight:800;margin:6px 0;text-align:center;letter-spacing:.5px}' +
     '.invoice-code{font-size:10px;text-align:center;color:#444;margin-bottom:4px}' +
     '.info-line{font-size:10.5px;margin:2px 0}' +
     'hr{border:none;border-top:1px dashed #333;margin:5px 0}' +
     'table.items{width:100%;border-collapse:collapse;font-size:10.5px}' +
     'table.items thead th{background:#f0f0f0;padding:3px 4px;border-top:1px solid #999;border-bottom:1px solid #999;font-size:10px;text-align:left;font-weight:800}' +
-    'table.items thead th.r{text-align:right}' +
-    'table.items thead th.c{text-align:center}' +
-    '.totals{font-size:11px;margin-top:3px}' +
-    '.totals .row{display:flex;justify-content:space-between;padding:2px 0}' +
+    'table.items thead th.r{text-align:right}table.items thead th.c{text-align:center}' +
+    '.totals{font-size:11px;margin-top:3px}.totals .row{display:flex;justify-content:space-between;padding:2px 0}' +
     '.grand{font-size:14px;font-weight:900;border-top:2px solid #000;padding-top:5px;margin-top:4px;display:flex;justify-content:space-between}' +
     '.note{font-size:9.5px;color:#444;font-style:italic;margin-top:6px;line-height:1.35}' +
     '.qrwrap{text-align:center;margin:6px 0}' +
@@ -3060,8 +3390,7 @@ function printBill(id, type, itemsOverride, totalOverride, doPrint, discountInfo
     '.footer{text-align:center;font-size:10.5px;margin-top:6px;font-weight:700}' +
     '.dev{font-size:8.5px;color:#888;text-align:center;margin-top:4px;font-style:italic}' +
     '.sign{display:flex;justify-content:space-between;margin-top:8px;font-size:9px;text-align:center}' +
-    '.sign > div{flex:1}' +
-    '.sign .line{margin-top:18px;border-top:1px dotted #666;padding-top:2px}' +
+    '.sign > div{flex:1}.sign .line{margin-top:18px;border-top:1px dotted #666;padding-top:2px}' +
     '@media print{.noprint{display:none}}' +
     '</style></head><body>' +
     '<h1>' + esc(brand.name||"ỐC NƯỚNG") + '</h1>' +
@@ -3073,14 +3402,11 @@ function printBill(id, type, itemsOverride, totalOverride, doPrint, discountInfo
     '</div>' : '') +
     '<div class="title">' + title + '</div>' +
     '<div class="invoice-code">Số HĐ: <b>' + esc(code) + '</b>' + (invoiceSymbol ? ' · Ký hiệu: ' + esc(invoiceSymbol) : '') + '</div>' +
-    '<hr>' +
-    '<div class="info-line">' + locLine + '</div>' +
-    '<div class="info-line">Thời gian: ' + timeStr + '</div>' +
-    '<hr>' +
+    '<hr><div class="info-line">' + locLine + '</div>' +
+    '<div class="info-line">Thời gian: ' + timeStr + '</div><hr>' +
     '<table class="items"><thead><tr><th>Món</th><th class="c">SL</th><th class="r">Đơn giá</th><th class="r">T.Tiền</th></tr></thead><tbody>' +
       billItems + svcRows +
-    '</tbody></table>' +
-    '<hr>' +
+    '</tbody></table><hr>' +
     '<div class="totals">' +
       '<div class="row"><span>Tạm tính:</span><b>' + subtotal.toLocaleString('vi-VN') + ' đ</b></div>' +
       (discount > 0 ? '<div class="row"><span>Giảm giá:</span><b>- ' + discount.toLocaleString('vi-VN') + ' đ</b></div>' : '') +
@@ -3089,26 +3415,25 @@ function printBill(id, type, itemsOverride, totalOverride, doPrint, discountInfo
     '</div>' +
     (svcFree.length ? '<div class="note">DV miễn phí: ' + svcFree.map(s=>esc(s.note||'')).filter(Boolean).join(", ") + '</div>' : '') +
     (type !== "final" ? '<div class="note" style="text-align:center;color:#9B2A1A;font-weight:700">※ Phiếu ' + (type === "pending" ? 'đề nghị thanh toán' : 'tạm tính') + ' — chưa phải HĐ chính thức.</div>' : '') +
-    ((type === "final" && isBankConfigured() && bankInfo.showOnBill !== false) ?
+    (qrUrl ?
       '<hr><div class="center" style="font-size:10px;font-weight:700">💳 QUÉT QR ĐỂ THANH TOÁN</div>' +
-      '<div class="qrwrap"><img src="' + buildBankQrUrl(total, 'Thanh toan ' + code) + '" referrerpolicy="no-referrer"></div>' +
+      '<div class="qrwrap"><img src="' + qrUrl + '" referrerpolicy="no-referrer"></div>' +
       '<div class="center" style="font-size:9px;color:#555;line-height:1.4">' +
         '<b>' + esc(bankName) + '</b><br>STK: <b>' + esc(bankInfo.accountNumber||"") + '</b><br>Chủ TK: ' + esc(bankInfo.accountHolder||"") +
       '</div>' : '') +
-    '<hr>' +
-    '<div class="sign">' +
+    '<hr><div class="sign">' +
       '<div>Khách hàng<div class="line">(Ký, ghi rõ họ tên)</div></div>' +
       '<div>Nhân viên<div class="line">(Ký, ghi rõ họ tên)</div></div>' +
     '</div>' +
     '<div class="footer">Cảm ơn Quý khách và hẹn gặp lại! 🙏</div>' +
     '<div class="dev">Hoá đơn phát hành bởi ' + esc(brand.dev||"Tiểu Nhị") + '</div>' +
-    (doPrint !== false ? '<script>setTimeout(()=>window.print(),300);<\/script>' : '') +
+    (doPrint !== false ? '<script>setTimeout(()=>window.print(),500);<\/script>' : '') +
     '</body></html>');
   w.document.close();
 }
 
 /* ============================================================
-   THANH TOÁN
+   MODAL THANH TOÁN
    ============================================================ */
 function renderPayModal(){
   const root = document.getElementById("modalRoot");
@@ -3151,7 +3476,7 @@ function renderPayModal(){
     '<div style="display:flex;justify-content:space-between;align-items:center">' +
       '<div style="flex:1;min-width:0">' +
         '<div class="tiny" style="opacity:.9">📞 SĐT khách</div>' +
-        '<input id="payLoyaltyPhone" value="' + esc(payLoyalty.phone) + '" placeholder="0901234567" inputmode="tel" style="width:100%;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);color:#fff;margin-top:.2rem">' +
+        '<input id="payLoyaltyPhone" value="' + esc(payLoyalty.phone) + '" placeholder="0901234567" inputmode="tel" style="width:100%;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);color:#fff;margin-top:.2rem" autocomplete="off">' +
         (loyaltyCustomer ? (function(){
           const pts = getCustomerPoints(loyaltyCustomer);
           const rk = getCustomerRank(loyaltyCustomer);
@@ -3164,7 +3489,7 @@ function renderPayModal(){
       '</div>' +
       (loyaltyCustomer ? '<div style="text-align:right"><div style="font-size:2rem;line-height:1">' + getCustomerRank(loyaltyCustomer).icon + '</div><div class="tiny" style="opacity:.9">' + getCustomerRank(loyaltyCustomer).name + '</div></div>' : '') +
     '</div>' +
-    '<input id="payLoyaltyName" value="' + esc(loyaltyCustomer ? loyaltyCustomer.name : payLoyalty.name) + '" placeholder="Tên khách (tùy chọn)" style="width:100%;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);color:#fff;margin-top:.35rem">' +
+    '<input id="payLoyaltyName" value="' + esc(loyaltyCustomer ? loyaltyCustomer.name : payLoyalty.name) + '" placeholder="Tên khách (tùy chọn)" style="width:100%;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);color:#fff;margin-top:.35rem" autocomplete="off">' +
   '</div>' : '';
   root.innerHTML = '<div class="modal-back" id="mb"><div class="modal">' +
     '<button class="close-x" id="mc">✕</button>' +
@@ -3172,8 +3497,7 @@ function renderPayModal(){
     '<div class="muted tiny">Chỉnh số lượng thực tế trước khi chốt.</div>' +
     '<div style="margin-top:.6rem">' + os.map(lineHtml).join("") + '</div>' +
     (svcsBillable.length ? '<div class="svc-summary"><div class="row" style="margin-bottom:.3rem"><b>➕ Dịch vụ</b></div>' +
-      svcsBillable.map(s=>'<div class="svc-item"><span>' + esc(s.note||"DV") + '</span><span><b>' + VND(s.price) + '</b></span></div>').join("") +
-    '</div>' : '') +
+      svcsBillable.map(s=>'<div class="svc-item"><span>' + esc(s.note||"DV") + '</span><span><b>' + VND(s.price) + '</b></span></div>').join("") + '</div>' : '') +
     (deliveryFee > 0 ? '<div class="svc-summary" style="border-color:var(--ta)">🛵 Phí giao: <b>' + VND(deliveryFee) + '</b></div>' : '') +
     '<div class="discount-row" style="margin-top:.6rem">' +
       '<select id="payDiscType">' +
@@ -3186,8 +3510,7 @@ function renderPayModal(){
     loyaltyHtml +
     (isBankConfigured() ? '<div class="card" style="margin-top:.7rem;background:var(--bg);text-align:center;border:1px dashed var(--money)"><b>💳 QR thanh toán</b>' +
       '<img id="payQrImg" src="' + buildBankQrUrl(tt.total, 'Thanh toan ' + id) + '" style="width:200px;height:200px;margin:.5rem auto;display:block;background:#fff;border-radius:10px;border:1px solid var(--border);padding:4px" referrerpolicy="no-referrer" onerror="this.style.display=\'none\'">' +
-      '<div class="tiny">STK: <b>' + esc((state.settings.bank.accountNumber||"")) + '</b> · ' + esc((BANK_LIST.find(b=>b.id===state.settings.bank.bankId)||{}).name||"") + '</div>' +
-    '</div>' : '') +
+      '<div class="tiny">STK: <b>' + esc((state.settings.bank.accountNumber||"")) + '</b> · ' + esc((BANK_LIST.find(b=>b.id===state.settings.bank.bankId)||{}).name||"") + '</div></div>' : '') +
     '<div style="margin-top:.8rem;background:var(--bg);padding:.6rem;border-radius:8px">' +
       '<div class="row"><span>Tạm tính:</span><b id="paySub">' + VND(tt.sub) + '</b></div>' +
       (payDiscount.type ? '<div class="row"><span style="color:var(--danger)">− Giảm:</span><b id="payDiscLine" style="color:var(--danger)">' + VND(tt.disc) + '</b></div>' : '') +
@@ -3274,9 +3597,7 @@ function renderPayModal(){
     const total = afterDisc + tax;
     if(!confirm('Xác nhận thanh toán ' + (isTA?'đơn '+id:'bàn '+id) + ': ' + VND(total) + (disc>0?' (giảm ' + VND(disc) + ')':'') + '?')) return;
     state.invoices.forEach(inv=>{
-      if(inv.table === id && inv.type === "pending" && !inv.superseded){
-        inv.superseded = true; inv.status = "superseded";
-      }
+      if(inv.table === id && inv.type === "pending" && !inv.superseded){ inv.superseded = true; inv.status = "superseded"; }
     });
     const code = genInvoiceCode(Date.now());
     state.invoices.push({
@@ -3297,9 +3618,7 @@ function renderPayModal(){
       delete state.tableSessions[id];
       delete state.takeawayMeta[id];
     } else {
-      Object.keys(state.merges).forEach(k=>{ if(resolveTable(k) === id){
-        delete state.merges[k]; delete state.tableSessions[k];
-      }});
+      Object.keys(state.merges).forEach(k=>{ if(resolveTable(k) === id){ delete state.merges[k]; delete state.tableSessions[k]; }});
       delete state.tableSessions[id];
       delete state.tableServices[id];
       delete state.tableNotes[id];
@@ -3316,41 +3635,90 @@ function renderPayModal(){
 }
 
 /* ============================================================
-   QR MANG VỀ
+   QR MANG VỀ — có upload/URL + in QR ngân hàng (#4, #6)
    ============================================================ */
 function openTakeawayQRModal(){
   const baseUrl = state.settings.qrUrlBase || (location.origin + location.pathname);
   const url = baseUrl + "?table=TAKEAWAY";
+  const custom = state.qrTakeaway || "";
   const root = document.getElementById("modalRoot");
   modalLocked = true;
   let qrImg = "";
-  try{ const qr = qrcode(0,"M"); qr.addData(url); qr.make(); qrImg = qr.createImgTag(4,4); }catch(e){}
-  root.innerHTML = '<div class="modal-back" id="mb"><div class="modal">' +
-    '<button class="close-x" id="mc">✕</button>' +
-    '<h3>🥡 QR Đặt món mang về</h3>' +
+  if(custom){
+    qrImg = '<img src="' + esc(custom) + '" referrerpolicy="no-referrer" style="max-width:100%;max-height:280px;border-radius:8px">';
+  } else {
+    try{ const qr = qrcode(0,"M"); qr.addData(url); qr.make(); qrImg = qr.createImgTag(5,5); }catch(e){}
+  }
+  root.innerHTML = '<div class="modal-back" id="mb"><div class="modal"><button class="close-x" id="mc">✕</button>' +
+    '<h3>🥡 QR Đặt mang về</h3>' +
     '<div class="muted tiny">Khách quét QR này để đặt món mang về, không cần bàn.</div>' +
-    '<div style="text-align:center;margin:.8rem 0"><div style="background:#fff;padding:10px;border-radius:12px;display:inline-block;border:1px solid var(--border)">' + qrImg + '</div></div>' +
+    '<div style="text-align:center;margin:.8rem 0">' +
+      '<div style="background:#fff;padding:10px;border-radius:12px;display:inline-block;border:1px solid var(--border)">' + qrImg + '</div>' +
+    '</div>' +
     '<div class="tiny" style="text-align:center;word-break:break-all;color:var(--muted)">' + esc(url) + '</div>' +
-    '<div class="row" style="margin-top:.8rem;gap:.4rem">' +
+    '<div class="row" style="margin-top:.7rem;gap:.3rem;flex-wrap:wrap">' +
+      '<label class="btn small secondary" style="cursor:pointer;margin:0;flex:1">🖼️ Upload<input type="file" id="tqUpload" accept="image/*" style="display:none"></label>' +
+      '<button class="btn small warn" id="tqUrl" style="flex:1">🔗 URL</button>' +
+      (custom ? '<button class="btn small danger" id="tqRemove" style="flex:1">🗑️ Xoá</button>' : '') +
+    '</div>' +
+    '<div class="row" style="margin-top:.5rem;gap:.3rem">' +
       '<button class="btn secondary" id="tqClose" style="flex:1">← Đóng</button>' +
       '<button class="btn" id="tqPrint" style="flex:1">🖨️ In</button>' +
       '<button class="btn ok" id="tqCopy" style="flex:1">📋 Copy</button>' +
-    '</div></div></div>';
+    '</div>' +
+  '</div></div>';
   const close = ()=>{ modalLocked = false; root.innerHTML = ""; renderAll(); };
   document.getElementById("mc").onclick = close;
   document.getElementById("mb").onclick = e=>{ if(e.target.id === "mb") close(); };
   document.getElementById("tqClose").onclick = close;
+  // Upload ảnh QR
+  const upInput = document.getElementById("tqUpload");
+  if(upInput) upInput.onchange = async ()=>{
+    const f = upInput.files[0]; if(!f) return;
+    try{
+      const dataUrl = await readImageAsResizedDataUrl(f, 500, 500, 0.75);
+      state.qrTakeaway = dataUrl;
+      if(fbQrRef) fbQrRef.child("TAKEAWAY").set(dataUrl).catch(e=>console.error(e));
+      save();
+      modalLocked = false; root.innerHTML = "";
+      renderAll();
+      openTakeawayQRModal();
+      alert("✓ Đã lưu QR mang về");
+    }catch(err){ alert("Lỗi đọc ảnh"); }
+  };
+  document.getElementById("tqUrl").onclick = ()=>{
+    const u = prompt("Dán URL ảnh QR (Imgur/Postimages):", state.qrTakeaway||"");
+    if(u === null) return;
+    const url = u.trim();
+    state.qrTakeaway = url;
+    if(fbQrRef) fbQrRef.child("TAKEAWAY").set(url || null).catch(e=>console.error(e));
+    save();
+    modalLocked = false; root.innerHTML = "";
+    renderAll();
+    openTakeawayQRModal();
+  };
+  const rmBtn = document.getElementById("tqRemove");
+  if(rmBtn) rmBtn.onclick = ()=>{
+    if(!confirm("Xóa QR tùy chỉnh? Sẽ dùng QR tự sinh.")) return;
+    state.qrTakeaway = "";
+    if(fbQrRef) fbQrRef.child("TAKEAWAY").remove().catch(e=>console.error(e));
+    save();
+    modalLocked = false; root.innerHTML = "";
+    renderAll();
+    openTakeawayQRModal();
+  };
   document.getElementById("tqPrint").onclick = ()=>{
     const w = window.open("", "_blank");
     if(!w) return;
+    const qrShow = custom ? '<img src="' + esc(custom) + '" style="max-width:200px">' : (function(){ try{ const qr = qrcode(0,"M"); qr.addData(url); qr.make(); return qr.createImgTag(5,5); }catch(e){ return ""; } })();
     w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>QR Mang về</title>' +
       '<style>body{font-family:Arial,sans-serif;text-align:center;padding:20px}h2{color:#9B2A1A;margin:0 0 6px}.sub{color:#666;font-size:13px;margin-bottom:14px}.qr{margin:10px auto;padding:10px;border:2px solid #9B2A1A;border-radius:12px;display:inline-block;background:#FFF3E0}.url{font-size:10px;color:#888;word-break:break-all;margin-top:8px}@media print{.noprint{display:none}}</style></head><body>' +
       '<div class="noprint" style="margin-bottom:10px"><button onclick="window.print()" style="padding:8px 16px;font-size:14px">🖨️ In</button></div>' +
       '<h2>' + esc(state.brand.name) + '</h2>' +
       '<div class="sub">🥡 QUÉT QR ĐỂ ĐẶT MÓN MANG VỀ</div>' +
-      '<div class="qr">' + qrImg + '</div>' +
+      '<div class="qr">' + qrShow + '</div>' +
       '<div class="url">' + esc(url) + '</div>' +
-      '<script>setTimeout(()=>window.print(),400);<\/script></body></html>');
+      '<script>setTimeout(()=>window.print(),500);<\/script></body></html>');
     w.document.close();
   };
   document.getElementById("tqCopy").onclick = ()=>{
@@ -3391,23 +3759,43 @@ function renderQl(){
   else if(currentQlTab === "customer") renderQlCustomer(content);
   else if(currentQlTab === "settings") renderQlSettings(content);
 }
+// MENU ADMIN có SEARCH (#9)
+let menuAdminSearch = "";
 function renderQlMenu(el){
   const showFin = canSeeFinance();
+  const search = menuAdminSearch.trim().toLowerCase();
   el.innerHTML = '<div class="card"><div class="row"><b>🍽️ Quản lý menu</b>' +
     '<div style="display:flex;gap:.3rem">' +
       '<button class="btn small secondary" id="btnAddCat" ' + (isManager()?"":"disabled") + '>+ Danh mục</button>' +
       '<button class="btn small" id="btnAddMenu" ' + (isManager()?"":"disabled") + '>+ Món</button>' +
-    '</div></div><div id="menuAdmin" style="margin-top:.5rem;max-height:520px;overflow:auto"></div></div>';
+    '</div></div>' +
+    '<input class="search-input" id="menuSearch" placeholder="🔍 Tìm món..." value="' + esc(menuAdminSearch) + '" autocomplete="off" style="margin-top:.5rem">' +
+    '<div id="menuAdmin" style="margin-top:.5rem;max-height:520px;overflow:auto"></div></div>';
   document.getElementById("btnAddMenu").onclick = ()=>{ if(isManager()) openMenuEditor(""); };
   document.getElementById("btnAddCat").onclick = ()=>{ if(isManager()) addNewCategory(); };
+  // Search input — debounce nhẹ để không lag
+  const searchInp = document.getElementById("menuSearch");
+  let searchTmr;
+  searchInp.oninput = e=>{
+    clearTimeout(searchTmr);
+    searchTmr = setTimeout(()=>{
+      menuAdminSearch = e.target.value;
+      renderQlMenu(el);
+      const si = document.getElementById("menuSearch");
+      if(si){ si.focus(); si.setSelectionRange(si.value.length, si.value.length); }
+    }, 300);
+  };
   const box = document.getElementById("menuAdmin");
   box.innerHTML = "";
+  let hasResult = false;
   getCats().forEach(cat=>{
-    const items = state.menu.filter(m=>m.cat === cat);
+    let items = state.menu.filter(m=>m.cat === cat);
+    if(search) items = items.filter(m => m.name.toLowerCase().includes(search));
     if(!items.length) return;
+    hasResult = true;
     const h = document.createElement("div");
     h.style.cssText = "font-size:.82rem;font-weight:700;margin:.6rem 0 .3rem";
-    h.innerHTML = catIcon(cat) + ' ' + esc(cat);
+    h.innerHTML = catIcon(cat) + ' ' + esc(cat) + ' <span class="muted" style="font-weight:400">(' + items.length + ')</span>';
     box.appendChild(h);
     items.forEach(m=>{
       const bestTag = m.tag === "best" ? ' <span class="badge" style="background:var(--danger);font-size:.62rem">🔥</span>' : (m.tag === "good" ? ' <span class="badge p2" style="font-size:.62rem">👍</span>' : "");
@@ -3434,6 +3822,9 @@ function renderQlMenu(el){
       box.appendChild(row);
     });
   });
+  if(!hasResult){
+    box.innerHTML = '<div class="empty">Không tìm thấy món nào</div>';
+  }
   box.querySelectorAll("[data-tog]").forEach(b=>b.onclick = ()=>{
     const m = state.menu.find(x=>x.id === b.dataset.tog);
     if(m){ m.available = !m.available; save(); renderAll(); }
@@ -3503,16 +3894,19 @@ function renderQlKho(el){
 }
 
 /* ============================================================
-   BULK PURCHASE — không reload khi nhập
+   BULK PURCHASE — auto-fill giá cũ (#5)
    ============================================================ */
 function openBulkPurchaseModal(){
   if(!isManager()) return alert("🔒 Chỉ QL");
-  purchaseDraft = [{ingId: state.ingredients[0] ? state.ingredients[0].id : "", qty:1, unitPrice:0}];
+  // Khởi tạo: dòng đầu auto-fill giá
+  const firstIng = state.ingredients[0];
+  purchaseDraft = [{ingId: firstIng ? firstIng.id : "", qty:1, unitPrice: firstIng ? firstIng.price : 0}];
   const root = document.getElementById("modalRoot");
   modalLocked = true;
   root.innerHTML = '<div class="modal-back" id="mb"><div class="modal" style="max-width:700px">' +
     '<button class="close-x" id="mc">✕</button>' +
     '<h3>📦 Phiếu nhập nhiều dòng</h3>' +
+    '<div class="muted tiny">Chọn NL → giá cũ tự động điền. Sửa SL rồi Lưu.</div>' +
     '<div style="overflow-x:auto;margin-top:.6rem"><table class="bulk-table" id="bulkTable">' +
       '<thead><tr><th style="width:40%">Nguyên liệu</th><th style="width:15%">SL</th><th style="width:20%">Đơn giá</th><th style="width:20%">T.Tiền</th><th></th></tr></thead>' +
       '<tbody id="bulkBody"></tbody>' +
@@ -3521,7 +3915,7 @@ function openBulkPurchaseModal(){
     '<div class="row" style="margin-top:.6rem;border-top:1px dashed var(--border);padding-top:.5rem">' +
       '<b>Tổng:</b><b id="bulkTotal" style="color:var(--money);font-size:1.1rem">0đ</b>' +
     '</div>' +
-    '<label class="fl">Nhà cung cấp <input id="bulkSupplier" placeholder="VD: Chị Hoa - chợ đầu mối"></label>' +
+    '<label class="fl">Nhà cung cấp <input id="bulkSupplier" placeholder="VD: Chị Hoa - chợ đầu mối" autocomplete="off"></label>' +
     '<div class="row" style="margin-top:.8rem">' +
       '<button class="btn secondary" id="bulkCancel">Hủy</button>' +
       '<button class="btn money" id="bulkSave">💾 Lưu & cập nhật kho</button>' +
@@ -3541,7 +3935,7 @@ function openBulkPurchaseModal(){
       '</tr>';
     }).join("");
     updateTotal();
-    // Auto-fill giá khi chọn NL
+    // Đổi NL → auto-fill giá cũ
     body.querySelectorAll("[data-bf='ingId']").forEach(sel=>{
       sel.onchange = ()=>{
         const i = parseInt(sel.dataset.i);
@@ -3549,14 +3943,15 @@ function openBulkPurchaseModal(){
         purchaseDraft[i].ingId = sel.value;
         const ing = state.ingredients.find(x=>x.id === sel.value);
         if(ing){
+          purchaseDraft[i].unitPrice = ing.price || 0;
           const row = sel.closest("tr");
           const priceInp = row.querySelector("[data-bf='unitPrice']");
-          if(priceInp && !Number(priceInp.value)){ priceInp.value = ing.price || 0; purchaseDraft[i].unitPrice = ing.price || 0; updateRowTotal(i); }
+          if(priceInp) priceInp.value = ing.price || 0;
+          updateRowTotal(i);
         }
         updateTotal();
       };
     });
-    // Qty + price: cập nhật tại chỗ, KHÔNG rebuild
     body.querySelectorAll("[data-bf='qty'], [data-bf='unitPrice']").forEach(inp=>{
       inp.oninput = ()=>{
         const i = parseInt(inp.dataset.i);
@@ -3570,7 +3965,10 @@ function openBulkPurchaseModal(){
     body.querySelectorAll("[data-bd]").forEach(b=>b.onclick = ()=>{
       const i = parseInt(b.dataset.bd);
       purchaseDraft.splice(i, 1);
-      if(!purchaseDraft.length) purchaseDraft.push({ingId: state.ingredients[0] ? state.ingredients[0].id : "", qty:1, unitPrice:0});
+      if(!purchaseDraft.length){
+        const firstIng = state.ingredients[0];
+        purchaseDraft.push({ingId: firstIng ? firstIng.id : "", qty:1, unitPrice: firstIng ? firstIng.price : 0});
+      }
       renderBody();
     });
   }
@@ -3590,7 +3988,8 @@ function openBulkPurchaseModal(){
   document.getElementById("mb").onclick = e=>{ if(e.target.id === "mb"){ modalLocked=false; root.innerHTML=""; renderAll(); } };
   document.getElementById("bulkCancel").onclick = ()=>{ modalLocked=false; root.innerHTML=""; renderAll(); };
   document.getElementById("bulkAdd").onclick = ()=>{
-    purchaseDraft.push({ingId: state.ingredients[0] ? state.ingredients[0].id : "", qty:1, unitPrice:0});
+    const firstIng = state.ingredients[0];
+    purchaseDraft.push({ingId: firstIng ? firstIng.id : "", qty:1, unitPrice: firstIng ? firstIng.price : 0});
     renderBody();
   };
   document.getElementById("bulkSave").onclick = ()=>{
@@ -3744,8 +4143,7 @@ function renderQlFinance(el){
       }).join("") +
       '</tbody></table>' : '<div class="empty">Chưa có</div>') +
   '</div>';
-  const fp = document.getElementById("finPeriod");
-  if(fp) fp.onchange = ()=>{ finPeriod = fp.value; renderQlFinance(el); };
+  document.getElementById("finPeriod").onchange = e=>{ finPeriod = e.target.value; renderQlFinance(el); };
   const fa = document.getElementById("finApply");
   if(fa) fa.onclick = ()=>{ finFrom = document.getElementById("finFrom").value; finTo = document.getElementById("finTo").value; renderQlFinance(el); };
   document.getElementById("btnAddPurchase").onclick = ()=>openBulkPurchaseModal();
@@ -3761,7 +4159,7 @@ function openRecurringModal(){
   const opts = Object.entries(EXP_CATS).map(([k,v])=>'<option value="' + k + '">' + v.label + '</option>').join("");
   root.innerHTML = '<div class="modal-back" id="mb"><div class="modal"><button class="close-x" id="mc">✕</button>' +
     '<h3>📅 CP cố định</h3>' +
-    '<label class="fl">Tên <input id="recName"></label>' +
+    '<label class="fl">Tên <input id="recName" autocomplete="off"></label>' +
     '<label class="fl">Loại <select id="recCat">' + opts + '</select></label>' +
     '<label class="fl">Số tiền/tháng <input type="number" id="recAmount" value="0" step="100000" min="0"></label>' +
     '<div class="row" style="margin-top:.8rem"><button class="btn secondary" id="recCancel">Hủy</button><button class="btn money" id="recSave">💾 Lưu</button></div></div></div>';
@@ -3786,7 +4184,7 @@ function openExpenseModal(){
     '<h3>💸 Chi phí</h3>' +
     '<label class="fl">Loại <select id="exCat">' + opts + '</select></label>' +
     '<label class="fl">Số tiền <input type="number" id="exAmount" value="0" step="10000" min="0"></label>' +
-    '<label class="fl">Ghi chú <input id="exNote"></label>' +
+    '<label class="fl">Ghi chú <input id="exNote" autocomplete="off"></label>' +
     '<label class="fl">Ngày <input type="date" id="exDate" value="' + new Date().toISOString().slice(0,10) + '"></label>' +
     '<div class="row" style="margin-top:.8rem"><button class="btn secondary" id="exCancel">Hủy</button><button class="btn money" id="exSave">💾 Lưu</button></div></div></div>';
   modalLocked = true;
@@ -3939,7 +4337,7 @@ function renderQlReport(el){
 }
 
 /* ============================================================
-   HÓA ĐƠN — TIN NHẮN — NHẠC ADMIN — QR — KHÁCH HÀNG
+   HÓA ĐƠN, TIN NHẮN, NHẠC ADMIN, QR, KHÁCH
    ============================================================ */
 function renderQlHoadon(el){
   const invs = toArr(state.invoices).slice().sort((a,b)=>(Number(b.ts)||0) - (Number(a.ts)||0));
@@ -4028,7 +4426,9 @@ function renderQlQr(el){
   const takeawayUrl = baseUrl + "?table=TAKEAWAY";
   el.innerHTML = '<div class="card"><div class="row"><b>🥡 QR Đặt mang về</b>' +
     '<button class="btn small" id="qrTakeawayBtn">📱 Xem & In</button></div>' +
-    '<div class="muted tiny">QR riêng cho khách đặt món mang về. Link: <code>' + esc(takeawayUrl) + '</code></div></div>' +
+    '<div class="muted tiny">QR riêng cho khách đặt món mang về. Link: <code>' + esc(takeawayUrl) + '</code></div>' +
+    (state.qrTakeaway ? '<div class="tiny" style="color:var(--money);margin-top:.3rem">✓ Đã có QR tùy chỉnh</div>' : '') +
+  '</div>' +
   '<div class="card"><div class="row"><b>🔗 QR theo bàn</b>' +
     '<div style="display:flex;gap:.3rem;flex-wrap:wrap">' +
       '<button class="btn small secondary" id="qrAll">Tất cả</button>' +
@@ -4118,7 +4518,7 @@ function openQrUrlModal(el){
     '<label class="fl">Chọn bàn <select id="qurlTable">' +
       visibleTables().map(t=>'<option value="' + t.id + '">Bàn ' + t.id + '</option>').join("") +
     '</select></label>' +
-    '<label class="fl">URL ảnh QR <input id="qurlLink" placeholder="https://i.imgur.com/xxx.png" inputmode="url"></label>' +
+    '<label class="fl">URL ảnh QR <input id="qurlLink" placeholder="https://i.imgur.com/xxx.png" inputmode="url" autocomplete="off"></label>' +
     '<div class="row" style="margin-top:.8rem"><button class="btn secondary" id="qurlCancel">Hủy</button><button class="btn ok" id="qurlSave">💾 Lưu</button></div></div></div>';
   const close = ()=>{ modalLocked = false; root.innerHTML = ""; renderAll(); };
   document.getElementById("mc").onclick = close;
@@ -4157,7 +4557,7 @@ function printQRCodes(tableIds){
     else { try{ const qr = qrcode(0, "M"); qr.addData(url); qr.make(); qrImg = qr.createImgTag(4,4); }catch(e){ qrImg = ""; } }
     html += '<div class="cell"><h3>BÀN ' + id + '</h3>' + qrImg + '<p>' + url + '</p></div>';
   });
-  html += '</div><script>setTimeout(()=>window.print(),400);<\/script></body></html>';
+  html += '</div><script>setTimeout(()=>window.print(),500);<\/script></body></html>';
   w.document.write(html); w.document.close();
 }
 function renderQlCustomer(el){
@@ -4194,30 +4594,30 @@ function renderQlCustomer(el){
 }
 
 /* ============================================================
-   CÀI ĐẶT
+   CÀI ĐẶT — Thêm toggle #3
    ============================================================ */
 function renderQlSettings(el){
   const totalImagesKB = totalImagesSizeKB();
   const cols = getVisibleCols();
   const rows = getVisibleRows();
   el.innerHTML = '<div class="card"><b>🏪 Thương hiệu</b>' +
-    '<label class="fl">🐚 Logo QUÁN (URL ảnh) <input id="setLogo" value="' + esc(state.brand.logo) + '" placeholder="https://i.imgur.com/logo.jpg" inputmode="url"></label>' +
-    '<label class="fl">🏮 Logo APP (URL ảnh) <input id="setAppLogo" value="' + esc(state.brand.appLogo||"") + '" placeholder="https://i.imgur.com/tieunhi.jpg" inputmode="url"></label>' +
-    '<label class="fl">Tên quán <input id="setName" value="' + esc(state.brand.name) + '"></label>' +
-    '<label class="fl">Khẩu hiệu <input id="setSub" value="' + esc(state.brand.sub) + '"></label>' +
-    '<label class="fl">📍 Địa chỉ <input id="setAddress" value="' + esc(state.brand.address||"") + '"></label>' +
-    '<label class="fl">📞 SĐT <input id="setPhone" value="' + esc(state.brand.phone||"") + '"></label>' +
-    '<label class="fl">📱 SĐT Zalo (đặt bàn) <input id="setZaloPhone" value="' + esc(state.settings.zaloPhone||"") + '" placeholder="0901234567" inputmode="tel"></label>' +
-    '<label class="fl">🕒 Giờ mở <input id="setHours" value="' + esc(state.brand.openHours||"") + '"></label>' +
-    '<label class="fl">Developer <input id="setDev" value="' + esc(state.brand.dev) + '"></label></div>' +
+    '<label class="fl">🐚 Logo QUÁN (URL ảnh) <input id="setLogo" value="' + esc(state.brand.logo) + '" placeholder="https://i.imgur.com/logo.jpg" inputmode="url" autocomplete="off"></label>' +
+    '<label class="fl">🏮 Logo APP (URL ảnh) <input id="setAppLogo" value="' + esc(state.brand.appLogo||"") + '" placeholder="https://i.imgur.com/tieunhi.jpg" inputmode="url" autocomplete="off"></label>' +
+    '<label class="fl">Tên quán <input id="setName" value="' + esc(state.brand.name) + '" autocomplete="off"></label>' +
+    '<label class="fl">Khẩu hiệu <input id="setSub" value="' + esc(state.brand.sub) + '" autocomplete="off"></label>' +
+    '<label class="fl">📍 Địa chỉ <input id="setAddress" value="' + esc(state.brand.address||"") + '" autocomplete="off"></label>' +
+    '<label class="fl">📞 SĐT <input id="setPhone" value="' + esc(state.brand.phone||"") + '" autocomplete="off"></label>' +
+    '<label class="fl">📱 SĐT Zalo (đặt bàn) <input id="setZaloPhone" value="' + esc(state.settings.zaloPhone||"") + '" placeholder="0901234567" inputmode="tel" autocomplete="off"></label>' +
+    '<label class="fl">🕒 Giờ mở <input id="setHours" value="' + esc(state.brand.openHours||"") + '" autocomplete="off"></label>' +
+    '<label class="fl">Developer <input id="setDev" value="' + esc(state.brand.dev) + '" autocomplete="off"></label></div>' +
   '<div class="card"><b>🧾 Hóa đơn</b>' +
-    '<label class="fl">MST quán <input id="setTaxCode" value="' + esc(state.settings.taxCode||"") + '" placeholder="0123456789"></label>' +
-    '<label class="fl">Ký hiệu HĐ <input id="setInvoiceSymbol" value="' + esc(state.settings.invoiceSymbol||"") + '" placeholder="1C24TAA"></label></div>' +
+    '<label class="fl">MST quán <input id="setTaxCode" value="' + esc(state.settings.taxCode||"") + '" placeholder="0123456789" autocomplete="off"></label>' +
+    '<label class="fl">Ký hiệu HĐ <input id="setInvoiceSymbol" value="' + esc(state.settings.invoiceSymbol||"") + '" placeholder="1C24TAA" autocomplete="off"></label></div>' +
   '<div class="card"><b>🔗 URL gốc QR</b>' +
     '<div class="muted tiny">VD: <code>https://username.github.io/ocnuong/</code></div>' +
-    '<label class="fl" style="margin-top:.4rem"><input id="setQrUrlBase" value="' + esc(state.settings.qrUrlBase||"") + '" placeholder="https://username.github.io/ocnuong/" inputmode="url"></label>' +
+    '<label class="fl" style="margin-top:.4rem"><input id="setQrUrlBase" value="' + esc(state.settings.qrUrlBase||"") + '" placeholder="https://username.github.io/ocnuong/" inputmode="url" autocomplete="off"></label>' +
     '<div class="row" style="margin-top:.5rem;gap:.3rem">' +
-      '<button class="btn small" id="setTakeawayQR" style="flex:1">🥡 Xem QR Mang về</button>' +
+      '<button class="btn small" id="setTakeawayQR" style="flex:1">🥡 QR Mang về</button>' +
       '<button class="btn small secondary" id="setTakeawayCopy" style="flex:1">📋 Copy link</button>' +
     '</div></div>' +
   '<div class="card"><b>🪑 Sơ đồ bàn</b>' +
@@ -4235,16 +4635,28 @@ function renderQlSettings(el){
   '<div class="card"><b>👥 Khách thân thiết</b>' +
     '<label class="fl" style="margin-top:.4rem"><input type="checkbox" id="setLoyalty" ' + (state.settings.loyaltyEnabled!==false?"checked":"") + ' style="width:auto"> Bật tích điểm</label>' +
     '<div class="muted tiny" style="margin-top:.3rem">100.000đ = 1 điểm · 100 điểm = 1 bậc</div></div>' +
+  // FIX #3: Toggle khách hủy món
+  '<div class="card"><b>🚫 Khách tự hủy món</b>' +
+    '<label class="fl" style="margin-top:.4rem"><input type="checkbox" id="setAllowCustCancel" ' + (state.settings.allowCustomerCancel!==false?"checked":"") + ' style="width:auto"> Cho phép khách tự hủy món (khi bếp chưa nhận)</label>' +
+    '<div class="muted tiny" style="margin-top:.3rem">Nếu TẮT: khách phải gọi NV để hủy.</div></div>' +
+  // FIX #12: Yêu cầu SĐT khi quét QR
+  '<div class="card"><b>📱 Xác thực SĐT khi quét QR</b>' +
+    '<label class="fl" style="margin-top:.4rem"><input type="checkbox" id="setRequirePhone" ' + (state.settings.requirePhoneQR!==false?"checked":"") + ' style="width:auto"> Yêu cầu khách nhập SĐT trước khi đặt món</label>' +
+    '<div class="muted tiny" style="margin-top:.3rem">Giúp chống phá rối + tự động nhận diện khách hàng thân thiết.</div></div>' +
+  // FIX #14: Yêu cầu CK trước cho mang về
+  '<div class="card"><b>💳 Mang về - Xác nhận CK trước</b>' +
+    '<label class="fl" style="margin-top:.4rem"><input type="checkbox" id="setRequireTAPay" ' + (state.settings.requireTakeawayPayment!==false?"checked":"") + ' style="width:auto"> Yêu cầu CK trước khi bếp làm món</label>' +
+    '<div class="muted tiny" style="margin-top:.3rem">Khách sẽ thấy QR ngân hàng khi đặt mang về. Bếp chờ NV xác nhận.</div></div>' +
   '<div class="card"><b>💼 Kế toán</b>' +
     '<label class="fl" style="margin-top:.4rem"><input type="checkbox" id="setLaborInPL" ' + (state.settings.laborInPL?"checked":"") + ' style="width:auto"> Tính tiền công vào COGS</label>' +
     '<div class="muted tiny" style="margin-top:.3rem">⚠️ Mặc định TẮT để tránh trùng lương NV</div></div>' +
   '<div class="card"><b>🏦 Ngân hàng — QR</b>' +
     '<label class="fl" style="margin-top:.4rem"><input type="checkbox" id="bankEnabled" ' + (state.settings.bank.enabled?"checked":"") + ' style="width:auto"> Bật QR</label>' +
     '<label class="fl">NH <select id="bankId">' + BANK_LIST.map(b=>'<option value="' + b.id + '" ' + (state.settings.bank.bankId===b.id?"selected":"") + '>' + b.name + '</option>').join("") + '</select></label>' +
-    '<label class="fl">STK <input id="bankAcc" value="' + esc(state.settings.bank.accountNumber||"") + '"></label>' +
-    '<label class="fl">Chủ TK <input id="bankHolder" value="' + esc(state.settings.bank.accountHolder||"") + '"></label>' +
-    '<label class="fl">URL ảnh QR riêng <input id="bankQrUrl" value="' + esc(state.settings.bank.qrImageUrl||"") + '"></label>' +
-    '<label class="fl" style="margin-top:.5rem"><input type="checkbox" id="bankOnBill" ' + (state.settings.bank.showOnBill!==false?"checked":"") + ' style="width:auto"> In kèm QR</label></div>' +
+    '<label class="fl">STK <input id="bankAcc" value="' + esc(state.settings.bank.accountNumber||"") + '" autocomplete="off"></label>' +
+    '<label class="fl">Chủ TK <input id="bankHolder" value="' + esc(state.settings.bank.accountHolder||"") + '" autocomplete="off"></label>' +
+    '<label class="fl">URL ảnh QR riêng <input id="bankQrUrl" value="' + esc(state.settings.bank.qrImageUrl||"") + '" autocomplete="off"></label>' +
+    '<label class="fl" style="margin-top:.5rem"><input type="checkbox" id="bankOnBill" ' + (state.settings.bank.showOnBill!==false?"checked":"") + ' style="width:auto"> In kèm QR trên bill</label></div>' +
   '<div class="card"><b>💰 Số dư đầu kỳ</b>' +
     '<label class="fl">Tiền mặt + NH <input type="number" id="setOpening" value="' + (state.settings.openingBalance||0) + '" step="100000"></label></div>' +
   '<div class="card"><b>⚙️ Hệ thống</b>' +
@@ -4272,13 +4684,11 @@ function renderQlSettings(el){
     if(!pin || pin.length < 4){ alert("PIN >= 4 ký tự"); return; }
     const rawLogo = document.getElementById("setLogo").value.trim().replace(/^['"]|['"]$/g,'').trim();
     if(rawLogo && !rawLogo.startsWith("http") && !rawLogo.startsWith("data:") && rawLogo.length > 4){
-      alert("⚠️ Logo QUÁN không đúng. Phải là URL ảnh (https://...) HOẶC emoji (1-2 ký tự).");
-      return;
+      alert("⚠️ Logo QUÁN không đúng. Phải là URL ảnh HOẶC emoji."); return;
     }
     const rawAppLogo = document.getElementById("setAppLogo").value.trim().replace(/^['"]|['"]$/g,'').trim();
     if(rawAppLogo && !rawAppLogo.startsWith("http") && !rawAppLogo.startsWith("data:") && rawAppLogo.length > 4){
-      alert("⚠️ Logo APP không đúng. Phải là URL ảnh HOẶC emoji.");
-      return;
+      alert("⚠️ Logo APP không đúng. Phải là URL ảnh HOẶC emoji."); return;
     }
     const newCols = Array.from(document.querySelectorAll("[data-col]:checked")).map(x=>x.dataset.col);
     const newRows = Array.from(document.querySelectorAll("[data-row]:checked")).map(x=>parseInt(x.dataset.row));
@@ -4306,6 +4716,9 @@ function renderQlSettings(el){
     state.settings.serviceFeeEnabled = document.getElementById("setSvcFee").checked;
     state.settings.loyaltyEnabled = document.getElementById("setLoyalty").checked;
     state.settings.laborInPL = document.getElementById("setLaborInPL").checked;
+    state.settings.allowCustomerCancel = document.getElementById("setAllowCustCancel").checked;
+    state.settings.requirePhoneQR = document.getElementById("setRequirePhone").checked;
+    state.settings.requireTakeawayPayment = document.getElementById("setRequireTAPay").checked;
     state.settings.showCols = newCols;
     state.settings.showRows = newRows;
     state.settings.bank = {
@@ -4445,8 +4858,8 @@ function openMenuEditor(id){
           (tempImgData ? '<button class="btn secondary small" id="mmImgRemove" type="button">🗑️</button>' : '') +
         '</div></div>' +
     '</div>' +
-    '<label class="fl">Emoji <input id="mmEmoji" value="' + esc(m.emoji||"🍽️") + '" maxlength="8"></label>' +
-    '<label class="fl">🔗 URL ảnh <input id="mmImg" value="' + esc(m.img||"") + '" placeholder="https://i.imgur.com/abc.jpg" inputmode="url"></label>' +
+    '<label class="fl">Emoji <input id="mmEmoji" value="' + esc(m.emoji||"🍽️") + '" maxlength="8" autocomplete="off"></label>' +
+    '<label class="fl">🔗 URL ảnh <input id="mmImg" value="' + esc(m.img||"") + '" placeholder="https://i.imgur.com/abc.jpg" inputmode="url" autocomplete="off"></label>' +
     '<div class="row" style="margin-top:.3rem;gap:.3rem">' +
       '<button type="button" class="btn secondary small" id="mmImgTest" style="flex:1">👁️ Xem thử</button>' +
       '<button type="button" class="btn secondary small" id="mmImgClear" style="flex:0 0 auto">🗑️ Xoá URL</button>' +
@@ -4455,8 +4868,8 @@ function openMenuEditor(id){
       '<img id="mmImgTestImg" style="max-width:100%;max-height:180px;border-radius:6px" referrerpolicy="no-referrer">' +
       '<div id="mmImgTestErr" style="display:none;color:var(--danger);font-size:.78rem;margin-top:.3rem">⚠️ Không tải được ảnh.</div>' +
     '</div>' +
-    '<label class="fl">Tên món <input id="mmName" value="' + esc(m.name) + '"></label>' +
-    '<label class="fl">Danh mục <input id="mmCat" list="catList" value="' + esc(m.cat) + '"></label>' +
+    '<label class="fl">Tên món <input id="mmName" value="' + esc(m.name) + '" autocomplete="off"></label>' +
+    '<label class="fl">Danh mục <input id="mmCat" list="catList" value="' + esc(m.cat) + '" autocomplete="off"></label>' +
     '<datalist id="catList">' + cats.map(c=>'<option value="' + esc(c) + '">').join("") + '</datalist>' +
     '<label class="fl">Giá bán <input type="number" id="mmPrice" value="' + m.price + '" min="0" step="1000"></label>' +
     '<label class="fl">Tiền công <input type="number" id="mmLabor" value="' + (m.laborCost||0) + '" min="0" step="1000"></label>' +
