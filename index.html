@@ -2894,7 +2894,6 @@ function openBookingModal(tableId){
 /* ============================================================
    MULTI-SERVICE MODAL
    ============================================================ */
-let svcDraft = []; // temp array
 function openSvcModal(tableId){
   const cur = getTableServices(tableId).slice();
   svcDraft = cur.length ? cur.map(x=>({...x})) : [{id: uid("sv"), note:"", price:0, billable:true, ts: nowMs()}];
